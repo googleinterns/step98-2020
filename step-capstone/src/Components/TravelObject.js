@@ -1,17 +1,27 @@
 import React from 'react'
 
 export default function TravelObject(props) {
+    let content = null;
     switch(props.type) {
         case 'event':
-            return null;
+            content = <div>Event!</div>;
+            break;
         case 'flight':
-            return (
-                <div>hi</div>
-            )
+            content = <div>Flight!</div>
+            break;
         case 'hotel':
-            return null;
+            content = <div>Hotel!</div>
+            break;
         default:
             console.log("Invalid type");
             break;
     }
+    return (
+        <div>
+            {content}
+            <button onClick={() => console.log("editing")}>Edit</button>
+            <button onClick={() => console.log("deleting")}>Delete</button>
+        </div>
+    )
+    
 }
