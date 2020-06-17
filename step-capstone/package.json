@@ -9,7 +9,8 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "stable": "^0.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -19,6 +20,9 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "engines": {
+    "node": "10.x.x"
   },
   "browserslist": {
     "production": [
