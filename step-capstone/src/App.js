@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import TravelObject from './Components/TravelObject'
 
 function App() {
   return (
