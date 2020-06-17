@@ -1,4 +1,5 @@
 import React from 'react'
+import Flight from './Flight'
 
 export default function TravelObject(props) {
     let content = null;
@@ -7,7 +8,7 @@ export default function TravelObject(props) {
             content = <div>Event!</div>;
             break;
         case 'flight':
-            content = <div>Flight!</div>
+            content = <Flight />
             break;
         case 'hotel':
             content = <div>Hotel!</div>
