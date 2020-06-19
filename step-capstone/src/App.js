@@ -1,12 +1,13 @@
 import React from 'react';
-import './App.css';
+import './styles/App.css';
+import TravelObject from './components/TravelObject'
 
 class App extends React.Component {
   render () {
     return(
-    <div className="App">
-      <h1> Hello World </h1>
-    </div>
+      <div className="App">
+
+      </div>
     );
   }
 }
