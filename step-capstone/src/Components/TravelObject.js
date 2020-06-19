@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Button, Typography} from '@material-ui/core'
+import { Grid, Typography} from '@material-ui/core'
 import { Edit, Delete} from '@material-ui/icons'
 
 export default function TravelObject(props) {
