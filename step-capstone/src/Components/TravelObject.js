@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import { Edit, Delete } from '@material-ui/icons'
 
 export default function TravelObject(props) {
