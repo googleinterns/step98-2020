@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import TravelObject from './Components/TravelObject'
+import TravelObject from './components/TravelObject'
 
 class App extends React.Component {
   render () {
