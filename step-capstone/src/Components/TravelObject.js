@@ -26,14 +26,14 @@ export default function TravelObject(props) {
                         {content}
                     </Box>
                     <Grid item>
-                            <Grid container direction="column">
-                                <Edit
-                                    onClick={() => console.log("editing")}
-                                />
-                                <Delete
-                                    onClick={() => console.log("deleting")}
-                                />
-                            </Grid>
+                        <Grid container direction="column">
+                            <Edit
+                                onClick={() => console.log("editing")}
+                            />
+                            <Delete
+                                onClick={() => console.log("deleting")}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
             </CardContent>
