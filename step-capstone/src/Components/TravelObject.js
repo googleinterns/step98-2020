@@ -1,39 +1,43 @@
 import React from 'react'
-import { Grid, Typography} from '@material-ui/core'
-import { Edit, Delete} from '@material-ui/icons'
+import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Edit, Delete } from '@material-ui/icons'
 
 export default function TravelObject(props) {
     let content = null;
-    switch(props.type) {
+    switch (props.type) {
         case 'event':
-            content = <div>Event!</div>
+            content = <Typography variant="h4" gutterBottom>Event!</Typography>
             break;
         case 'flight':
             content = <Typography variant="h4" gutterBottom>Flight!</Typography>
             break;
         case 'hotel':
-            content = <div>Hotel!</div>
+            content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
             break;
         default:
             console.log("Invalid type");
             break;
     }
     return (
-        <Grid container direction="row" justify="center" alignItems="center">
-            <Grid item>
-                {content}
-            </Grid>
-            <Grid item>
-                <Grid container direction="column">
-                    <Edit 
-                        onClick={() => console.log("editing")}
-                    />
-                    <Delete 
-                        onClick={() => console.log("deleting")}
-                    />
+        <Card>
+            <CardContent>
+                <Grid container direction="row" justify="flex-end" alignItems="center">
+                    <Box mr={10} width="100%" height="100%">
+                        {content}
+                    </Box>
+                    <Grid item>
+                            <Grid container direction="column">
+                                <Edit
+                                    onClick={() => console.log("editing")}
+                                />
+                                <Delete
+                                    onClick={() => console.log("deleting")}
+                                />
+                            </Grid>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Grid>
+            </CardContent>
+        </Card>
     )
-    
 }
