@@ -15,8 +15,7 @@ export default function TravelObject(props) {
             content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
             break;
         default:
-            console.log("Invalid type");
-            break;
+            return null;
     }
     return (
         <Card>
