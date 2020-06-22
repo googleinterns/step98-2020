@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
+import Flight from './Flight'
 
 export default function TravelObject(props) {
     let content = null;
@@ -9,7 +10,7 @@ export default function TravelObject(props) {
             content = <Typography variant="h4" gutterBottom>Event!</Typography>
             break;
         case 'flight':
-            content = <Typography variant="h4" gutterBottom>Flight!</Typography>
+            content = <Flight />
             break;
         case 'hotel':
             content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
