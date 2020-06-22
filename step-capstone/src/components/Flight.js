@@ -1,6 +1,19 @@
 import React from 'react'
 import { Box, Grid, Typography } from '@material-ui/core'
 
+/*
+Takes data in this form:
+        {
+          finalized: true,
+          type: "flight",
+          departureAirport: "BOS",
+          arrivalAirport: "SFO",
+          departureDate: "4:00pm EST",
+          arrivalDate: "7:00pm PST",
+          description: "Additional notes"
+        }
+
+*/
 export default function Flight({ data }) {
     return(
         <Grid item>
