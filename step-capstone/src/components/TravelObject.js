@@ -5,12 +5,12 @@ import Flight from './Flight'
 
 export default function TravelObject(props) {
     let content = null;
-    switch (props.type) {
+    switch (props.data.type) {
         case 'event':
             content = <Typography variant="h4" gutterBottom>Event!</Typography>
             break;
         case 'flight':
-            content = <Flight />
+            content = <Flight data={ props.data }/>
             break;
         case 'hotel':
             content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
