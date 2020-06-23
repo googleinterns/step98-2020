@@ -10,16 +10,18 @@
     background-color: royalblue;
 }
 
-#itinerary-component {
+#finalized-component {
     width: 300px;
     background-color: red;
     height: 100%;
+    overflow-y: auto;
 }
 
-#unordered-objects-component {
+#unfinalized-component {
     width: 300px;
     background-color: red;
     height: 100%;
+    overflow-y: auto;
 }
 
 #trip {
@@ -28,7 +30,7 @@
 
 .foreground {
     width: 100%;
-    height: 100%;
+    height: 100vmin;
     position: absolute;
     z-index: 2;
 }

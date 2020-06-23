@@ -22,7 +22,7 @@ export default function TravelObject(props) {
     return (
         <Card>
             <CardContent>
-                <Grid container direction="row" justify="flex-end" alignItems="center">
+                <Grid container direction="row">
                     <Grid item xs>
                         <Box mr={10} width="100%" height="100%">
                             {content}
@@ -30,12 +30,16 @@ export default function TravelObject(props) {
                     </Grid>
                     <Grid item>
                         <Grid container direction="column">
-                            <Edit
-                                onClick={() => props.onEditItem(props.data.id)}
-                            />
-                            <Delete
-                                onClick={() => props.onRemoveItem(props.data.id)}
-                            />
+                            <Grid item>
+                                <Edit
+                                    onClick={() => props.onEditItem(props.data.id)}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Delete
+                                    onClick={() => props.onRemoveItem(props.data.id)}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

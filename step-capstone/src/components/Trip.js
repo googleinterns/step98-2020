@@ -53,6 +53,66 @@ const testData = [
         departureDate: "4:00pm EST",
         arrivalDate: "7:00pm PST",
         description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
     }
 ]
 
@@ -96,7 +156,7 @@ export default class Trip extends React.Component {
             <div className="trip">
                 <Grid id="map-component"></Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
-                    <Grid item id="itinerary-component">
+                    <Grid item id="finalized-component">
                         <Finalized
                             list={this.state.items.filter((item) => item.finalized)}
                             onRemoveItem={this.handleRemoveItem}
@@ -104,7 +164,7 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                         />
                     </Grid>
-                    <Grid item id="unordered-objects-component">
+                    <Grid item id="unfinalized-component">
                         <Unfinalized
                             list={this.state.items.filter((item) => !item.finalized)}
                             onRemoveItem={this.handleRemoveItem}
