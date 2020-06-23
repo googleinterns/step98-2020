@@ -1,7 +1,8 @@
 import React from 'react';
 import TravelObject from './TravelObject'
-import { Grid } from '@material-ui/core'
+import { Grid, IconButton } from '@material-ui/core'
 import '../styles/Trip.css'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const testData = [
     {
@@ -172,6 +173,11 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                         />
                     </Grid>
+                </Grid>
+                <Grid id="add-button-component">
+                    <IconButton aria-label="add">
+                        <AddCircleIcon fontSize="large"/>
+                    </IconButton>
                 </Grid>
             </div>
         );

@@ -26,6 +26,7 @@
 
 #trip {
     height: 100vmin;
+    position: relative;
 }
 
 .foreground {
@@ -33,4 +34,11 @@
     height: 100vmin;
     position: absolute;
     z-index: 2;
+}
+
+#add-button-component {
+    z-index: 5;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
