@@ -18,6 +18,7 @@ export default function TravelObject(props) {
         default:
             return null;
     }
+
     return (
         <Card>
             <CardContent>
@@ -30,10 +31,10 @@ export default function TravelObject(props) {
                     <Grid item>
                         <Grid container direction="column">
                             <Edit
-                                onClick={() => console.log("editing")}
+                                onClick={() => props.edit(props.data.id)}
                             />
                             <Delete
-                                onClick={() => console.log("deleting")}
+                                onClick={() => props.delete(props.data.id)}
                             />
                         </Grid>
                     </Grid>
