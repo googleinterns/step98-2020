@@ -1,10 +1,11 @@
 import React from 'react'
 import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
+import Hotel from './Hotel'
 
 export default function TravelObject(props) {
     let content = null;
-    switch (props.type) {
+    switch (props.data.type) {
         case 'event':
             content = <Typography variant="h4" gutterBottom>Event!</Typography>
             break;
@@ -12,7 +13,7 @@ export default function TravelObject(props) {
             content = <Typography variant="h4" gutterBottom>Flight!</Typography>
             break;
         case 'hotel':
-            content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
+            content = <Hotel {...props.data}/>
             break;
         default:
             return null;
