@@ -96,7 +96,7 @@ export default class Trip extends React.Component {
                 <Grid id="map-component">hi</Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="itinerary-component">
-                        <Itinerary
+                        <Finalized
                             list={this.state.items.filter((item) => item.finalized)}
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
@@ -104,7 +104,7 @@ export default class Trip extends React.Component {
                         />
                     </Grid>
                     <Grid item id="unordered-objects-component">
-                        <UnorderedItems
+                        <Unfinalized
                             list={this.state.items.filter((item) => !item.finalized)}
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
@@ -117,7 +117,7 @@ export default class Trip extends React.Component {
     }
 }
 
-function Itinerary(props) {
+function Finalized(props) {
     return (
         <Grid>
             {
@@ -134,7 +134,7 @@ function Itinerary(props) {
     )
 }
 
-function UnorderedItems(props) {
+function Unfinalized(props) {
     return (
         <Grid>
             {
