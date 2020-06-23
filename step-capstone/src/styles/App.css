@@ -3,5 +3,32 @@
 }
 
 #map-component {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+    background-color: royalblue;
+}
+
+#itinerary-component {
+    width: 300px;
+    background-color: red;
+    height: 100%;
+}
+
+#unordered-objects-component {
+    width: 300px;
+    background-color: red;
+    height: 100%;
+}
+
+#app {
     height: 100vmin;
+}
+
+.foreground {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 2;
 }
