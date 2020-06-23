@@ -1,6 +1,7 @@
 import React from 'react';
 import TravelObject from './TravelObject'
 import { Grid } from '@material-ui/core'
+import '../styles/Trip.css'
 
 const testData = [
     {
@@ -92,8 +93,8 @@ export default class Trip extends React.Component {
 
     render() {
         return (
-            <div className="App">
-                <Grid id="map-component">hi</Grid>
+            <div className="trip">
+                <Grid id="map-component"></Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="itinerary-component">
                         <Finalized

@@ -31,10 +31,10 @@ export default function TravelObject(props) {
                     <Grid item>
                         <Grid container direction="column">
                             <Edit
-                                onClick={() => props.edit(props.data.id)}
+                                onClick={() => props.onEditItem(props.data.id)}
                             />
                             <Delete
-                                onClick={() => props.delete(props.data.id)}
+                                onClick={() => props.onRemoveItem(props.data.id)}
                             />
                         </Grid>
                     </Grid>
