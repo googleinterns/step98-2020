@@ -124,10 +124,11 @@ function Finalized(props) {
             {
                 props.list.map((item) => {
                     return <TravelObject
+                        key={item.id}
                         data={item}
-                        onRemoveItem={props.handleRemoveItem}
-                        onEditItem={props.handleEditItem}
-                        onAddItem={props.handleAddItem}
+                        onRemoveItem={props.onRemoveItem}
+                        onEditItem={props.onEditItem}
+                        onAddItem={props.onAddItem}
                     />
                 })
             }
@@ -141,6 +142,7 @@ function Unfinalized(props) {
             {
                 props.list.map((item) => {
                     return <TravelObject
+                        key={item.id}
                         data={item}
                         onRemoveItem={props.handleRemoveItem}
                         onEditItem={props.handleEditItem}
