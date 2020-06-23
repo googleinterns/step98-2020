@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles/App.css';
 import TravelObject from './components/TravelObject'
+import { Box, Grid, Typography } from '@material-ui/core'
 
 class App extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-
+        <div id="map-component"></div>
         <TravelObject
           data={this.state.data[0]}
         />
