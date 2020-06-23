@@ -2,74 +2,151 @@ import React from 'react';
 import TravelObject from './TravelObject'
 import { Grid } from '@material-ui/core'
 
+const testData = [
+    {
+        id: 0,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 1,
+        finalized: false,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 2,
+        finalized: false,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 3,
+        finalized: false,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    },
+    {
+        id: 4,
+        finalized: true,
+        type: "flight",
+        departureAirport: "BOS",
+        arrivalAirport: "SFO",
+        departureDate: "4:00pm EST",
+        arrivalDate: "7:00pm PST",
+        description: "Additional notes"
+    }
+]
+
 export default class Trip extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            items: []
         }
 
-        this.deleteObject = this.deleteObject.bind(this);
-        this.editObject = this.editObject.bind(this);
-        this.addObject = this.editObject.bind(this);
+        this.handleRemoveItem = this.handleRemoveItem.bind(this);
+        this.handleEditItem = this.handleEditItem.bind(this);
+        this.handleAddItem = this.handleAddItem.bind(this);
     }
 
     fetchData() {
-        return [
-            {
-                id: 0,
-                finalized: true,
-                type: "flight",
-                departureAirport: "BOS",
-                arrivalAirport: "SFO",
-                departureDate: "4:00pm EST",
-                arrivalDate: "7:00pm PST",
-                description: "Additional notes"
-            }
-        ]
+        return testData;
     }
 
     componentDidMount() {
+        let data = this.fetchData();
         this.setState({
-            data: this.fetchData()
+            items: data
         })
     }
 
-    deleteObject(id) {
+    handleRemoveItem(id) {
         console.log("deleting " + id);
     }
 
-    editObject(id) {
+    handleEditItem(id) {
         console.log("editing " + id)
     }
 
-    addObject() {
+    handleAddItem() {
         console.log("adding object");
     }
 
     render() {
-        if (this.state.data.length === 0) {
-            return null;
-        }
         return (
             <div className="App">
                 <Grid id="map-component">hi</Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="itinerary-component">
-                        <TravelObject
-                            data={ this.state.data[0] }
-                            delete={ this.deleteObject }
-                            edit={ this.editObject }
-                            add={ this.add }
+                        <Itinerary
+                            list={this.state.items.filter((item) => item.finalized)}
+                            onRemoveItem={this.handleRemoveItem}
+                            onEditItem={this.handleEditItem}
+                            onAddItem={this.handleAddItem}
                         />
                     </Grid>
                     <Grid item id="unordered-objects-component">
-                        <TravelObject
-                            data={this.state.data[0]}
+                        <UnorderedItems
+                            list={this.state.items.filter((item) => !item.finalized)}
+                            onRemoveItem={this.handleRemoveItem}
+                            onEditItem={this.handleEditItem}
+                            onAddItem={this.handleAddItem}
                         />
                     </Grid>
                 </Grid>
             </div>
         );
     }
+}
+
+function Itinerary(props) {
+    return (
+        <Grid>
+            {
+                props.list.map((item) => {
+                    return <TravelObject
+                        data={item}
+                        onRemoveItem={props.handleRemoveItem}
+                        onEditItem={props.handleEditItem}
+                        onAddItem={props.handleAddItem}
+                    />
+                })
+            }
+        </Grid>
+    )
+}
+
+function UnorderedItems(props) {
+    return (
+        <Grid>
+            {
+                props.list.map((item) => {
+                    return <TravelObject
+                        data={item}
+                        onRemoveItem={props.handleRemoveItem}
+                        onEditItem={props.handleEditItem}
+                        onAddItem={props.handleAddItem}
+                    />
+                })
+            }
+        </Grid>
+    )
 }
