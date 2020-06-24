@@ -48,7 +48,7 @@ const testData = [
         description: "Additional notes"
     },
     {
-        id: 4,
+        id: 125,
         finalized: true,
         type: "flight",
         departureAirport: "BOS",
@@ -58,7 +58,7 @@ const testData = [
         description: "Additional notes"
     },
     {
-        id: 4,
+        id: 87,
         finalized: true,
         type: "flight",
         departureAirport: "BOS",
@@ -68,7 +68,7 @@ const testData = [
         description: "Additional notes"
     },
     {
-        id: 4,
+        id: 231,
         finalized: true,
         type: "flight",
         departureAirport: "BOS",
@@ -78,7 +78,7 @@ const testData = [
         description: "Additional notes"
     },
     {
-        id: 4,
+        id: 5425,
         finalized: true,
         type: "flight",
         departureAirport: "BOS",
@@ -123,7 +123,10 @@ export default class Trip extends React.Component {
     }
 
     handleRemoveItem(id) {
-        console.log("deleting " + id);
+        console.log("removing" + id)
+        this.setState({
+            items: this.state.items.filter((item) => item.id !== id)
+        });
     }
 
     handleEditItem(id) {
@@ -233,7 +236,7 @@ function Unfinalized(props) {
                     return <TravelObject
                         key={item.id}
                         data={item}
-                        onRemoveItem={props.handleRemoveItem}
+                        onRemoveItem={props.onRemoveItem}
                         onEditItem={props.handleEditItem}
                         onAddItem={props.handleAddItem}
                     />
