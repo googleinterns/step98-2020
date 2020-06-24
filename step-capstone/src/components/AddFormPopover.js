@@ -13,7 +13,10 @@ export default function AddFormPopver(props) {
                 anchorOrigin={props.anchorOrigin}
                 transformOrigin={props.transformOrigin}
             >
-                <AddForm onClose={props.onClose}/>
+                <AddForm 
+                    onClose={props.onClose}
+                    onAddItem={props.onAddItem}
+                />
             </Popover>
         </div>
     )

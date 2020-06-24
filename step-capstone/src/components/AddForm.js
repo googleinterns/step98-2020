@@ -7,11 +7,14 @@ export default class AddForm extends React.Component {
         super(props);
         this.state = {
             value: 0,
-            onClose: props.onClose
+            onClose: props.onClose,
+            onAddItem: props.onAddItem,
+            data: undefined
         }
+        this.handleToggleTab = this.handleToggleTab.bind(this);
     }
 
-    handleToggleTab = () => {
+    handleToggleTab() {
         let newVal = this.state.value < 2 ? this.state.value + 1 : 0
         this.setState({
             value: newVal
@@ -34,16 +37,29 @@ export default class AddForm extends React.Component {
                             <Tab label="Hotel" />
                         </Tabs>
                     </Paper>
-                    <form>
-                        <TextField id="title" label="Add Title" />
-                    </form>
+                    <AddEvent />
                 </CardContent>
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.state.onClose} size="small">Create</Button>
+                    <Button onClick={() => this.state.onAddItem(this.state.data)} size="small">Create</Button>
                 </CardActions>
             </Card>
         )
     }
+}
+
+function AddEvent(props) {
+
+    return (
+        <TextField id="title" label="Add Title" />
+    )
+}
+
+function AddHotel(props) {
+
+}
+
+function AddFlight(props) {
+
 }
 

@@ -149,8 +149,12 @@ export default class Trip extends React.Component {
         console.log("editing " + id)
     }
 
-    handleAddItem() {
-        console.log("adding object");
+    handleAddItem(data) {
+        if (data === undefined) {
+            console.log("please enter information")
+        } else {
+            console.log("Adding " + data);
+        }
     }
 
     render() {
@@ -176,7 +180,7 @@ export default class Trip extends React.Component {
                     </Grid>
                 </Grid>
                 <Grid id="add-button-component">
-                    <AddItemButton />
+                    <AddItemButton onAddItem={this.handleAddItem} />
                 </Grid>
             </div>
         );

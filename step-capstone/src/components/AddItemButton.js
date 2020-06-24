@@ -2,8 +2,9 @@ import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { Fab } from '@material-ui/core'
 import AddFormPopover from './AddFormPopover'
+import { PinDropSharp } from '@material-ui/icons';
 
-export default function AddItemButton() {
+export default function AddItemButton(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
@@ -35,6 +36,7 @@ export default function AddItemButton() {
                     vertical: 'bottom',
                     horizontal: 'right',
                 }}
+                onAddItem={props.onAddItem}
             />
         </div>
     )
