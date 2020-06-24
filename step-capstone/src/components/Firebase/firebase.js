@@ -1,9 +1,4 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-import * as firebaseui from 'firebaseui'
 
-
-console.log(process.env.REACT_APP_API_KEY);
 var firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain:  process.env.REACT_APP_AUTH_DOMAIN,
@@ -32,7 +27,7 @@ class Firebase {
       }
     };
   }
-  creatFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
+  createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
   doSignOut = () => this.auth.signOut();
   getUserInfo = () => {
     this.auth.onAuthStateChanged(async (user) => {
@@ -45,5 +40,5 @@ class Firebase {
     }
   );}
 }
- 
-export default Firebase;
+
+var firebaseObject = new Firebase(); 

@@ -1,12 +1,32 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Travel Planner</title>
-    <script type="text/javascript" src="./src/index.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Smart Travel Assistant's Logged In page"
+    />
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.5.1/firebase-ui-auth.css" />
+
+    <script src="/home/step98-2020/step-capstone/index.js"></script>
+    <script src="/home/step98-2020/step-capstone/loggedIn.js"></script>
 </head>
 <body>
-    <p>Hi everyone</p>
-    <div id="root"></div>
+  <a class="brand-logo">
+    <img src="images/zed-logo.png" style="width: 100px; margin-top: 10px;">
+    <h1>Welcome to Zed - The Smart Travel Assistant</h1>
+  </a>
+  
+  <div id="sign-in-status"></div>
+  <div id="sign-in">
+    <Button id="sign-out" display="none">Sign Out</Button>
+  </div>
+  <pre id="account-details"></pre>
 </body>
 </html>

@@ -1,24 +1,19 @@
 import React from 'react';
 import './styles/App.css';
-import { FirebaseContext } from './components/Firebase';
 import TravelObject from './components/TravelObject'
 
 
-
 class App extends React.Component {
-  SomeComponent = () => (
-    <FirebaseContext.Consumer>
-      {(firebase) => {
-        firebase.creatFirebaseWidget();
-      }}
-    </FirebaseContext.Consumer>
-  );
-  value = this.SomeComponent();
+  constructor(props) {
+    super();
+    console.log(props.firebase);
+    this.firebase = props.firebaseObject;
+    this.signInWidget = this.firebase.createFirebaseWidget();
+  }
   render () {
     return(
       <div className="App">
         <p> Hello World </p>
-        {this.SomeComponent()}
       </div>
     );
   }
