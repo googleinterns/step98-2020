@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/firestore';
 import * as firebaseui from 'firebaseui';
 
 var firebaseConfig = {
@@ -16,6 +17,7 @@ var firebaseConfig = {
 class Firebase {
   constructor() {
     firebase.initializeApp(firebaseConfig);
+    this.db = firebase.firestore();
     this.auth = firebase.auth();
     this.ui = new firebaseui.auth.AuthUI(this.auth);
     this.uiConfig = {
@@ -32,15 +34,11 @@ class Firebase {
     };
   }
 
-  signOutCallback = function() {
-    window.location ="index.html";
-  };
-
   createSignOut = function(accessToken) {
     const signOutButton = document.getElementById('sign-out');
     signOutButton.addEventListener("click", (e) => {
       e.preventDefault();
-      this.auth.signOut().then(this.signOutCallback());
+      this.auth.signOut().then(() => window.location ="index.html");
     });
   };
 
@@ -68,6 +66,7 @@ class Firebase {
         
     });
   }
+
 }
  
 export default Firebase;

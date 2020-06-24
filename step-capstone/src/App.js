@@ -27,6 +27,19 @@ class App extends React.Component {
   componentDidMount() {
     console.log(this.context);
     this.context.getUserInfo().then( (status) => this.afterAuthStateCheck(status));
+    
+    //Example code: Read the db function
+    this.context.db.collection('users').get().then((snapshot) => {
+      snapshot.docs.forEach(doc => {
+        console.log(doc.data());
+      })
+    });
+
+    //Example code: Write to the db function
+    this.context.db.collection('users').add({
+      displayName: "memo",
+      email: "memo@email.com"
+    });
 
   }
   render () {
