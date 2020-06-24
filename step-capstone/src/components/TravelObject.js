@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
 import Flight from './Flight'
+import Hotel from './Hotel'
 
 export default function TravelObject(props) {
     let content = null;

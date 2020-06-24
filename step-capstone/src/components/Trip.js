@@ -86,6 +86,16 @@ const testData = [
         departureDate: "4:00pm EST",
         arrivalDate: "7:00pm PST",
         description: "Additional notes"
+    },
+    {
+        id: 100,
+        finalized: true,
+        type: "hotel",
+        name: "Hotel ZED",
+        location: "London",
+        checkIn: "December 17, 2020 15:30:00",
+        checkOut: "December 20, 2020 11:00:00",
+        description: 'description',
     }
 ]
 
@@ -131,21 +141,32 @@ export default class Trip extends React.Component {
                     console.log("adding event");
                     break;
                 case "hotel":
-                    console.log("adding hotel")
+                    this.setState({
+                        items: this.state.items.concat([{
+                            id: this.state.items.length,
+                            finalized: data.finalized,
+                            type: "hotel",
+                            name: data.title,
+                            location: data.location,
+                            checkIn: data.startDate,
+                            checkOut: data.endDate,
+                            description: data.description,
+
+                        }])
+                    })
                     break;
                 case "flight":
-                    let newItem = {
-                        id: this.state.items.length,
-                        finalized: data.finalized,
-                        type: type,
-                        departureAirport: data.departureAirport,
-                        arrivalAirport: data.arrivalAirport,
-                        departureDate: data.departureDate.toString(),
-                        arrivalDate: data.arrivalDate.toString(),
-                        description: data.description
-                    }
                     this.setState({
-                        items: this.state.items.concat([newItem])
+                        items: this.state.items.concat([{
+                            id: this.state.items.length,
+                            finalized: data.finalized,
+                            type: type,
+                            departureAirport: data.departureAirport,
+                            arrivalAirport: data.arrivalAirport,
+                            departureDate: data.departureDate.toString(),
+                            arrivalDate: data.arrivalDate.toString(),
+                            description: data.description
+                        }])
                     })
                     break;
                 default: console.log("invalid type"); break;
@@ -156,7 +177,7 @@ export default class Trip extends React.Component {
     render() {
         return (
             <div className="trip">
-                <Grid id="map-component"><Map zoom={13} center={{lat:51.5, lng:0.087}}/></Grid>
+                <Grid id="map-component"><Map zoom={13} center={{ lat: 51.5, lng: 0.087 }} /></Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
                         <Finalized
