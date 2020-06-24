@@ -14,7 +14,7 @@ Takes data in this form:
         }
 
 */
-export default function Flight({ data }) {
+export default function Flight( data ) {
     return(
         <Grid item>
             <Typography variant="h6" gutterBottom>Flight from { data.departureAirport } to { data.arrivalAirport }</Typography>
