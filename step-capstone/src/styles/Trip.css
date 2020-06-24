@@ -16,7 +16,7 @@
     height: 100%;
     overflow-y: auto;
     pointer-events: auto;
-    box-shadow: 1px 1px 10px gray;
+    box-shadow: 1px 1px 7px gray;
 }
 
 #unfinalized-component {
