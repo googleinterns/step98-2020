@@ -1,9 +1,7 @@
-import app from 'firebase/app';
+import firebase from 'firebase/app';
 import 'firebase/auth';
-import * as firebaseui from 'firebaseui'
+import * as firebaseui from 'firebaseui';
 
-
-console.log(process.env.REACT_APP_API_KEY);
 var firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain:  process.env.REACT_APP_AUTH_DOMAIN,
@@ -14,17 +12,18 @@ var firebaseConfig = {
     appId: "1:390165048626:web:6e692e8fa9d6c5ea1dbb2b",
     measurementId: "G-JPC7PLV9CF",
   };
- 
+
 class Firebase {
   constructor() {
-    app.initializeApp(firebaseConfig);
-    this.auth = app.auth();
+    firebase.initializeApp(firebaseConfig);
+    this.auth = firebase.auth();
     this.ui = new firebaseui.auth.AuthUI(this.auth);
     this.uiConfig = {
       signInSuccessUrl: 'index.html',
       signInOptions: [
-        app.auth.GoogleAuthProvider.PROVIDER_ID,
-        app.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
       ],
       tosUrl: 'index.html',
       privacyPolicyUrl: function() {
@@ -32,18 +31,43 @@ class Firebase {
       }
     };
   }
-  creatFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
-  doSignOut = () => this.auth.signOut();
+
+  signOutCallback = function() {
+    window.location ="index.html";
+  };
+
+  createSignOut = function(accessToken) {
+    const signOutButton = document.getElementById('sign-out');
+    signOutButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      this.auth.signOut().then(this.signOutCallback());
+    });
+  };
+
+  createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
   getUserInfo = () => {
-    this.auth.onAuthStateChanged(async (user) => {
-      console.log(user.displayName);
-      if (user) {
-        return "Success";
-      } else {
-        return "Not log in";
-      }
-    }
-  );}
+    return new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+          var displayName = user.displayName;
+          console.log(displayName);
+
+          //Logout button is created here
+          user.getIdToken().then((accessToken) => this.createSignOut(accessToken));
+
+          resolve({signInStatus: true, userInfo: displayName});
+
+        } else {
+          // User is signed out.
+          console.log("havent logged in");
+
+          resolve({signInStatus: false, userInfo:null});
+        }
+      })
+        
+    });
+  }
 }
  
 export default Firebase;
