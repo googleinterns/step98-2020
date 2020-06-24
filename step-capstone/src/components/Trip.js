@@ -1,10 +1,10 @@
 import React from 'react';
 import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
-import { Grid, Box } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
 
-
+// Data just for testing purposes
 const testData = [
     {
         id: 0,
@@ -39,36 +39,6 @@ const testData = [
     {
         id: 3,
         finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
-        description: "Additional notes"
-    },
-    {
-        id: 4,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
-        description: "Additional notes"
-    },
-    {
-        id: 4,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
-        description: "Additional notes"
-    },
-    {
-        id: 4,
-        finalized: true,
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
@@ -154,12 +124,13 @@ export default class Trip extends React.Component {
             console.log("please enter information")
         } else {
             // Add to database here
+            // current code for testing data format etc.
             switch (type) {
                 case "event":
-
+                    console.log("adding event");
                     break;
                 case "hotel":
-
+                    console.log("adding hotel")
                     break;
                 case "flight":
                     let newItem = {
@@ -211,6 +182,9 @@ export default class Trip extends React.Component {
     }
 }
 
+/*
+ Classes for testing UI purposes
+*/
 function Finalized(props) {
     return (
         <Grid>

@@ -2,7 +2,6 @@ import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { Fab } from '@material-ui/core'
 import AddFormPopover from './AddFormPopover'
-import { PinDropSharp } from '@material-ui/icons';
 
 export default function AddItemButton(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);

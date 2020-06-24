@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {
-    Typography,
     Card,
     CardActions,
     CardContent,
