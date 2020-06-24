@@ -34,6 +34,7 @@
     height: 100vmin;
     position: absolute;
     z-index: 2;
+    pointer-events: none;
 }
 
 #add-button-component {

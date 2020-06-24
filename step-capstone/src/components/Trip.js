@@ -3,6 +3,7 @@ import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
+import Map from "./Map"
 
 // Data just for testing purposes
 const testData = [
@@ -155,7 +156,7 @@ export default class Trip extends React.Component {
     render() {
         return (
             <div className="trip">
-                <Grid id="map-component"></Grid>
+                <Grid id="map-component"><Map zoom={13} center={{lat:51.5, lng:0.087}}/></Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
                         <Finalized
