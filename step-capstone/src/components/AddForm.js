@@ -1,35 +1,32 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Typography, Popover } from '@material-ui/core';
 
 export default function AddForm(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
     return (
         <div>
-            <Dialog
+            <Popover
+                id={props.id}
                 open={props.open}
-                onClose={props.handleClose}
-                aria-labelledby="draggable-dialog-title"
+                anchorEl={props.anchorEl}
+                onClose={props.onClose}
+                anchorOrigin={props.anchorOrigin}
+                transformOrigin={props.transformOrigin}
             >
-                <DialogTitle>Add Item</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        To subscribe to this website, please enter your email address here. We will send updates
-                        occasionally.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button autoFocus onClick={props.onClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={props.onClose} color="primary">
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <Typography>The content of the Popover.</Typography>
+            </Popover>
         </div>
     )
 

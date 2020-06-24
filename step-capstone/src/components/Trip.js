@@ -1,7 +1,7 @@
 import React from 'react';
 import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 import '../styles/Trip.css'
 
 

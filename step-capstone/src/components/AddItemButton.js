@@ -4,24 +4,37 @@ import { IconButton } from '@material-ui/core'
 import AddForm from './AddForm'
 
 export default function AddItemButton() {
-    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleOpen = () => {
-        setOpen(true);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setAnchorEl(null);
     };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     return (
         <div>
-            <IconButton aria-label="add" onClick={handleOpen}>
+            <IconButton aria-label="add" onClick={handleClick}>
                 <AddCircleIcon fontSize="large" />
             </IconButton>
             <AddForm 
+                id={id}
                 open={open}
+                anchorEl={anchorEl}
                 onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
             />
         </div>
     )
