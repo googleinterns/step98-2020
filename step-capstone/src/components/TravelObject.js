@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Typography, Card, CardContent } from '@material-ui/core'
+import { Box, Grid, Typography, Card, CardContent, IconButton } from '@material-ui/core'
 import { Edit, Delete } from '@material-ui/icons'
 import Flight from './Flight'
 import Hotel from './Hotel'
@@ -14,7 +14,7 @@ export default function TravelObject(props) {
             content = <Flight {...props.data} />
             break;
         case 'hotel':
-            content = <Hotel {...props.data}/>
+            content = <Hotel {...props.data} />
             break;
         default:
             return null;
@@ -32,14 +32,18 @@ export default function TravelObject(props) {
                     <Grid item>
                         <Grid container direction="column">
                             <Grid item>
-                                <Edit
-                                    onClick={() => props.onEditItem(props.data.id)}
-                                />
+                                <IconButton aria-label="edit">
+                                    <Edit
+                                        onClick={() => props.onEditItem(props.data.id)}
+                                    />
+                                </IconButton>
                             </Grid>
                             <Grid item>
-                                <Delete
-                                    onClick={() => props.onRemoveItem(props.data.id)}
-                                />
+                                <IconButton arial-label="delete">
+                                    <Delete
+                                        onClick={() => props.onRemoveItem(props.data.id)}
+                                    />
+                                </IconButton>
                             </Grid>
                         </Grid>
                     </Grid>
