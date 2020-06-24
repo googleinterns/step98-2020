@@ -1,7 +1,7 @@
 import React from 'react';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { IconButton } from '@material-ui/core'
-import AddForm from './AddForm'
+import AddIcon from '@material-ui/icons/Add';
+import { Fab } from '@material-ui/core'
+import AddFormPopover from './AddFormPopover'
 
 export default function AddItemButton() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,10 +19,10 @@ export default function AddItemButton() {
 
     return (
         <div>
-            <IconButton aria-label="add" onClick={handleClick}>
-                <AddCircleIcon fontSize="large" />
-            </IconButton>
-            <AddForm 
+            <Fab aria-label="add" onClick={handleClick}>
+                <AddIcon />
+            </Fab>
+            <AddFormPopover
                 id={id}
                 open={open}
                 anchorEl={anchorEl}

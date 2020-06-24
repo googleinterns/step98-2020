@@ -1,33 +1,49 @@
-import React from 'react';
-import { Typography, Popover } from '@material-ui/core';
+import React from 'react'
+import { Typography, Card, CardActions, CardContent, Button, TextField } from '@material-ui/core';
+import { Paper, Box, Tabs, Tab } from '@material-ui/core'
 
-export default function AddForm(props) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+export default class AddForm extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: 0,
+            onClose: props.onClose
+        }
+    }
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    handleToggleTab = () => {
+        let newVal = this.state.value < 2 ? this.state.value + 1 : 0
+        this.setState({
+            value: newVal
+        });
+    }
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-
-    return (
-        <div>
-            <Popover
-                id={props.id}
-                open={props.open}
-                anchorEl={props.anchorEl}
-                onClose={props.onClose}
-                anchorOrigin={props.anchorOrigin}
-                transformOrigin={props.transformOrigin}
-            >
-                <Typography>The content of the Popover.</Typography>
-            </Popover>
-        </div>
-    )
-
+    render() {
+        console.log("rendering tab")
+        return (
+            <Card id="add-form-container">
+                <CardContent>
+                    <Paper>
+                        <Tabs
+                            value={this.state.value}
+                            onChange={this.handleToggleTab}
+                            variant="fullWidth"
+                        >
+                            <Tab label="Event" />
+                            <Tab label="Flight" />
+                            <Tab label="Hotel" />
+                        </Tabs>
+                    </Paper>
+                    <form>
+                        <TextField id="title" label="Add Title" />
+                    </form>
+                </CardContent>
+                <CardActions>
+                    <Button onClick={this.state.onClose} size="small">Cancel</Button>
+                    <Button onClick={this.state.onClose} size="small">Create</Button>
+                </CardActions>
+            </Card>
+        )
+    }
 }
+

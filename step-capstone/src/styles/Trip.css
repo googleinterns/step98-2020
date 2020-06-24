@@ -41,4 +41,10 @@
     position: absolute;
     bottom: 0;
     right: 0;
+    margin: 30px;
+}
+
+#add-form-container {
+    height: 500px;
+    width: 600px;;
 }
