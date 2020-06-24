@@ -162,7 +162,19 @@ export default class Trip extends React.Component {
 
                     break;
                 case "flight":
-
+                    let newItem = {
+                        id: this.state.items.length,
+                        finalized: data.finalized,
+                        type: type,
+                        departureAirport: data.departureAirport,
+                        arrivalAirport: data.arrivalAirport,
+                        departureDate: data.departureDate.toString(),
+                        arrivalDate: data.arrivalDate.toString(),
+                        description: data.description
+                    }
+                    this.setState({
+                        items: this.state.items.concat([newItem])
+                    })
                     break;
                 default: console.log("invalid type"); break;
             }
