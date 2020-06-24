@@ -149,11 +149,23 @@ export default class Trip extends React.Component {
         console.log("editing " + id)
     }
 
-    handleAddItem(data) {
+    handleAddItem(type, data) {
         if (data === undefined) {
             console.log("please enter information")
         } else {
-            console.log("Adding " + data);
+            // Add to database here
+            switch (type) {
+                case "event":
+
+                    break;
+                case "hotel":
+
+                    break;
+                case "flight":
+
+                    break;
+                default: console.log("invalid type"); break;
+            }
         }
     }
 

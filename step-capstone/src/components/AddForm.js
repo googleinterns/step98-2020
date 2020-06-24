@@ -31,6 +31,7 @@ export default class AddForm extends React.Component {
         }
         this.handleToggleTab = this.handleToggleTab.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
+        this.handleCreate = this.handleCreate.bind(this);
     }
 
     // clears data when tab is changed
@@ -56,8 +57,23 @@ export default class AddForm extends React.Component {
         }
     }
 
+    handleCreate() {
+        switch (this.state.value) {
+            case 0:
+                this.state.onAddItem("event", this.state.data);
+                break;
+            case 1:
+                this.state.onAddItem("flight", this.state.data);
+                break;
+            case 2:
+                this.state.onAddItem("hotel", this.state.data);
+                break;
+            default: break;
+        }
+        this.state.onClose();
+    }
+
     render() {
-        console.log(this.state.data)
         return (
             <Card id="add-form-container">
                 <CardContent>
@@ -76,7 +92,7 @@ export default class AddForm extends React.Component {
                 </CardContent>
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
-                    <Button onClick={() => this.state.onAddItem(this.state.data)} size="small">Create</Button>
+                    <Button onClick={this.handleCreate} size="small">Create</Button>
                 </CardActions>
             </Card>
         )
