@@ -10,10 +10,10 @@ export default function TravelObject(props) {
             content = <Typography variant="h4" gutterBottom>Event!</Typography>
             break;
         case 'flight':
-            content = <Flight data={props.data} />
+            content = <Flight {...props.data} />
             break;
         case 'hotel':
-            content = <Typography variant="h4" gutterBottom>Hotel!</Typography>
+            content = <Hotel {...props.data}/>
             break;
         default:
             return null;
