@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {
     Typography,
@@ -10,7 +10,8 @@ import {
     Paper,
     Grid,
     Tabs,
-    Tab
+    Tab,
+    Checkbox
 } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
@@ -26,19 +27,37 @@ export default class AddForm extends React.Component {
             value: 0,
             onClose: props.onClose,
             onAddItem: props.onAddItem,
-            data: undefined
+            data: {}
         }
         this.handleToggleTab = this.handleToggleTab.bind(this);
+        this.handleDataChange = this.handleDataChange.bind(this);
     }
 
-    handleToggleTab() {
-        let newVal = this.state.value < 2 ? this.state.value + 1 : 0
+    // clears data when tab is changed
+    handleToggleTab(event, newVal) {
         this.setState({
-            value: newVal
+            value: newVal,
+            data: undefined
         });
     }
 
+    handleDataChange(newData) {
+        this.setState({
+            data: newData
+        })
+    }
+
+    getForm() {
+        switch (this.state.value) {
+            case 0: return <AddEventHotel onDataChange={this.handleDataChange} />
+            case 1: return <AddFlight onDataChange={this.handleDataChange} />
+            case 2: return <AddEventHotel onDataChange={this.handleDataChange} />
+            default: return;
+        }
+    }
+
     render() {
+        console.log(this.state.data)
         return (
             <Card id="add-form-container">
                 <CardContent>
@@ -53,7 +72,7 @@ export default class AddForm extends React.Component {
                             <Tab label="Hotel" />
                         </Tabs>
                     </Paper>
-                    <AddEvent />
+                    {this.getForm()}
                 </CardContent>
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
@@ -64,37 +83,160 @@ export default class AddForm extends React.Component {
     }
 }
 
-function AddEvent(props) {
-    const [selectedDate, handleDateChange] = useState(new Date());
+function AddEventHotel(props) {
+    const [startDate, handleStartChange] = useState(new Date());
+    const [endDate, handleEndChange] = useState(new Date());
+    const [checked, setChecked] = useState(false);
+    const [title, setTitle] = useState("");
+    const [location, setLocation] = useState("");
+    const [description, setDescription] = useState("");
+
+    const handleChecked = (e) => {
+        setChecked(e.target.checked);
+    }
+
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const handleLocationChange = (e) => {
+        setLocation(e.target.value);
+    }
+
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+    }
+
+    /*
+     * Called once change to hook state is complete. Updates data property in AddForm.
+     */
+    useEffect(() => {
+        props.onDataChange({
+            title: title,
+            startDate: startDate,
+            endDate: endDate,
+            finalized: checked,
+            location: location,
+            description: description
+        })
+    }, [startDate, endDate, checked, title, location, description])
 
     return (
         <Grid container direction="column">
             <Grid item>
-                <TextField id="title" label="Add Title" fullWidth/>
+                <TextField id="title" label="Add Title" fullWidth onChange={handleTitleChange} />
+            </Grid>
+            <Grid item>
+                <Checkbox
+                    checked={checked}
+                    onChange={handleChecked}
+                />
             </Grid>
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={selectedDate} onChange={handleDateChange} />
+                    <DateTimePicker value={startDate} onChange={handleStartChange} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={selectedDate} onChange={handleDateChange} />
+                    <DateTimePicker value={endDate} onChange={handleEndChange} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                <TextField id="location" label="Add Location" fullWidth/>
+                <TextField
+                    id="location"
+                    label="Add Location"
+                    fullWidth onChange={handleLocationChange}
+                />
             </Grid>
             <Grid item>
-                <TextField id="description" label="Add Description" fullWidth multiline/>
+                <TextField
+                    id="description"
+                    label="Add Description"
+                    fullWidth
+                    multiline
+                    onChange={handleDescriptionChange}
+                />
             </Grid>
         </Grid>
     )
 }
 
-function AddHotel(props) {
-
-}
-
 function AddFlight(props) {
+    const [departureDate, handleStartChange] = useState(new Date());
+    const [arrivalDate, handleEndChange] = useState(new Date());
+    const [checked, setChecked] = useState(false);
+    const [departureAirport, setDepartureAirport] = useState("");
+    const [arrivalAirport, setArrivalAirport] = useState("")
+    const [description, setDescription] = useState("");
 
+    const handleChecked = (event) => {
+        setChecked(event.target.checked);
+    }
+
+    const handleDepartureAirport = (e) => {
+        setDepartureAirport(e.target.value);
+    }
+
+    const handleArrivalAirport = (e) => {
+        setArrivalAirport(e.target.value);
+    }
+
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+    }
+
+    /*
+     * Called once change to hook state is complete. Updates data property in AddForm.
+     */
+    useEffect(() => {
+        console.log("changing data");
+        props.onDataChange({
+            finalized: checked,
+            departureDate: departureDate,
+            arrivalDate: arrivalDate,
+            departureAirport: departureAirport,
+            arrivalAirport: arrivalAirport,
+            description: description
+        })
+    }, [departureDate, arrivalDate, checked, departureAirport, arrivalAirport, description])
+
+    return (
+        <Grid container direction="column">
+            <Grid item container direction="row">
+                <TextField
+                    id="departure"
+                    label="Add departure airport"
+                    onChange={handleDepartureAirport}
+                />
+                <TextField
+                    id="arrival"
+                    label="Add arrival airport"
+                    onChange={handleArrivalAirport}
+                />
+            </Grid>
+            <Grid item>
+                <Checkbox
+                    checked={checked}
+                    onChange={handleChecked}
+                />
+            </Grid>
+            <Grid item container direction="row" justify="space-between">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker value={departureDate} onChange={handleStartChange} />
+                </MuiPickersUtilsProvider>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker value={arrivalDate} onChange={handleEndChange} />
+                </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item>
+                <TextField
+                    id="description"
+                    label="Add Description"
+                    fullWidth
+                    multiline
+                    onChange={handleDescriptionChange}
+                />
+            </Grid>
+        </Grid>
+    )
 }
 
