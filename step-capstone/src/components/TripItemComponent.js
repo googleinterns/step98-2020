@@ -19,7 +19,7 @@ const useStyles = makeStyles({
     },
 })
 /*
-* Trip component should recieve some trip
+* Trip component should receive some trip
 */
 export default function TripItemComponent(props) {
     const classes = useStyles();
