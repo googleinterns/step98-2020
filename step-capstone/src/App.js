@@ -15,6 +15,7 @@ class App extends React.Component {
   }
 
   handleOpenTrip(tripID) {
+    // TODO
     // fetch trip from database with tripID
     this.setState({ selectedTrip: "fetched trip" })
     console.log("Opening trip " + tripID);
@@ -37,6 +38,8 @@ class App extends React.Component {
           onOpenTrip={this.handleOpenTrip}
         />
         {/* 
+          TODO
+          
           Add route to trip with path /trip and pass in selected trip object
 
           <Route path="/trip">
