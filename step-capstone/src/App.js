@@ -6,6 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 import './styles/App.css';
+import {Grid} from '@material-ui/core'
+import Trip from "./components/Trip"
 
 class App extends React.Component {
   isLoggedIn = true; 
@@ -34,7 +36,6 @@ class App extends React.Component {
             </Route>
           </Switch>
         </Router>
-      
       </div>
     );
   }
@@ -52,18 +53,18 @@ function TripList(){
   //   <li><TripBox {...trip}/></li>
   // );
   return (
-    <h2>Hello World</h2>
-    <Grid> {
-       trips.map((trip) => {
-         return(
-           <TripBox {...trip}/>
-         );
-         })
-      }
-    </Grid>
+    <Trip />
+    // <Grid> {
+    //    trips.map((trip) => {
+    //      return(
+    //        <TripBox {...trip}/>
+    //      );
+    //      })
+    //   }
+    // </Grid>
     
    // <ul> {tripList} </ul>
-  )
+  );
 }
 
 export default App;
