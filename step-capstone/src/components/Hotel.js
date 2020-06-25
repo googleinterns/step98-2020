@@ -15,10 +15,10 @@ export default function Hotel(data) {
   **/
   return (
     <Grid item>
-      <Typography variant="h6" gutterBottom>{data.name} </Typography>
+      <Typography variant="h6" gutterBottom>{data.title} </Typography>
       <Typography variant="subtitle2" gutterBottom>{
-          data.checkIn + ' - ' +
-          data.checkOut} </Typography>
+          data.startDate.toString() + ' - ' +
+          data.endDate.toString()} </Typography>
       <Typography variant="subtitle2" gutterBottom>{data.location}</Typography>
       <Typography variant="body2" gutterBottom>{ data.description }</Typography>
     </Grid>
