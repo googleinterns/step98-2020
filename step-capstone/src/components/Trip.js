@@ -180,7 +180,7 @@ export default class Trip extends React.Component {
                         }])
                     })
                     break;
-                default: console.log("invalid type"); break;
+                default: throw "Invalid input";
             }
         }
     }
