@@ -60,7 +60,7 @@ export default function AddFlight(props) {
             return (
                 <TextField
                     error
-                    helperText="Please enter departure airport"
+                    helperText="Cannot leave field blank"
                     id="departure"
                     label={"Departire IATA code"}
                     defaultValue={departureAirport}
@@ -84,7 +84,7 @@ export default function AddFlight(props) {
             return (
                 <TextField
                     error
-                    helperText="Please enter arrival airport"
+                    helperText="Cannot leave field blank"
                     id="arrival"
                     label={"Arrival IATA code"}
                     defaultValue={arrivalAirport}
