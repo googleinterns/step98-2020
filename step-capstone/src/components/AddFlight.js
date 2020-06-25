@@ -57,12 +57,14 @@ export default function AddFlight(props) {
             <Grid item container direction="row">
                 <TextField
                     id="departure"
-                    label={departureAirport.length !== 0 ? departureAirport : "Add departure airport"}
+                    label={"Add departure airport"}
+                    defaultValue= {departureAirport}
                     onChange={handleDepartureAirport}
                 />
                 <TextField
                     id="arrival"
-                    label={arrivalAirport.length !== 0 ? arrivalAirport : "Add arrival airport"}
+                    label={"Add arrival airport"}
+                    defaultValue= {arrivalAirport}
                     onChange={handleArrivalAirport}
                 />
             </Grid>
@@ -74,16 +76,17 @@ export default function AddFlight(props) {
             </Grid>
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={departureDate} onChange={handleStartChange} />
+                    <DateTimePicker label="Departure" value={departureDate} onChange={handleStartChange} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={arrivalDate} onChange={handleEndChange} />
+                    <DateTimePicker label="Arrival" value={arrivalDate} onChange={handleEndChange} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
                 <TextField
                     id="description"
-                    label={description.length !== 0 ? description : "Add Description"}
+                    label={"Add Description"}
+                    defaultValue={description}
                     fullWidth
                     multiline
                     onChange={handleDescriptionChange}

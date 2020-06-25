@@ -59,7 +59,8 @@ export default function AddEventHotel(props) {
             <Grid item>
                 <TextField
                     id="title"
-                    label={title.length !== 0 ? title : "Add Title"}
+                    label={"Add Title"}
+                    defaultValue={title}
                     fullWidth
                     onChange={handleTitleChange}
                 />
@@ -72,10 +73,16 @@ export default function AddEventHotel(props) {
             </Grid>
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={startDate} onChange={handleStartChange} />
+                    <DateTimePicker
+                        label={props.type === "event" ? "Start" : "Check in"}
+                        value={startDate}
+                        onChange={handleStartChange} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker value={endDate} onChange={handleEndChange} />
+                    <DateTimePicker
+                        label={props.type === "event" ? "End" : "Check out"}
+                        value={endDate}
+                        onChange={handleEndChange} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
@@ -89,7 +96,8 @@ export default function AddEventHotel(props) {
             <Grid item>
                 <TextField
                     id="description"
-                    label={description.length !== 0 ? description : "Add Description"}
+                    label={"Add Description"}
+                    defaultValue={description}
                     fullWidth
                     multiline
                     onChange={handleDescriptionChange}
