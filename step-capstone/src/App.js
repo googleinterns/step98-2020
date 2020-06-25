@@ -53,8 +53,17 @@ function TripList(){
   // );
   return (
     <h2>Hello World</h2>
+    <Grid> {
+       trips.map((trip) => {
+         return(
+           <TripBox {...trip}/>
+         );
+         })
+      }
+    </Grid>
+    
    // <ul> {tripList} </ul>
-  );
+  )
 }
 
 export default App;
