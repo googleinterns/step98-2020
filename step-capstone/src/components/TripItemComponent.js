@@ -17,7 +17,9 @@ const useStyles = makeStyles({
         height: 140
     },
 })
-
+/*
+* Trip component should recieve some trip
+*/
 export default function TripItemComponent(props) {
     const classes = useStyles();
     let dateRange = props.startDate.toString() + " - " + props.endDate.toString();
@@ -32,7 +34,7 @@ export default function TripItemComponent(props) {
             <CardContent>{props.description}</CardContent>
             <CardActions>
                 <Button size="small">Share</Button>
-                <Button size="small">Open</Button>
+                <Button size="small" onClick={() => props.onOpenTrip(props.id)}>Open</Button>
             </CardActions>
         </Card>
     )
