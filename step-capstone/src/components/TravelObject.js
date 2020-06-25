@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Grid, Typography, Card, CardContent, IconButton } from '@material-ui/core'
-import { Edit, Delete, ControlPointSharp } from '@material-ui/icons'
+import { Edit, Delete } from '@material-ui/icons'
 import Flight from './Flight'
 import Hotel from './Hotel'
 import FormPopover from './FormPopover'

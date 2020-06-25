@@ -18,9 +18,6 @@ export default class ItemForm extends React.Component {
         this.state = {
             isNewItem: props.data === undefined,
             value: 0,
-            onClose: props.onClose,
-            onAddItem: props.onAddItem,
-            onEditItem: props.onEditItem,
             data: props.data,
             isValidated: false
         }
@@ -90,12 +87,12 @@ export default class ItemForm extends React.Component {
             return;
         }
         if (this.state.isNewItem) {
-            this.state.onAddItem(this.state.data);
+            this.props.onAddItem(this.state.data);
         } else {
-            this.state.onEditItem(this.state.data);
+            this.props.onEditItem(this.state.data);
         }
 
-        this.state.onClose();
+        this.props.onClose();
     }
 
     // renders tab if user presses add button to create a new item
