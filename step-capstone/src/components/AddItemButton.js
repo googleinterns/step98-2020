@@ -4,6 +4,7 @@ import { Fab } from '@material-ui/core'
 import FormPopover from './FormPopover'
 
 export default function AddItemButton(props) {
+    // anchor reference point
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {

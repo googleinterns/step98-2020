@@ -44,6 +44,7 @@ export default class ItemForm extends React.Component {
         })
     }
 
+    // sets validation state to indicate whether or not all required inputs are filled out
     handleToggleValidation(validated) {
         if (validated !== this.state.isValidated) {
             this.setState({
@@ -97,6 +98,8 @@ export default class ItemForm extends React.Component {
         this.state.onClose();
     }
 
+    // renders tab if user presses add button to create a new item
+    // otherwise only the form should show for editing
     renderTab() {
         if (this.state.isNewItem) {
             return (

@@ -14,6 +14,8 @@ import DateFnsUtils from "@date-io/date-fns";
 
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
+
+    // Sets values to previous values if editing, otherwise blank slate
     const [departureDate, handleStartChange] = useState(overwriting ? props.data.departureDate : new Date());
     const [arrivalDate, handleEndChange] = useState(overwriting ? props.data.arrivalDate : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
@@ -55,6 +57,8 @@ export default function AddFlight(props) {
         props.onToggleValidation(!(departureAirport === "" || arrivalAirport === ""))
     }, [departureDate, arrivalDate, checked, departureAirport, arrivalAirport, description])
 
+
+    // Users must input departure and arrival airports --> renders error input if not
     let renderDepartureAirportField = () => {
         if (departureAirport === "") {
             return (
@@ -79,6 +83,7 @@ export default function AddFlight(props) {
         }
     }
 
+    // Users must input departure and arrival airports --> renders error input if not
     let renderArrivalAirportField = () => {
         if (arrivalAirport === "") {
             return (

@@ -20,6 +20,7 @@ export default function TravelObject(props) {
         default:
             return null;
     }
+
     return (
         <Card>
             <CardContent>
@@ -52,7 +53,11 @@ export default function TravelObject(props) {
     )
 }
 
+/*
+ * Edit Button triggers FormPopover and populates it with previously set data. Any changes will override existing item
+ */
 function EditButton(props) {
+    // reference point
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {

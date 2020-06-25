@@ -18,6 +18,7 @@ import DateFnsUtils from "@date-io/date-fns";
 export default function AddEventHotel(props) {
     let overwriting = props.data !== undefined;
 
+    // Sets values to previous values if editing, otherwise blank slate
     const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
     const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
