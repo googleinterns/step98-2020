@@ -1,5 +1,12 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import './styles/App.css';
+import {Grid} from '@material-ui/core'
 import Trip from "./components/Trip"
 import TripItemComponent from "./components/TripItemComponent"
 
@@ -24,18 +31,31 @@ class App extends React.Component {
     //   <Redirect to = "/trip/nameOfTrip" />
     // )
   }
-
-  render() {
-    return (
+  
+  isLoggedIn = true;
+  handleLogin(){
+    if(this.isLoggedIn){
+      return(
+        <Redirect to = "/trip-list"/>
+      ); 
+    } else {
+      return (
+        <Redirect to = "/login-page"/>
+      );
+    }
+  }
+  render () {
+    return(
       <div className="App">
-        <TripItemComponent
-          id="dksfgbwehkf"
-          title="Asia Trip"
-          startDate={new Date()}
-          endDate={new Date()}
-          description="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-          onOpenTrip={this.handleOpenTrip}
-        />
+        <Router>
+          {this.handleLogin()}
+          <Switch>
+            <Route path="/trip-list">
+              <TripList userId = 'userId' />
+            </Route>
+            <Route path="/login-page">
+              <Login />
+            </Route>
         {/* 
           TODO
 
@@ -46,9 +66,38 @@ class App extends React.Component {
           </Route>
         
         */}
+          </Switch>
+        </Router>
       </div>
     );
   }
+}
+
+function Login(){
+  return ( 
+    <Login/>
+    //Login Page
+  );
+}
+
+function TripList(){
+  // const trips = firestore.getTrips(props.userId);
+  // const tripList = trips.map((trip) =>
+  //   <li><TripBox {...trip}/></li>
+  // );
+  return (
+    <Trip />
+    // <Grid> {
+    //    trips.map((trip) => {
+    //      return(
+    //        <TripBox {...trip}/>
+    //      );
+    //      })
+    //   }
+    // </Grid>
+    
+   // <ul> {tripList} </ul>
+  );
 }
 
 export default App;
