@@ -113,6 +113,7 @@ export default class Trip extends React.Component {
     }
 
     fetchData() {
+        // TODO: fetch from datastore
         return testData;
     }
 
@@ -147,6 +148,7 @@ export default class Trip extends React.Component {
         } else {
             // Add to database here
             // current code for testing data format etc.
+            // TODO: Add item to datastore
             switch (data.type) {
                 case "event":
                     console.log("adding event");
