@@ -7,9 +7,9 @@ class App extends React.Component {
   constructor() {
     super();
     
-    this.state({
+    this.state = {
       selectedTrip: undefined
-    })
+    };
 
     this.handleOpenTrip = this.handleOpenTrip.bind(this);
   }
