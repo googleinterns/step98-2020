@@ -1,6 +1,7 @@
 import React from 'react';
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
+import SignInWidget from './components/Firebase/SignInWidget';
 import {Button} from 'react-bootstrap';
 
 class App extends React.Component {
@@ -12,7 +13,7 @@ class App extends React.Component {
   }
 
   afterAuthStateCheck(status) {
-    console.log(status);
+
     if (status.signInStatus) {
       this.setState({authState: true, userInfo: status.userInfo});
       console.log("You have logged in.");
@@ -20,42 +21,38 @@ class App extends React.Component {
     else {
       this.setState({authState: false, userInfo: null});
       console.log("You havent logged in yet");
-      this.context.createFirebaseWidget();
+      
     }
   }
 
   componentDidMount() {
-    console.log(this.context);
+    
     this.context.getUserInfo().then( (status) => this.afterAuthStateCheck(status));
     
     //Example code: Read the db function
-    this.context.db.collection('users').get().then((snapshot) => {
-      snapshot.docs.forEach(doc => {
-        console.log(doc.data());
-      })
-    });
+    // this.context.db.collection('users').get().then((snapshot) => {
+    //   snapshot.docs.forEach(doc => {
+    //     console.log(doc.data());
+    //   })
+    // });
 
-    //Example code: Write to the db function
-    this.context.db.collection('users').add({
-      displayName: "memo",
-      email: "memo@email.com"
-    });
+    // //Example code: Write to the db function
+    // this.context.db.collection('users').add({
+    //   displayName: "memo",
+    //   email: "memo@email.com"
+    // });
 
   }
   render () {
-    
+
     const display = (this.state.authState)? "block" : "none";
     const displayObject = {display: display};
     return (
       <div>
-          <div id="firebaseui-auth-container"></div>
+          <SignInWidget authState={this.state.authState}/>
+          <Button id="sign-out" style={displayObject}>Sign Out</Button>
           
-          <div id="sign-in-status"></div>
-          <div id="sign-in">
-            <Button id="sign-out" style={displayObject}>Sign Out</Button>
-          </div>
           <pre id="account-details" style={displayObject}>Hello {this.state.userInfo}</pre>
-
       </div>
     ) 
   }  
