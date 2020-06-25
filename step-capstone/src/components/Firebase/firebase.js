@@ -57,8 +57,6 @@ class Firebase {
 
         } else {
           // User is signed out.
-          console.log("havent logged in");
-
           resolve({signInStatus: false, userInfo:null});
         }
       })
