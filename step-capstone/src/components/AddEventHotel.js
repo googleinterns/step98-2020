@@ -12,12 +12,14 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 
 export default function AddEventHotel(props) {
-    const [startDate, handleStartChange] = useState(new Date());
-    const [endDate, handleEndChange] = useState(new Date());
-    const [checked, setChecked] = useState(false);
-    const [title, setTitle] = useState("");
-    const [location, setLocation] = useState("");
-    const [description, setDescription] = useState("");
+    let overwriting = props.data !== undefined;
+
+    const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
+    const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
+    const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
+    const [title, setTitle] = useState(overwriting ? props.data.title : "");
+    const [location, setLocation] = useState(overwriting ? props.data.location : "");
+    const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
     const handleChecked = (e) => {
         setChecked(e.target.checked);
@@ -40,7 +42,9 @@ export default function AddEventHotel(props) {
      */
     useEffect(() => {
         props.onDataChange({
+            id: props.data.id,
             title: title,
+            type: props.type,
             startDate: startDate,
             endDate: endDate,
             finalized: checked,
@@ -52,7 +56,12 @@ export default function AddEventHotel(props) {
     return (
         <Grid container direction="column">
             <Grid item>
-                <TextField id="title" label="Add Title" fullWidth onChange={handleTitleChange} />
+                <TextField
+                    id="title"
+                    label={title.length !== 0 ? title : "Add Title"}
+                    fullWidth
+                    onChange={handleTitleChange}
+                />
             </Grid>
             <Grid item>
                 <Checkbox
@@ -71,14 +80,15 @@ export default function AddEventHotel(props) {
             <Grid item>
                 <TextField
                     id="location"
-                    label="Add Location"
-                    fullWidth onChange={handleLocationChange}
+                    label={location.length !== 0 ? location : "Add Location"}
+                    fullWidth
+                    onChange={handleLocationChange}
                 />
             </Grid>
             <Grid item>
                 <TextField
                     id="description"
-                    label="Add Description"
+                    label={description.length !== 0 ? description : "Add Description"}
                     fullWidth
                     multiline
                     onChange={handleDescriptionChange}

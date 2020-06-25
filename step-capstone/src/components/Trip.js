@@ -13,8 +13,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -23,8 +23,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -33,8 +33,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -43,8 +43,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -53,8 +53,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -63,8 +63,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -73,8 +73,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
@@ -83,18 +83,18 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: "4:00pm EST",
-        arrivalDate: "7:00pm PST",
+        departureDate: new Date(),
+        arrivalDate: new Date(),
         description: "Additional notes"
     },
     {
         id: 100,
         finalized: true,
         type: "hotel",
-        name: "Hotel ZED",
+        title: "Hotel ZED",
         location: "London",
-        checkIn: "December 17, 2020 15:30:00",
-        checkOut: "December 20, 2020 11:00:00",
+        startDate: new Date(),
+        endDate: new Date(),
         description: 'description',
     }
 ]
@@ -123,14 +123,21 @@ export default class Trip extends React.Component {
     }
 
     handleRemoveItem(id) {
-        console.log("removing" + id)
         this.setState({
             items: this.state.items.filter((item) => item.id !== id)
         });
     }
 
-    handleEditItem(id) {
-        console.log("editing " + id)
+    handleEditItem(data) {
+        this.setState({
+            items: this.state.items.map((item) => {
+                if (item.id !== data.id) {
+                    return item;
+                } else {
+                    return data
+                }
+            })
+        })
     }
 
     handleAddItem(type, data) {
@@ -151,8 +158,8 @@ export default class Trip extends React.Component {
                             type: "hotel",
                             name: data.title,
                             location: data.location,
-                            checkIn: data.startDate,
-                            checkOut: data.endDate,
+                            startDate: data.startDate,
+                            endDate: data.endDate,
                             description: data.description,
 
                         }])
@@ -166,8 +173,8 @@ export default class Trip extends React.Component {
                             type: type,
                             departureAirport: data.departureAirport,
                             arrivalAirport: data.arrivalAirport,
-                            departureDate: data.departureDate.toString(),
-                            arrivalDate: data.arrivalDate.toString(),
+                            departureDate: data.departureDate,
+                            arrivalDate: data.arrivalDate,
                             description: data.description
                         }])
                     })
@@ -237,7 +244,7 @@ function Unfinalized(props) {
                         key={item.id}
                         data={item}
                         onRemoveItem={props.onRemoveItem}
-                        onEditItem={props.handleEditItem}
+                        onEditItem={props.onEditItem}
                         onAddItem={props.handleAddItem}
                     />
                 })

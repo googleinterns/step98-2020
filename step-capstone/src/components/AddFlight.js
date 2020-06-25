@@ -12,12 +12,13 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 
 export default function AddFlight(props) {
-    const [departureDate, handleStartChange] = useState(new Date());
-    const [arrivalDate, handleEndChange] = useState(new Date());
-    const [checked, setChecked] = useState(false);
-    const [departureAirport, setDepartureAirport] = useState("");
-    const [arrivalAirport, setArrivalAirport] = useState("")
-    const [description, setDescription] = useState("");
+    let overwriting = props.data !== undefined;
+    const [departureDate, handleStartChange] = useState(overwriting ? props.data.departureDate : new Date());
+    const [arrivalDate, handleEndChange] = useState(overwriting ? props.data.arrivalDate : new Date());
+    const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
+    const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
+    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
+    const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
     const handleChecked = (event) => {
         setChecked(event.target.checked);
@@ -39,9 +40,10 @@ export default function AddFlight(props) {
      * Called once change to hook state is complete. Updates data property in AddForm.
      */
     useEffect(() => {
-        console.log("changing data");
         props.onDataChange({
             finalized: checked,
+            id: props.data.id,
+            type: "flight",
             departureDate: departureDate,
             arrivalDate: arrivalDate,
             departureAirport: departureAirport,
@@ -55,12 +57,12 @@ export default function AddFlight(props) {
             <Grid item container direction="row">
                 <TextField
                     id="departure"
-                    label="Add departure airport"
+                    label={departureAirport.length !== 0 ? departureAirport : "Add departure airport"}
                     onChange={handleDepartureAirport}
                 />
                 <TextField
                     id="arrival"
-                    label="Add arrival airport"
+                    label={arrivalAirport.length !== 0 ? arrivalAirport : "Add arrival airport"}
                     onChange={handleArrivalAirport}
                 />
             </Grid>
@@ -81,7 +83,7 @@ export default function AddFlight(props) {
             <Grid item>
                 <TextField
                     id="description"
-                    label="Add Description"
+                    label={description.length !== 0 ? description : "Add Description"}
                     fullWidth
                     multiline
                     onChange={handleDescriptionChange}

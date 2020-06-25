@@ -1,8 +1,9 @@
 import React from 'react'
 import { Box, Grid, Typography, Card, CardContent, IconButton } from '@material-ui/core'
-import { Edit, Delete } from '@material-ui/icons'
+import { Edit, Delete, ControlPointSharp } from '@material-ui/icons'
 import Flight from './Flight'
 import Hotel from './Hotel'
+import FormPopover from './FormPopover'
 
 export default function TravelObject(props) {
     let content = null;
@@ -19,7 +20,6 @@ export default function TravelObject(props) {
         default:
             return null;
     }
-
     return (
         <Card>
             <CardContent>
@@ -32,11 +32,10 @@ export default function TravelObject(props) {
                     <Grid item>
                         <Grid container direction="column">
                             <Grid item>
-                                <IconButton aria-label="edit">
-                                    <Edit
-                                        onClick={() => props.onEditItem(props.data.id)}
-                                    />
-                                </IconButton>
+                                <EditButton
+                                    data={props.data}
+                                    onEditItem={props.onEditItem}
+                                />
                             </Grid>
                             <Grid item>
                                 <IconButton arial-label="delete">
@@ -50,5 +49,44 @@ export default function TravelObject(props) {
                 </Grid>
             </CardContent>
         </Card>
+    )
+}
+
+function EditButton(props) {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    return (
+        <div>
+            <IconButton aria-label="edit">
+                <Edit
+                    onClick={handleClick}
+                />
+            </IconButton>
+            <FormPopover
+                data={props.data}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                onAddItem={props.onAddItem}
+                onEditItem={props.onEditItem}
+            />
+        </div>
     )
 }

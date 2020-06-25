@@ -1,7 +1,7 @@
 import React from 'react';
 import AddIcon from '@material-ui/icons/Add';
 import { Fab } from '@material-ui/core'
-import AddFormPopover from './AddFormPopover'
+import FormPopover from './FormPopover'
 
 export default function AddItemButton(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -15,15 +15,15 @@ export default function AddItemButton(props) {
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    //const id = open ? 'simple-popover' : undefined;
 
     return (
         <div>
             <Fab aria-label="add" onClick={handleClick}>
                 <AddIcon />
             </Fab>
-            <AddFormPopover
-                id={id}
+            <FormPopover
+                data={undefined}
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handleClose}
@@ -36,6 +36,7 @@ export default function AddItemButton(props) {
                     horizontal: 'right',
                 }}
                 onAddItem={props.onAddItem}
+                onEditItem={props.onEditItem}
             />
         </div>
     )
