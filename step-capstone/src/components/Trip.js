@@ -140,13 +140,13 @@ export default class Trip extends React.Component {
         })
     }
 
-    handleAddItem(type, data) {
+    handleAddItem(data) {
         if (data === undefined) {
             console.log("please enter information")
         } else {
             // Add to database here
             // current code for testing data format etc.
-            switch (type) {
+            switch (data.type) {
                 case "event":
                     console.log("adding event");
                     break;
@@ -155,7 +155,7 @@ export default class Trip extends React.Component {
                         items: this.state.items.concat([{
                             id: this.state.items.length,
                             finalized: data.finalized,
-                            type: "hotel",
+                            type: data.type,
                             title: data.title,
                             location: data.location,
                             startDate: data.startDate,
@@ -170,7 +170,7 @@ export default class Trip extends React.Component {
                         items: this.state.items.concat([{
                             id: this.state.items.length,
                             finalized: data.finalized,
-                            type: type,
+                            type: data.type,
                             departureAirport: data.departureAirport,
                             arrivalAirport: data.arrivalAirport,
                             departureDate: data.departureDate,

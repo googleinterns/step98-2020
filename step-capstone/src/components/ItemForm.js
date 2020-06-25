@@ -89,18 +89,7 @@ export default class ItemForm extends React.Component {
             return;
         }
         if (this.state.isNewItem) {
-            switch (this.state.value) {
-                case 0:
-                    this.state.onAddItem("event", this.state.data);
-                    break;
-                case 1:
-                    this.state.onAddItem("flight", this.state.data);
-                    break;
-                case 2:
-                    this.state.onAddItem("hotel", this.state.data);
-                    break;
-                default: break;
-            }
+            this.state.onAddItem(this.state.data);
         } else {
             this.state.onEditItem(this.state.data);
         }
