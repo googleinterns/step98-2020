@@ -3,7 +3,8 @@ import { useState } from 'react'
 import {
     TextField,
     Grid,
-    Checkbox
+    Checkbox,
+    FormControlLabel
 } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
@@ -50,28 +51,74 @@ export default function AddFlight(props) {
             arrivalAirport: arrivalAirport,
             description: description
         })
+        // notifies form if necessary inputs are present
+        props.onToggleValidation(!(departureAirport === "" || arrivalAirport === ""))
     }, [departureDate, arrivalDate, checked, departureAirport, arrivalAirport, description])
+
+    let renderDepartureAirportField = () => {
+        if (departureAirport === "") {
+            return (
+                <TextField
+                    error
+                    helperText="Please enter departure airport"
+                    id="departure"
+                    label={"Departire IATA code"}
+                    defaultValue={departureAirport}
+                    onChange={handleDepartureAirport}
+                />
+            )
+        } else {
+            return (
+                <TextField
+                    id="departure"
+                    label={"Departire IATA code"}
+                    defaultValue={departureAirport}
+                    onChange={handleDepartureAirport}
+                />
+            )
+        }
+    }
+
+    let renderArrivalAirportField = () => {
+        if (arrivalAirport === "") {
+            return (
+                <TextField
+                    error
+                    helperText="Please enter arrival airport"
+                    id="arrival"
+                    label={"Arrival IATA code"}
+                    defaultValue={arrivalAirport}
+                    onChange={handleArrivalAirport}
+                />
+            )
+        } else {
+            return (
+                <TextField
+                    id="arrival"
+                    label={"Arrival IATA code"}
+                    defaultValue={arrivalAirport}
+                    onChange={handleArrivalAirport}
+                />
+            )
+        }
+    }
 
     return (
         <Grid container direction="column">
-            <Grid item container direction="row">
-                <TextField
-                    id="departure"
-                    label={"Add departure airport"}
-                    defaultValue= {departureAirport}
-                    onChange={handleDepartureAirport}
-                />
-                <TextField
-                    id="arrival"
-                    label={"Add arrival airport"}
-                    defaultValue= {arrivalAirport}
-                    onChange={handleArrivalAirport}
-                />
+            <Grid item container direction="row" justify="space-between">
+                {renderDepartureAirportField()}
+                {renderArrivalAirportField()}
             </Grid>
             <Grid item>
-                <Checkbox
-                    checked={checked}
-                    onChange={handleChecked}
+
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked}
+                            onChange={handleChecked}
+                        />
+                    }
+                    label="Finalized"
                 />
             </Grid>
             <Grid item container direction="row" justify="space-between">

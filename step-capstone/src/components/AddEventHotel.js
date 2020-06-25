@@ -3,7 +3,8 @@ import { useState } from 'react'
 import {
     TextField,
     Grid,
-    Checkbox
+    Checkbox,
+    FormControlLabel
 } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
@@ -66,9 +67,14 @@ export default function AddEventHotel(props) {
                 />
             </Grid>
             <Grid item>
-                <Checkbox
-                    checked={checked}
-                    onChange={handleChecked}
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked}
+                            onChange={handleChecked}
+                        />
+                    }
+                    label="Finalized"
                 />
             </Grid>
             <Grid item container direction="row" justify="space-between">

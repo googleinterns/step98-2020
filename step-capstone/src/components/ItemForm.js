@@ -21,11 +21,13 @@ export default class ItemForm extends React.Component {
             onClose: props.onClose,
             onAddItem: props.onAddItem,
             onEditItem: props.onEditItem,
-            data: props.data
+            data: props.data,
+            isValidated: false
         }
         this.handleToggleTab = this.handleToggleTab.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
-        this.handleCreate = this.handleCreate.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleToggleValidation = this.handleToggleValidation.bind(this);
     }
 
     // clears data when tab is changed
@@ -42,6 +44,14 @@ export default class ItemForm extends React.Component {
         })
     }
 
+    handleToggleValidation(validated) {
+        if (validated !== this.state.isValidated) {
+            this.setState({
+                isValidated: validated
+            })
+        }
+    }
+
     getForm() {
         let isNew = this.state.isNewItem;
         if ((!isNew && this.state.data.type === "event") || (isNew && this.state.value === 0)) {
@@ -50,6 +60,7 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     type="event"
                     data={this.state.data}
+                    onToggleValidation={this.handleToggleValidation}
                 />
             )
         } else if ((!isNew && this.state.data.type === "flight") || (isNew && this.state.value === 1)) {
@@ -57,6 +68,7 @@ export default class ItemForm extends React.Component {
                 <AddFlight
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
+                    onToggleValidation={this.handleToggleValidation}
                 />
             )
         } else {
@@ -65,12 +77,17 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     type="hotel"
                     data={this.state.data}
+                    onToggleValidation={this.handleToggleValidation}
                 />
             )
         }
     }
 
-    handleCreate() {
+    handleSave() {
+        // Doesn't save data if improper input --> doesn't close popover which shows error
+        if (!this.state.isValidated) {
+            return;
+        }
         if (this.state.isNewItem) {
             switch (this.state.value) {
                 case 0:
@@ -124,7 +141,7 @@ export default class ItemForm extends React.Component {
                 {this.renderCardContent()}
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleCreate} size="small">Save</Button>
+                    <Button onClick={this.handleSave} size="small">Save</Button>
                 </CardActions>
             </Card>
         )
