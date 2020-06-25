@@ -41,8 +41,9 @@ export default function AddEventHotel(props) {
      * Called once change to hook state is complete. Updates data property in AddForm.
      */
     useEffect(() => {
+        console.log(title)
         props.onDataChange({
-            id: props.data.id,
+            id: overwriting ? props.data.id : undefined,
             title: title,
             type: props.type,
             startDate: startDate,

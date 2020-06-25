@@ -156,7 +156,7 @@ export default class Trip extends React.Component {
                             id: this.state.items.length,
                             finalized: data.finalized,
                             type: "hotel",
-                            name: data.title,
+                            title: data.title,
                             location: data.location,
                             startDate: data.startDate,
                             endDate: data.endDate,

@@ -42,7 +42,7 @@ export default function AddFlight(props) {
     useEffect(() => {
         props.onDataChange({
             finalized: checked,
-            id: props.data.id,
+            id: overwriting ? props.data.id : undefined,
             type: "flight",
             departureDate: departureDate,
             arrivalDate: arrivalDate,
