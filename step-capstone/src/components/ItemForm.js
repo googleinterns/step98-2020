@@ -93,41 +93,37 @@ export default class ItemForm extends React.Component {
         } else {
             this.state.onEditItem(this.state.data);
         }
-        
+
         this.state.onClose();
     }
 
-    renderCardContent() {
+    renderTab() {
         if (this.state.isNewItem) {
             return (
-                <CardContent>
-                    <Paper>
-                        <Tabs
-                            value={this.state.value}
-                            onChange={this.handleToggleTab}
-                            variant="fullWidth"
-                        >
-                            <Tab label="Event" />
-                            <Tab label="Flight" />
-                            <Tab label="Hotel" />
-                        </Tabs>
-                    </Paper>
-                    {this.getForm()}
-                </CardContent>
-            )
-        } else {
-            return (
-                <CardContent>
-                    {this.getForm()}
-                </CardContent>
+                <Paper>
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleToggleTab}
+                        variant="fullWidth"
+                    >
+                        <Tab label="Event" />
+                        <Tab label="Flight" />
+                        <Tab label="Hotel" />
+                    </Tabs>
+                </Paper>
+
             )
         }
+        return null;
     }
 
     render() {
         return (
             <Card id="add-form-container">
-                {this.renderCardContent()}
+                <CardContent>
+                    {this.renderTab()}
+                    {this.getForm()}
+                </CardContent>
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
                     <Button onClick={this.handleSave} size="small">Save</Button>
