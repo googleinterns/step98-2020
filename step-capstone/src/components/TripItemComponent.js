@@ -5,7 +5,8 @@ import {
     CardHeader,
     CardMedia,
     CardContent,
-    CardActions
+    CardActions,
+    Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -31,7 +32,9 @@ export default function TripItemComponent(props) {
                 className={classes.media}
                 src="https://www.state.gov/wp-content/uploads/2019/04/Japan-2107x1406.jpg"
             />
-            <CardContent>{props.description}</CardContent>
+            <CardContent>
+                <Typography variant="body2" gutterBottom>{props.description}</Typography>
+            </CardContent>
             <CardActions>
                 <Button size="small">Share</Button>
                 <Button size="small" onClick={() => props.onOpenTrip(props.id)}>Open</Button>
