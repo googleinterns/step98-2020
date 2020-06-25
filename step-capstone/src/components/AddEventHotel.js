@@ -53,6 +53,15 @@ export default function AddEventHotel(props) {
             location: location,
             description: description
         })
+
+        //validating input
+        if (title === "") {
+            props.onToggleValidation(false);
+        } else if (checked && location === "") {
+            props.onToggleValidation(false);
+        } else {
+            props.onToggleValidation(true);
+        }
     }, [startDate, endDate, checked, title, location, description])
 
     return (
