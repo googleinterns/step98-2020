@@ -18,9 +18,9 @@ export default function Flight( data ) {
         <Grid item>
             <Typography variant="h6" gutterBottom>Title { data.title } to { data.title }</Typography>
             <Typography variant="subtitle2" gutterBottom>Location: { data.location }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Time start: { data.timeStart }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Time end: { data.timeEnd }</Typography>
-            <Typography variant="body2" gutterBottom>{ data.description }</Typography>
+            <Typography variant="subtitle2" gutterBottom>Time start: { data.timeStart.toString() }</Typography>
+            <Typography variant="subtitle2" gutterBottom>Time end: { data.timeEnd.toString() }</Typography>
+            {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
         </Grid>
     )
 } 

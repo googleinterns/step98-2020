@@ -8,8 +8,8 @@ Takes data in this form:
           type: "flight",
           departureAirport: "BOS",
           arrivalAirport: "SFO",
-          departureDate: "4:00pm EST",
-          arrivalDate: "7:00pm PST",
+          timeStart: "4:00pm EST",
+          timeEnd: "7:00pm PST",
           description: "Additional notes"
         }
 
@@ -18,8 +18,8 @@ export default function Flight( data ) {
     return(
         <Grid item>
             <Typography variant="h6" gutterBottom>Flight from { data.departureAirport } to { data.arrivalAirport }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Departure: { data.departureDate.toString() }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Arrival: { data.arrivalDate.toString() }</Typography>
+            <Typography variant="subtitle2" gutterBottom>Departure: { data.timeStart.toString() }</Typography>
+            <Typography variant="subtitle2" gutterBottom>Arrival: { data.timeEnd.toString() }</Typography>
             <Typography variant="body2" gutterBottom>{ data.description }</Typography>
         </Grid>
     )
