@@ -12,7 +12,7 @@ class Map extends React.Component {
   componentDidMount() {
     const loadGoogleMapScript = document.createElement('script');
     loadGoogleMapScript.src =
-     'https://maps.googleapis.com/maps/api/js?key=AIzaSyAoxC_RWciy_EVsxVImCWk09xFhWf6AwgY&libraries=place';
+     'https://maps.googleapis.com/maps/api/js?key='+process.env.REACT_APP_API_KEY+'&libraries=place';
     
     window.document.body.appendChild(loadGoogleMapScript);
 
