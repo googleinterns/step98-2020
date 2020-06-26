@@ -102,6 +102,7 @@ const testData = [
 export default class Trip extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             items: []
         }
@@ -187,6 +188,9 @@ export default class Trip extends React.Component {
     }
 
     render() {
+        if (this.props.items === undefined) {
+            // TODO: redirect to Home page
+        }
         return (
             <div className="trip">
                 <Grid id="map-component"><Map zoom={13} center={{ lat: 51.5, lng: 0.087 }} /></Grid>

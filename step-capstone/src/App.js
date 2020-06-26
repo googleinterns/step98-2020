@@ -11,14 +11,35 @@ import SignInWidget from './components/Firebase/SignInWidget';
 import SignOutButton from './components/Firebase/SignOutButton';
 import {Grid} from '@material-ui/core'
 import Trip from "./components/Trip"
+import TripItemComponent from "./components/TripItemComponent"
 
 class App extends React.Component {
   static contextType = FirebaseContext;
+  isLoggedIn = true;
+
   constructor() {
     super();
-    this.state = {authState: null, user: null};
+    
+    this.state = {
+      selectedTrip: undefined,
+      authState: null,
+      user: null
+    };
+
+    this.handleOpenTrip = this.handleOpenTrip.bind(this);
   }
 
+  handleOpenTrip(tripID) {
+    // TODO
+    // fetch trip from database with tripID
+    this.setState({ selectedTrip: "fetched trip" })
+    console.log("Opening trip " + tripID);
+    // redirect to trip component
+    // return (
+    //   <Redirect to = "/trip/nameOfTrip" />
+    // )
+  }
+  
   componentDidMount() {
     
     this.context.getUserInfo().then( (status) => this.afterAuthStateCheck(status));
@@ -73,12 +94,23 @@ class App extends React.Component {
             <Route path="/login-page">
               <Login />
             </Route>
+        {/* 
+          TODO
+
+          Add route to trip with path /trip and pass in selected trip object
+
+          <Route path="/trip">
+            <Trip items={this.state.selectedTrip} />
+          </Route>
+        
+        */}
           </Switch>
         </Router>
       </div>
     ) 
   }  
 }
+
 function Login(){
  render () {
     let displayWhenLoggedIn = (this.state.authState)? {display: "block"} : {display: "none"};
