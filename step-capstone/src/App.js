@@ -2,14 +2,14 @@ import React from 'react';
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
 import SignInWidget from './components/Firebase/SignInWidget';
-import {Button} from 'react-bootstrap';
+import SignOutButton from './components/Firebase/SignOutButton';
 
 class App extends React.Component {
 
   static contextType = FirebaseContext;
   constructor() {
     super();
-    this.state = {authState: false, userInfo: null};
+    this.state = {authState: null, userInfo: null};
   }
 
   afterAuthStateCheck(status) {
@@ -28,7 +28,6 @@ class App extends React.Component {
   componentDidMount() {
     
     this.context.getUserInfo().then( (status) => this.afterAuthStateCheck(status));
-    
     //Example code: Read the db function
     // this.context.db.collection('users').get().then((snapshot) => {
     //   snapshot.docs.forEach(doc => {
@@ -44,15 +43,15 @@ class App extends React.Component {
 
   }
   render () {
-
-    const display = (this.state.authState)? "block" : "none";
-    const displayObject = {display: display};
+    let displayWhenLoggedIn = (this.state.authState)? {display: "block"} : {display: "none"};
+    let notDisplayOnLoad = (this.state.authState === null)? {display: "none"} : {display: "block"};
+    let SignInORSignOut = (this.state.authState)? <SignOutButton /> : <SignInWidget />;
     return (
       <div>
-          <SignInWidget authState={this.state.authState}/>
-          <Button id="sign-out" style={displayObject}>Sign Out</Button>
-          
-          <pre id="account-details" style={displayObject}>Hello {this.state.userInfo}</pre>
+          <div style={notDisplayOnLoad}>
+            {SignInORSignOut}
+          </div>
+          <pre id="account-details" style={displayWhenLoggedIn}>Hello {this.state.userInfo}</pre>
       </div>
     ) 
   }  

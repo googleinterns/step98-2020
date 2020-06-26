@@ -34,26 +34,13 @@ class Firebase {
     };
   }
 
-  createSignOut = function(accessToken) {
-    const signOutButton = document.getElementById('sign-out');
-    signOutButton.addEventListener("click", (e) => {
-      e.preventDefault();
-      this.auth.signOut().then(() => window.location ="index.html");
-    });
-  };
-
   createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
   getUserInfo = () => {
     return new Promise((resolve, reject) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
-          var displayName = user.displayName;
-
-          //Logout button is created here
-          user.getIdToken().then((accessToken) => this.createSignOut(accessToken));
-
-          resolve({signInStatus: true, userInfo: displayName});
+          resolve({signInStatus: true, userInfo: user.displayName});
 
         } else {
           // User is signed out.
