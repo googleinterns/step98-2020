@@ -20,7 +20,7 @@ export default function Flight( data ) {
             <Typography variant="h6" gutterBottom>Flight from { data.departureAirport } to { data.arrivalAirport }</Typography>
             <Typography variant="subtitle2" gutterBottom>Departure: { data.timeStart.toString() }</Typography>
             <Typography variant="subtitle2" gutterBottom>Arrival: { data.timeEnd.toString() }</Typography>
-            <Typography variant="body2" gutterBottom>{ data.description }</Typography>
+            {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
         </Grid>
     )
 }
