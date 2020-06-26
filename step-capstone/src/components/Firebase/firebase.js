@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import * as firebaseui from 'firebaseui';
+import User from './User';
 
 var firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -34,17 +35,20 @@ class Firebase {
     };
   }
 
+  getTrips = (email) => {return {"1" : "tripA"}};
   createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
   getUserInfo = () => {
     return new Promise((resolve, reject) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
-          resolve({signInStatus: true, userInfo: user.displayName});
+          let trips = this.getTrips(user.email);
+          let userObject = new User(user.email, user.displayName, trips);
+          resolve({signInStatus: true, user: userObject});
 
         } else {
           // User is signed out.
-          resolve({signInStatus: false, userInfo:null});
+          resolve({signInStatus: false, user: null});
         }
       })
         

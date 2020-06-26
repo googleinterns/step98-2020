@@ -9,17 +9,17 @@ class App extends React.Component {
   static contextType = FirebaseContext;
   constructor() {
     super();
-    this.state = {authState: null, userInfo: null};
+    this.state = {authState: null, user: null};
   }
 
   afterAuthStateCheck(status) {
 
     if (status.signInStatus) {
-      this.setState({authState: true, userInfo: status.userInfo});
+      this.setState({authState: true, user: status.user});
       console.log("You have logged in.");
     }
     else {
-      this.setState({authState: false, userInfo: null});
+      this.setState({authState: false, user: null});
       console.log("You havent logged in yet");
       
     }
@@ -45,13 +45,14 @@ class App extends React.Component {
   render () {
     let displayWhenLoggedIn = (this.state.authState)? {display: "block"} : {display: "none"};
     let notDisplayOnLoad = (this.state.authState === null)? {display: "none"} : {display: "block"};
+    let userEmail = (this.state.authState)? this.state.user.email : null;
     let SignInORSignOut = (this.state.authState)? <SignOutButton /> : <SignInWidget />;
     return (
       <div>
           <div style={notDisplayOnLoad}>
             {SignInORSignOut}
           </div>
-          <pre id="account-details" style={displayWhenLoggedIn}>Hello {this.state.userInfo}</pre>
+          <pre id="account-details" style={displayWhenLoggedIn}>Hello {userEmail}</pre>
       </div>
     ) 
   }  
