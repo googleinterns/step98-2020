@@ -29,7 +29,7 @@ class App extends React.Component {
     //   })
     // });
 
-    // //Example code: Write to the db function
+    // //Example code: Write to the db functionif(this.state.authState){
     // this.context.db.collection('users').add({
     //   displayName: "memo",
     //   email: "memo@email.com"
@@ -46,24 +46,21 @@ class App extends React.Component {
     else {
       this.setState({authState: false, user: null});
       console.log("You havent logged in yet");
-      
     }
   }
 
   handleLogin(){
-    if(this.authState){
-      return(
-        <Redirect to = "/trip-list"/>
-      ); 
+    if(this.state.authState){
+      return <Redirect to = "/trip-list"/>;
     } else {
-      return (
-        <Redirect to = "/login-page"/>
-      );
+      return <Redirect to = "/login-page"/>;
     }
   }
+
   render () {
     return(
       <div className="App">
+        {this.state.authState ? <SignOutButton/> :''}
         <Router>
           {this.handleLogin()}
           <Switch>
@@ -80,17 +77,9 @@ class App extends React.Component {
   }  
 }
 function Login(){
- render () {
-    let displayWhenLoggedIn = (this.state.authState)? {display: "block"} : {display: "none"};
-    let notDisplayOnLoad = (this.state.authState === null)? {display: "none"} : {display: "block"};
-    let userEmail = (this.state.authState)? this.state.user.email : null;
-    let SignInORSignOut = (this.state.authState)? <SignOutButton /> : <SignInWidget />;
-    return (
-      <div>
-          <div style={notDisplayOnLoad}>
-            {SignInORSignOut}
-      </div>
-      <pre id="account-details" style={displayWhenLoggedIn}>Hello {userEmail}</pre>
+  return (
+    <SignInWidget/>
+  );
 }
 
 function TripList(){
