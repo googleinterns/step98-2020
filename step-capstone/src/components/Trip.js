@@ -4,6 +4,8 @@ import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
 import Map from "./Map"
+import Finalized from "./Finalized"
+import Unfinalized from "./Unfinalized"
 
 // Data just for testing purposes
 const testData = [
