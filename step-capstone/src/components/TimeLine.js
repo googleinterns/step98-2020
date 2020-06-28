@@ -31,11 +31,11 @@ function OneHourInterval(props) {
     <div className="OneHourInterval">
       <tr className="OneHourInterval">
           <td className="headcol">{props.idV + ":00"}</td>
-          <td id={props.idV +":00"}></td>
+          <td className="Interval" id={props.idV +":00"}></td>
       </tr>
       <tr className="OneHourInterval">
         <td className="headcol"></td>
-        <td id={props.idV + ":30"}></td>
+        <td className="Interval" id={props.idV + ":30"}></td>
       </tr>
     </div>
   )
