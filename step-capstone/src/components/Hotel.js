@@ -1,7 +1,8 @@
-import React from 'react'
-import {Grid, Typography} from '@material-ui/core'
+import React from 'react';
+import {Grid, Typography} from '@material-ui/core';
+import '../styles/TimeLine.css';
 
-export default function Hotel(data) {
+export default function Hotel(props) {
 
   /**
    * Takes data in the form: 
@@ -14,13 +15,13 @@ export default function Hotel(data) {
    * finalized : true
   **/
   return (
-    <Grid item>
-      <Typography variant="h6" gutterBottom>{data.title} </Typography>
-      <Typography variant="subtitle2" gutterBottom>{
-          data.timeStart.toString() + ' - ' +
-          data.timeEnd.toString()} </Typography>
-      <Typography variant="subtitle2" gutterBottom>{data.location}</Typography>
+    <div className="event double hotels" style={props.styleConfig}>
+      <p>{props.data.title} </p>
+      <p>{
+          props.data.timeStart.toString() + ' - ' +
+          props.data.timeEnd.toString()} </p>
+      <p>{props.data.location}</p>
       {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
-    </Grid>
+    </div>
   );
 }

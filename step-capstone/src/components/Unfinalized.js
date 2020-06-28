@@ -2,8 +2,10 @@ import React from 'react';
 import TravelObject from './TravelObject';
 import { Grid } from '@material-ui/core'
 
-export default class Unfinalized {
-    
+export default class Unfinalized extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
         return (
             <div>
@@ -16,6 +18,7 @@ export default class Unfinalized {
                             onRemoveItem={this.props.onRemoveItem}
                             onEditItem={this.props.onEditItem}
                             onAddItem={this.props.onAddItem}
+                            styleConfig={{}}
                         />
                     })
                 }

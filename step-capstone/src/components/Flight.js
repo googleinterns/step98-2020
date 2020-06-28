@@ -1,5 +1,6 @@
-import React from 'react'
-import { Grid, Typography } from '@material-ui/core'
+import React from 'react';
+import { Grid, Typography } from '@material-ui/core';
+import '../styles/TimeLine.css';
 
 /*
 Takes data in this form:
@@ -14,13 +15,13 @@ Takes data in this form:
         }
 
 */
-export default function Flight( data ) {
+export default function Flight( props ) {
     return(
-        <Grid item>
-            <Typography variant="h6" gutterBottom>Flight from { data.departureAirport } to { data.arrivalAirport }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Departure: { data.timeStart.toString() }</Typography>
-            <Typography variant="subtitle2" gutterBottom>Arrival: { data.timeEnd.toString() }</Typography>
+        <div className="event double flights" style={props.styleConfig}>
+            <p>Flight from { props.data.departureAirport } to { props.data.arrivalAirport }</p>
+            <p>Departure: { props.data.timeStart.toLocaleString() }</p>
+            <p>Arrival: { props.data.timeEnd.toLocaleString() }</p>
             {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
-        </Grid>
+        </div>
     )
 }

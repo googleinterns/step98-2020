@@ -5,52 +5,30 @@ import Flight from './Flight'
 import Event from  './Event'
 import Hotel from './Hotel'
 import FormPopover from './FormPopover'
+import '../styles/TimeLine.css';
 
 export default function TravelObject(props) {
     let content = null;
     switch (props.data.type) {
         case 'event':
-            content = <Event {...props.data} />
+            content = <Event data={props.data} styleConfig={props.styleConfig} />
             break;
         case 'flight':
-            content = <Flight {...props.data} />
+            content = <Flight data={props.data} styleConfig={props.styleConfig} />
             break;
         case 'hotel':
-            content = <Hotel {...props.data} />
+            content = <Hotel data={props.data} styleConfig={props.styleConfig} />
             break;
         default:
             return null;
     }
 
     return (
-        <Card>
-            <CardContent>
-                <Grid container direction="row">
-                    <Grid item xs>
-                        <Box mr={10} width="100%" height="100%">
-                            {content}
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <EditButton
-                                    data={props.data}
-                                    onEditItem={props.onEditItem}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <IconButton arial-label="delete">
-                                    <Delete
-                                        onClick={() => props.onRemoveItem(props.data.id)}
-                                    />
-                                </IconButton>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+        
+        <div>
+            {content}
+        </div>
+
     )
 }
 

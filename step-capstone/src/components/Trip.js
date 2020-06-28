@@ -1,11 +1,11 @@
 import React from 'react';
-import TravelObject from './TravelObject'
-import AddItemButton from './AddItemButton'
-import { Grid } from '@material-ui/core'
-import '../styles/Trip.css'
-import Map from "./Map"
-import Finalized from "./Finalized"
-import Unfinalized from "./Unfinalized"
+import TravelObject from './TravelObject';
+import AddItemButton from './AddItemButton';
+import { Grid } from '@material-ui/core';
+import '../styles/Trip.css';
+import Map from "./Map";
+import Finalized from "./Finalized";
+import Unfinalized from "./Unfinalized";
 
 // Data just for testing purposes
 const testData = [
@@ -15,8 +15,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T02:00:00Z"),
+        timeEnd: new Date("2015-03-25T03:30:00Z"),
         description: "Additional notes"
     },
     {
@@ -25,8 +25,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T05:00:00Z"),
+        timeEnd: new Date("2015-03-25T06:00:00Z"),
         description: "Additional notes"
     },
     {
@@ -35,8 +35,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T07:00:00Z"),
+        timeEnd: new Date("2015-03-25T07:30:00Z"),
         description: "Additional notes"
     },
     {
@@ -45,8 +45,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T09:00:00Z"),
+        timeEnd: new Date("2015-03-25T10:30:00Z"),
         description: "Additional notes"
     },
     {
@@ -55,8 +55,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T11:00:00Z"),
+        timeEnd: new Date("2015-03-25T14:00:00Z"),
         description: "Additional notes"
     },
     {
@@ -65,8 +65,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T14:00:00Z"),
+        timeEnd: new Date("2015-03-25T15:00:00Z"),
         description: "Additional notes"
     },
     {
@@ -75,8 +75,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart: new Date("2015-03-25T16:00:00Z"),
+        timeEnd: new Date("2015-03-25T17:30:00Z"),
         description: "Additional notes"
     },
     {
@@ -85,8 +85,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
+        timeStart:new Date("2015-03-25T17:45:00Z"),
+        timeEnd: new Date("2015-03-25T19:50:00Z"),
         description: "Additional notes"
     },
     {
@@ -95,8 +95,8 @@ const testData = [
         type: "hotel",
         title: "Hotel ZED",
         location: "London",
-        startDate: new Date(),
-        endDate: new Date(),
+        timeStart: new Date("2015-03-25T19:43:00Z"),
+        timeEnd: new Date("2015-03-25T22:50:00Z"),
         description: 'description',
     }
 ]
