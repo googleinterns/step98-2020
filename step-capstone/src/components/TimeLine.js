@@ -26,16 +26,19 @@ function Header() {
     </div>
   )
 }
+function handleOnClickInterval(idV) {
+  console.log(idV);
+}
 function OneHourInterval(props) {
   return (
     <div className="OneHourInterval">
       <tr className="OneHourInterval">
           <td className="headcol">{props.idV + ":00"}</td>
-          <td className="Interval" id={props.idV +":00"}></td>
+          <td className="Interval" id={props.idV +":00"} onClick={() => handleOnClickInterval(props.idV + ":00")}></td>
       </tr>
       <tr className="OneHourInterval">
         <td className="headcol"></td>
-        <td className="Interval" id={props.idV + ":30"}></td>
+        <td className="Interval" id={props.idV + ":30"} onClick={() => handleOnClickInterval(props.idV + ":30")}></td>
       </tr>
     </div>
   )
