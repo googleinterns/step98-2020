@@ -9,14 +9,19 @@ import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
 import SignInWidget from './components/Firebase/SignInWidget';
 import SignOutButton from './components/Firebase/SignOutButton';
-import {Grid} from '@material-ui/core'
-import Trip from "./components/Trip"
+import TripList from "./components/TripList"
 
 class App extends React.Component {
   static contextType = FirebaseContext;
-  constructor() {
-    super();
-    this.state = {authState: null, user: null};
+
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      authState: null,
+      user: null
+    };
+
   }
 
   componentDidMount() {
@@ -50,8 +55,9 @@ class App extends React.Component {
   }
 
   handleLogin(){
+    console.log("handleLogin");
     if(this.state.authState){
-      return <Redirect to = "/trip-list"/>;
+      return <Redirect to = "/trips/"/>;
     } else {
       return <Redirect to = "/login-page"/>;
     }
@@ -64,11 +70,11 @@ class App extends React.Component {
         <Router>
           {this.handleLogin()}
           <Switch>
-            <Route path="/trip-list">
-              <TripList userId = 'userId' />
-            </Route>
             <Route path="/login-page">
               <Login />
+            </Route>
+            <Route path = "/trips/">
+              <TripList userId = 'userId'/>
             </Route>
           </Switch>
         </Router>
@@ -76,29 +82,10 @@ class App extends React.Component {
     ) 
   }  
 }
+
 function Login(){
   return (
     <SignInWidget/>
-  );
-}
-
-function TripList(){
-  // const trips = firestore.getTrips(props.userId);
-  // const tripList = trips.map((trip) =>
-  //   <li><TripBox {...trip}/></li>
-  // );
-  return (
-    <Trip />
-    // <Grid> {
-    //    trips.map((trip) => {
-    //      return(
-    //        <TripBox {...trip}/>
-    //      );
-    //      })
-    //   }
-    // </Grid>
-    
-   // <ul> {tripList} </ul>
   );
 }
 
