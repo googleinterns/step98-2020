@@ -57,62 +57,25 @@ export default function AddFlight(props) {
         props.onToggleValidation(!(departureAirport === "" || arrivalAirport === ""))
     }, [departureDate, arrivalDate, checked, departureAirport, arrivalAirport, description])
 
-
-    // Users must input departure and arrival airports --> renders error input if not
-    let renderDepartureAirportField = () => {
-        if (departureAirport === "") {
-            return (
-                <TextField
-                    error
-                    helperText="Cannot leave field blank"
-                    id="departure"
-                    label={"Departire IATA code"}
-                    defaultValue={departureAirport}
-                    onChange={handleDepartureAirport}
-                />
-            )
-        } else {
-            return (
-                <TextField
-                    id="departure"
-                    label={"Departire IATA code"}
-                    defaultValue={departureAirport}
-                    onChange={handleDepartureAirport}
-                />
-            )
-        }
-    }
-
-    // Users must input departure and arrival airports --> renders error input if not
-    let renderArrivalAirportField = () => {
-        if (arrivalAirport === "") {
-            return (
-                <TextField
-                    error
-                    helperText="Cannot leave field blank"
-                    id="arrival"
-                    label={"Arrival IATA code"}
-                    defaultValue={arrivalAirport}
-                    onChange={handleArrivalAirport}
-                />
-            )
-        } else {
-            return (
-                <TextField
-                    id="arrival"
-                    label={"Arrival IATA code"}
-                    defaultValue={arrivalAirport}
-                    onChange={handleArrivalAirport}
-                />
-            )
-        }
-    }
-
     return (
         <Grid container direction="column">
             <Grid item container direction="row" justify="space-between">
-                {renderDepartureAirportField()}
-                {renderArrivalAirportField()}
+                <TextField
+                    error={departureAirport === ""}
+                    helperText="Cannot leave field blank"
+                    id="departure"
+                    label={"Departire IATA code"}
+                    defaultValue={departureAirport}
+                    onChange={handleDepartureAirport}
+                />
+                <TextField
+                    error={arrivalAirport === ""}
+                    helperText="Cannot leave field blank"
+                    id="arrival"
+                    label={"Arrival IATA code"}
+                    defaultValue={arrivalAirport}
+                    onChange={handleArrivalAirport}
+                />
             </Grid>
             <Grid item>
 

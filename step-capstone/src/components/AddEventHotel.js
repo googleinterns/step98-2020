@@ -65,62 +65,18 @@ export default function AddEventHotel(props) {
         }
     }, [startDate, endDate, checked, title, location, description])
 
-    // render error input if no title
-    let renderTitleInput = () => {
-        if (title === "") {
-            return (
-                <TextField
-                    error
-                    helperText="Cannot leave field blank"
-                    id="title"
-                    label={"Add Title"}
-                    defaultValue={title}
-                    fullWidth
-                    onChange={handleTitleChange}
-                />
-            )
-        } else {
-            return (
-                <TextField
-                    id="title"
-                    label={"Add Title"}
-                    defaultValue={title}
-                    fullWidth
-                    onChange={handleTitleChange}
-                />
-            )
-        }
-    }
-
-    // Render error input if finalized item has no location
-    let renderLocationInput = () => {
-        if (checked && location === "") {
-            return (
-                <TextField
-                    error
-                    helperText="Cannot leave field blank"
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
-                    fullWidth
-                    onChange={handleLocationChange}
-                />
-            )
-        } else {
-            return (
-                <TextField
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
-                    fullWidth
-                    onChange={handleLocationChange}
-                />
-            )
-        }
-    }
-
     return (
         <Grid container direction="column">
             <Grid item>
-                {renderTitleInput()}
+                <TextField
+                    error={title === ""}
+                    helperText="Cannot leave field blank"
+                    id="title"
+                    label={"Add Title"}
+                    defaultValue={title}
+                    fullWidth
+                    onChange={handleTitleChange}
+                />
             </Grid>
             <Grid item>
                 <FormControlLabel
@@ -148,7 +104,14 @@ export default function AddEventHotel(props) {
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                {renderLocationInput()}
+                <TextField
+                    error={checked && location === ""}
+                    helperText="Cannot leave field blank"
+                    id="location"
+                    label={location.length !== 0 ? location : "Add Location"}
+                    fullWidth
+                    onChange={handleLocationChange}
+                />
             </Grid>
             <Grid item>
                 <TextField
