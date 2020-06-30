@@ -6,25 +6,10 @@ import React, { createRef } from 'react'
  * center: {lat:0.0, lng:0.0} - coordinates for center of map
  */
 
- /*
-
-
-*/
-
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      coordinates: [
-        {
-          lat: 51.511645,
-          lng: -0.131944
-        },
-        {
-          lat: 51.509963,
-          lng: -0.129336
-        }
-      ],
       finalized: this.props.finalized,
       unfinalized: this.props.unfinalized
     }
@@ -81,11 +66,13 @@ class Map extends React.Component {
   }
 
   drawPath(map, path) {
+    // dotted line
     var lineSymbol = {
       path: 'M 0,-1 0,1',
       strokeOpacity: 1,
       scale: 4
     };
+    
     let geoPath = new window.google.maps.Polyline({
       path: path.path,
       strokeColor: '#FF0000',
@@ -99,7 +86,9 @@ class Map extends React.Component {
         : [],
       strokeWeight: 2,
     });
+
     geoPath.setMap(map);
+
     return geoPath;
   }
 
@@ -115,6 +104,7 @@ class Map extends React.Component {
     // First: separate into different segments: flight vs non-flight
     var paths = []
     var curPath = []
+    
     for (let i = 0; i < this.state.finalized.length; i++) {
       let item = this.state.finalized[i];
 
