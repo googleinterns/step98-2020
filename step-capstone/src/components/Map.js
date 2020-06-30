@@ -39,9 +39,9 @@ class Map extends React.Component {
     window.document.body.appendChild(loadGoogleMapScript);
 
     loadGoogleMapScript.addEventListener('load', () => {
-      var googleMap = this.createMap();
-      let bounds = this.drawMap(googleMap)
-      googleMap.fitBounds(bounds);
+      this.googleMap = this.createMap();
+      let bounds = this.drawMap(this.googleMap)
+      this.googleMap.fitBounds(bounds);
     });
   }
 
@@ -52,13 +52,32 @@ class Map extends React.Component {
     })
   }
 
-  addMarker(map, coordinates, bounds) {
+  addMarker(map, coordinates, bounds, type) {
     bounds.extend(coordinates);
-    return new window.google.maps.Marker({
+
+    var iconUrl;
+    if (type === "flight") {
+      iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+    } else if (type === "event") {
+      iconUrl = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+    } else {
+      iconUrl = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
+    }
+
+    var newMarker = new window.google.maps.Marker({
       position: coordinates,
       map: map,
-      animation: window.google.maps.Animation.DROP
+      animation: window.google.maps.Animation.DROP,
+      icon: {url: iconUrl}
     })
+
+    // zoom to marker when clicked
+    newMarker.addListener('click', function() {
+      map.setZoom(15);
+      map.setCenter(newMarker.getPosition());
+    });
+
+    return newMarker;
   }
 
   drawPath(map, path) {
@@ -88,8 +107,8 @@ class Map extends React.Component {
     var bounds = new window.google.maps.LatLngBounds();
 
     // unfinalized places are disconnected markers
-    this.state.unfinalized.map((item) => {
-      this.addMarker(map, item.coordinates, bounds)
+    this.geoMarkers = this.state.unfinalized.map((item) => {
+      this.addMarker(map, item.coordinates, bounds, item.type)
     })
 
     // Connect finalized components
@@ -114,11 +133,11 @@ class Map extends React.Component {
         // start of next path is arrival location of flight
         curPath = [item.arrivalCoordinates];
         
-        this.addMarker(map, item.departureCoordinates, bounds);
-        this.addMarker(map, item.arrivalCoordinates, bounds);
+        this.addMarker(map, item.departureCoordinates, bounds, item.type);
+        this.addMarker(map, item.arrivalCoordinates, bounds, item.type);
       } else {
         curPath.push(item.coordinates);
-        this.addMarker(map, item.coordinates, bounds);
+        this.addMarker(map, item.coordinates, bounds, item.type);
       }
     }
 
@@ -127,7 +146,7 @@ class Map extends React.Component {
     }
     
     // Add all paths to map
-    paths.map((path) => {
+    this.geoPaths = paths.map((path) => {
       return this.drawPath(map, path);
     })
 
