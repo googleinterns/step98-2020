@@ -89,9 +89,7 @@ class MapComponent extends React.Component {
       strokeOpacity: 1,
       scale: 4
     };
-
-    console.log(color);
-
+    
     let geoPath = new window.google.maps.Polyline({
       path: path,
       strokeColor: color,
