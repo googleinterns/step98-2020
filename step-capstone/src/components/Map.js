@@ -49,7 +49,7 @@ class MapComponent extends React.Component {
     })
   }
 
-  addMarker(coordinates, type) {
+  addMarker(coordinates, type, label) {
     // TODO: firebase will provide coordinates as a GeoPoint --> convert to {lat, lng}
     // { lat: coordinates.lat(), lng: coordinates.lng() }
 
@@ -90,17 +90,15 @@ class MapComponent extends React.Component {
     };
 
     let geoPath = new window.google.maps.Polyline({
-      path: path.path,
+      path: path,
       strokeColor: '#FF0000',
-      strokeOpacity: path.type === "normal" ? 0.0 : 1.0,
-      icons: path.type === "normal"
-        ? [{
+      strokeOpacity: 0,
+      strokeWeight: 2,
+      icons: [{
           icon: lineSymbol,
           offset: '0',
           repeat: '20px'
         }]
-        : [],
-      strokeWeight: 2,
     });
 
     geoPath.setMap(map);
@@ -136,7 +134,7 @@ class MapComponent extends React.Component {
    *  Draws path between all finalized travel objects, returns list of path objects
    */
   drawPaths() {
-    // Separate into different segments: flight vs non-flight
+    // Separate into different segments
     var paths = [];
     var curPath = [];
 
@@ -147,25 +145,22 @@ class MapComponent extends React.Component {
       if (item.type === "flight") {
         if (paths.length !== 0) {
           curPath.push(item.departureCoordinates)
-          paths.push({ path: curPath, type: "normal" });
-          curPath = [];
+          paths.push(curPath);
         }
-        curPath.push(item.departureCoordinates);
-        curPath.push(item.arrivalCoordinates);
-
-        paths.push({ path: curPath, type: "flight" });
-
-        // start of next path is arrival location of flight
         curPath = [item.arrivalCoordinates];
       } else {
         curPath.push(item.coordinates);
+        paths.push(curPath);
+        curPath = [item.coordinates];
       }
     }
 
     // add remaining path, if any, to paths
     if (curPath.length > 1) {
-      paths.push({ path: curPath, type: "normal" });
+      paths.push(curPath);
     }
+
+    console.log(paths)
 
     // add each path to the map and return array of path objects
     return paths.map((path) => {
