@@ -81,7 +81,7 @@ class MapComponent extends React.Component {
   }
 
   // constructs path object and places on map. Returns path object.
-  addPath(map, path) {
+  addPath(map, path, color) {
     // TODO : change to show directions between paths
     // dotted line
     var lineSymbol = {
@@ -90,11 +90,13 @@ class MapComponent extends React.Component {
       scale: 4
     };
 
+    console.log(color);
+
     let geoPath = new window.google.maps.Polyline({
       path: path,
-      strokeColor: '#FF0000',
+      strokeColor: color,
       strokeOpacity: 0,
-      strokeWeight: 2,
+      strokeWeight: 5,
       icons: [{
           icon: lineSymbol,
           offset: '0',
@@ -161,11 +163,13 @@ class MapComponent extends React.Component {
       paths.push(curPath);
     }
 
-    console.log(paths)
-
     // add each path to the map and return array of path objects
+    var red = 60;
+    let change = paths.length === 0 ? 0 : red / (paths.length - 1);
     return paths.map((path) => {
-      return this.addPath(this.googleMap, path);
+      let color = "hsl(0, 100%, " + red + "%)";
+      red -= change;
+      return this.addPath(this.googleMap, path, color);
     })
   }
 
