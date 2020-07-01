@@ -19,7 +19,7 @@ export default function Hotel(data) {
       <Typography variant="subtitle2" gutterBottom>{
           data.startDate.toString() + ' - ' +
           data.endDate.toString()} </Typography>
-      <Typography variant="subtitle2" gutterBottom>{data.location}</Typography>
+      <Typography variant="subtitle2" gutterBottom>{data.location.toString()}</Typography>
       <Typography variant="body2" gutterBottom>{ data.description }</Typography>
     </Grid>
   );
