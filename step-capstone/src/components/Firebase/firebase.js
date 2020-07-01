@@ -55,6 +55,51 @@ class Firebase {
     });
   }
 
+  getData(reference){
+    const doc = this.db.doc(reference);
+    return doc.get();
+  }
+
+  getCollection(reference){
+    const collec = this.db.collection(reference);
+    return collec.get();
+  }
+
+  addTrip(reference, trip) {
+    const tripListRef = this.db.collection(reference);
+    return tripListRef.add(trip);
+  }
+
+  addTravelObject(reference, travelObject) {
+    const tripRef = this.db.doc(reference);
+    return tripRef.update({travelObjects: firebase.firestore.FieldValue.arrayUnion(travelObject)});
+  }
+
+  editTravelObject(reference, oldTravelObject, newTravelObject) {
+    const tripRef = this.db.doc(reference); 
+    return new Promise((resolve) => {
+      tripRef.update({travelObjects : firebase.firestore.FieldValue.arrayRemove(oldTravelObject)})
+      .then(() => {
+        tripRef.update({travelObjects : firebase.firestore.FieldValue.arrayUnion(newTravelObject)})
+        .then(() => {resolve()});
+     })
+    });
+  }
+
+  editTrip(reference, data) {
+    //TODO: Implement when details of trip editing and settings are implemented
+  }
+
+  deleteTravelObject(reference, travelObject) {
+    const tripRef = this.db.doc(reference);
+    return tripRef.update({travelObjects : firebase.firestore.FieldValue.arrayRemove(travelObject)});
+  }
+
+  deleteTrip(reference) {
+    const tripRef = this.db.doc(reference);
+    return tripRef.delete()
+  }
+
 }
  
 export default Firebase;
