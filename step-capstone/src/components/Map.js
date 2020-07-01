@@ -10,8 +10,6 @@ class MapComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      finalized: this.props.finalized,
-      unfinalized: this.props.unfinalized,
       finalizedMarkers: new Map(),
       unfinalizedMarkers: new Map(),
       geoPaths: []
@@ -100,7 +98,7 @@ class MapComponent extends React.Component {
 
   drawUnfinalizedMarkers(map, bounds) {
     // construct hashmap with key: travelObject id, value: marker object
-    return this.state.unfinalized.reduce((hashMap, item) => {
+    return this.props.unfinalized.reduce((hashMap, item) => {
       hashMap.set(item.id, this.addMarker(map, item.coordinates, bounds, item.type));
       return hashMap;
     }, new Map())
@@ -113,8 +111,8 @@ class MapComponent extends React.Component {
     var curPath = [];
     var finalizedMarkers = new Map();
 
-    for (let i = 0; i < this.state.finalized.length; i++) {
-      let item = this.state.finalized[i];
+    for (let i = 0; i < this.props.finalized.length; i++) {
+      let item = this.props.finalized[i];
 
       // found flight -> create new path segment
       if (item.type === "flight") {
@@ -166,6 +164,21 @@ class MapComponent extends React.Component {
     });
 
     return bounds;
+  }
+
+  removeAllMarkers(hashMap) {
+    for (const [key, value] of hashMap) {
+      value.setMap(null);
+    }
+  }
+
+  clearMap() {
+    this.removeAllMarkers(this.state.unfinalizedMarkers);
+    this.removeAllMarkers(this.state.finalizedMarkers);
+
+    this.state.geoPaths.map((path) => {
+      path.setMap(null);
+    })
   }
 
   render() {
