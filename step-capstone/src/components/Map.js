@@ -89,17 +89,17 @@ class MapComponent extends React.Component {
       strokeOpacity: 1,
       scale: 4
     };
-    
+
     let geoPath = new window.google.maps.Polyline({
       path: path,
       strokeColor: color,
       strokeOpacity: 0,
       strokeWeight: 5,
       icons: [{
-          icon: lineSymbol,
-          offset: '0',
-          repeat: '20px'
-        }]
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+      }]
     });
 
     geoPath.setMap(map);
@@ -115,14 +115,15 @@ class MapComponent extends React.Component {
     // construct hashmap with key: travelObject id, value: marker object
     return list.reduce((hashMap, item) => {
       if (item.type !== "flight") {
-        hashMap.set(item.id, {marker: this.addMarker(item.coordinates, item.type, item.id), type: item.type});
+        hashMap.set(item.id, { marker: this.addMarker(item.coordinates, item.type, item.id), type: item.type });
         bounds.extend(item.coordinates);
       } else {
         hashMap.set(item.id, {
           marker: {
             departure: this.addMarker(item.departureCoordinates, item.type, item.id),
             arrival: this.addMarker(item.arrivalCoordinates, item.type, item.id)
-          }, type: item.type});
+          }, type: item.type
+        });
 
         bounds.extend(item.departureCoordinates);
         bounds.extend(item.arrivalCoordinates);
@@ -131,11 +132,8 @@ class MapComponent extends React.Component {
     }, new Map())
   }
 
-  /*
-   *  Draws path between all finalized travel objects, returns list of path objects
-   */
-  drawPaths() {
-    // Separate into different segments
+  // splits finalized trips into segments of coordinate pairs
+  getPathSegments() {
     var paths = [];
     var curPath = [];
 
@@ -160,6 +158,15 @@ class MapComponent extends React.Component {
     if (curPath.length > 1) {
       paths.push(curPath);
     }
+
+    return paths;
+  }
+
+  /*
+   *  Draws path between all finalized travel objects, returns list of path objects
+   */
+  drawPaths() {
+    let paths = this.getPathSegments();
 
     // add each path to the map and return array of path objects
     var red = 60;
