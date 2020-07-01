@@ -3,7 +3,7 @@ import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
-import Map from "./Map"
+import MapComponent from "./Map"
 
 // Data just for testing purposes
 const testData = [
@@ -184,11 +184,11 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
-                    <Map
+                    <MapComponent
                         zoom={13}
                         center={{ lat: 51.5, lng: 0.087 }}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) =>!item.finalized)}
+                        unfinalized={this.state.items.filter((item) =>!item.finalized && item.coordinates !== null && item.type !== "flight")}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
@@ -202,7 +202,7 @@ export default class Trip extends React.Component {
                     </Grid>
                     <Grid item id="unfinalized-component">
                         <Unfinalized
-                            list={this.state.items.filter((item) => !item.finalized && item.coordinates !== null && item.type !== "flight")}
+                            list={this.state.items.filter((item) => !item.finalized)}
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
