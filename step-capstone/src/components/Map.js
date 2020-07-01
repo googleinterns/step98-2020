@@ -99,13 +99,11 @@ class MapComponent extends React.Component {
   }
 
   drawUnfinalizedMarkers(map, bounds) {
+    // construct hashmap with key: travelObject id, value: marker object
     return this.state.unfinalized.reduce((hashMap, item) => {
       hashMap.set(item.id, this.addMarker(map, item.coordinates, bounds, item.type));
       return hashMap;
     }, new Map())
-    // return this.state.unfinalized.map((item) => {
-    //   this.addMarker(map, item.coordinates, bounds, item.type);
-    // })
   }
 
   drawPaths(map, bounds) {
