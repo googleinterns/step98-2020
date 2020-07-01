@@ -4,106 +4,15 @@ import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
 import Map from "./Map"
-
-// Data just for testing purposes
-const testData = [
-    {
-        id: 0,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 1,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 2,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 3,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 125,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 87,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 231,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 5425,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 100,
-        finalized: true,
-        type: "hotel",
-        title: "Hotel ZED",
-        location: "London",
-        startDate: new Date(),
-        endDate: new Date(),
-        description: 'description',
-    }
-]
+import {FirebaseContext} from './Firebase';
 
 export default class Trip extends React.Component {
+  static contextType = FirebaseContext;
     constructor(props) {
         super(props);
 
         this.state = {
+            reference :"/users/" + sessionStorage.getItem("userId") +"/trips/" + sessionStorage.getItem("tripId"),
             items: []
         }
 
@@ -112,78 +21,59 @@ export default class Trip extends React.Component {
         this.handleAddItem = this.handleAddItem.bind(this);
     }
 
-    fetchData() {
-        // TODO: fetch from datastore
-        return testData;
-    }
-
     componentDidMount() {
-        let data = this.fetchData();
-        this.setState({
-            items: data
-        })
+      let travelObjectList = [];
+      this.context.getData(this.state.reference)
+      .then(data => {
+        data.data().travelObjects.forEach(travelObject => {
+          travelObjectList.push(travelObject)
+        });
+        this.setState({items : travelObjectList});
+      })
+      .catch(error => {console.log("Error Getting Trip Data")});
     }
 
-    handleRemoveItem(id) {
+    handleRemoveItem(data) {
+      this.context.deleteTravelObject(this.state.reference, data)
+      .then(() => {
         this.setState({
-            items: this.state.items.filter((item) => item.id !== id)
+          items: this.state.items.filter((item) => item.id !== data.id)
         });
+      })
+      .catch(error => console.log("Error Removing Item"));
     }
 
     handleEditItem(data) {
-        this.setState({
-            items: this.state.items.map((item) => {
-                if (item.id !== data.id) {
-                    return item;
-                } else {
-                    return data
-                }
-            })
-        })
+      this.setState({
+          items: this.state.items.map((item) => {
+              if (item.id === data.id) {
+                let success = this.context.editTravelObject(this.state.reference, item, data)
+                  .then(() => {
+                    return true;
+                  })
+                  .catch(error => {
+                    console.log("Error Editing Item");
+                    return false; 
+                  });
+                return (success ? data : item);
+              } else {
+                  return item;
+              }
+          })
+      })
     }
 
     handleAddItem(data) {
         if (data === undefined) {
-            console.log("please enter information")
+            console.log("please enter information");
         } else {
             // Add to database here
-            // current code for testing data format etc.
-            // TODO: Add item to datastore
-            switch (data.type) {
-                case "event":
-                    console.log("adding event");
-                    break;
-                case "hotel":
-                    this.setState({
-                        items: this.state.items.concat([{
-                            id: this.state.items.length,
-                            finalized: data.finalized,
-                            type: data.type,
-                            title: data.title,
-                            location: data.location,
-                            startDate: data.startDate,
-                            endDate: data.endDate,
-                            description: data.description,
-
-                        }])
-                    })
-                    break;
-                case "flight":
-                    this.setState({
-                        items: this.state.items.concat([{
-                            id: this.state.items.length,
-                            finalized: data.finalized,
-                            type: data.type,
-                            departureAirport: data.departureAirport,
-                            arrivalAirport: data.arrivalAirport,
-                            departureDate: data.departureDate,
-                            arrivalDate: data.arrivalDate,
-                            description: data.description
-                        }])
-                    })
-                    break;
-                default: throw "Invalid input";
-            }
+            data.id = Date.now();
+            this.context.addTravelObject(this.state.reference, data)
+            .then(() => {
+              this.setState({items : this.state.items.concat(data)});
+            })
+            .catch(error => {console.log("Error Adding Item")});
         }
     }
 
