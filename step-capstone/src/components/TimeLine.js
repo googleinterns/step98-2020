@@ -1,5 +1,4 @@
 import React from 'react';
-import TravelObject from './TravelObject';
 import '../styles/TimeLine.css';
 
 function Header() {

@@ -23,8 +23,8 @@ export default function AddFlight(props) {
     const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
-    const handleChecked = (event) => {
-        setChecked(event.target.checked);
+    const handleChecked = (e) => {
+        setChecked(e.target.checked);
     }
 
     const handleDepartureAirport = (e) => {

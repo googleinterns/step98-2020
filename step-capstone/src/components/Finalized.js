@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TravelObject from './TravelObject';
 import TimeLine from './TimeLine';
-import { Grid } from '@material-ui/core'
 
 export default class Finalized extends React.Component {
     /* Assuming that all of those events are currently on the same day */

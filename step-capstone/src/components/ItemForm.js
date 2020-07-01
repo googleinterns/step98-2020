@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
     Card,
     CardActions,
@@ -8,8 +8,9 @@ import {
     Tabs,
     Tab,
 } from '@material-ui/core';
-import AddEventHotel from './AddEventHotel'
-import AddFlight from './AddFlight'
+import AddEvent from './AddEvent';
+import AddHotel from './AddHotel';
+import AddFlight from './AddFlight';
 
 
 export default class ItemForm extends React.Component {
@@ -55,9 +56,8 @@ export default class ItemForm extends React.Component {
         let isNew = this.state.isNewItem;
         if ((!isNew && this.state.data.type === "event") || (isNew && this.state.value === 0)) {
             return (
-                <AddEventHotel
+                <AddEvent
                     onDataChange={this.handleDataChange}
-                    type="event"
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
                 />
@@ -72,9 +72,8 @@ export default class ItemForm extends React.Component {
             )
         } else {
             return (
-                <AddEventHotel
+                <AddHotel
                     onDataChange={this.handleDataChange}
-                    type="hotel"
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
                 />

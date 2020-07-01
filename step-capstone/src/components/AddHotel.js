@@ -12,7 +12,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 
-export default function AddEventHotel(props) {
+export default function AddHotel(props) {
     let overwriting = props.data !== undefined;
 
     // Sets values to previous values if editing, otherwise blank slate
@@ -23,6 +23,7 @@ export default function AddEventHotel(props) {
     const [location, setLocation] = useState(overwriting ? props.data.location : "");
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
+    
     const handleChecked = (e) => {
         setChecked(e.target.checked);
     }
@@ -43,13 +44,13 @@ export default function AddEventHotel(props) {
      * Called once change to hook state is complete. Updates data property in AddForm.
      */
     useEffect(() => {
-        console.log(title)
+
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,
-            type: props.type,
-            startDate: startDate,
-            endDate: endDate,
+            type: "hotel",
+            timeStart: startDate,
+            timeEnd: endDate,
             finalized: checked,
             location: location,
             description: description

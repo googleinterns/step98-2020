@@ -29,7 +29,7 @@ export default class TripSettingFormPopover extends React.Component {
     }
 
     handleValidation(isValidated) {
-        if (this.state.isValidated != isValidated) {
+        if (this.state.isValidated !== isValidated) {
             this.setState({isValidated : isValidated});
         }
     }
