@@ -82,6 +82,7 @@ class MapComponent extends React.Component {
 
   // constructs path object and places on map. Returns path object.
   addPath(map, path) {
+    // TODO : change to show directions between paths
     // dotted line
     var lineSymbol = {
       path: 'M 0,-1 0,1',
