@@ -15,21 +15,26 @@ export default class Finalized extends React.Component {
             return output + ":30";
         }
     }
+
     getHeightPercentage(timeStart, timeEnd) {
         let dif = timeEnd.getHours()*60 + timeEnd.getMinutes() - timeStart.getHours()*60 - timeStart.getMinutes();
-        return dif/30.0;
+        return dif*48.0/30-16;
     }
+
     getTopPixel(timeStart) {
         let dif = (timeStart.getMinutes() < 30)? timeStart.getMinutes() : timeStart.getMinutes() - 30;
-        console.log(dif);
         return dif/30.0*48;
-
     }
+
+    sorting() {
+        //TO DO: sort the props.list before rendering
+    }
+
     componentDidUpdate() {
         let zIndex = 1;
         this.props.list.forEach((sample) => {
             let div = this.getAssociatedDiv(sample.timeStart);
-            let height = this.getHeightPercentage(sample.timeStart, sample.timeEnd)*100;
+            let height = this.getHeightPercentage(sample.timeStart, sample.timeEnd);
             let top = this.getTopPixel(sample.timeStart);
             ReactDOM.render(
                 <TravelObject
@@ -40,7 +45,8 @@ export default class Finalized extends React.Component {
                     onAddItem={this.props.onAddItem}
                     styleConfig={{
                         top: top.toString() + "px",
-                        height: height.toString() + "%",
+                        height: height.toString() + "px",
+                        width: "228px",
                         overflowY: "scroll",
                         position: "absolute",
                         zIndex: zIndex.toString()}}
@@ -52,8 +58,8 @@ export default class Finalized extends React.Component {
         });
         
     }
-    render() {
 
+    render() {
         return (
             <TimeLine />
         )

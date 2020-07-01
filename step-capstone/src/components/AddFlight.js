@@ -16,8 +16,8 @@ export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
 
     // Sets values to previous values if editing, otherwise blank slate
-    const [departureDate, handleStartChange] = useState(overwriting ? props.data.departureDate : new Date());
-    const [arrivalDate, handleEndChange] = useState(overwriting ? props.data.arrivalDate : new Date());
+    const [departureDate, handleStartChange] = useState(overwriting ? props.data.timeStart : new Date());
+    const [arrivalDate, handleEndChange] = useState(overwriting ? props.data.timeEnd : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
     const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
@@ -47,8 +47,8 @@ export default function AddFlight(props) {
             finalized: checked,
             id: overwriting ? props.data.id : undefined,
             type: "flight",
-            departureDate: departureDate,
-            arrivalDate: arrivalDate,
+            timeStart: departureDate,
+            timeEnd: arrivalDate,
             departureAirport: departureAirport,
             arrivalAirport: arrivalAirport,
             description: description

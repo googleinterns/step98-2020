@@ -16,8 +16,8 @@ export default function AddEventHotel(props) {
     let overwriting = props.data !== undefined;
 
     // Sets values to previous values if editing, otherwise blank slate
-    const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
-    const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
+    const [startDate, handleStartChange] = useState(overwriting ? props.data.timeStart : new Date());
+    const [endDate, handleEndChange] = useState(overwriting ? props.data.timeEnd : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
     const [location, setLocation] = useState(overwriting ? props.data.location : "");

@@ -16,12 +16,8 @@ export default function Hotel(props) {
   **/
   return (
     <div className="event double hotels" style={props.styleConfig}>
-      <p>{props.data.title} </p>
-      <p>{
-          props.data.timeStart.toString() + ' - ' +
-          props.data.timeEnd.toString()} </p>
+      <p>{props.data.timeStart.toLocaleString()} - {props.data.timeEnd.toLocaleString()}: {props.data.title}</p>
       <p>{props.data.location}</p>
-      {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
     </div>
   );
 }

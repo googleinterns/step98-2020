@@ -21,6 +21,7 @@ export default class ItemForm extends React.Component {
             data: props.data,
             isValidated: false
         }
+
         this.handleToggleTab = this.handleToggleTab.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -111,7 +112,6 @@ export default class ItemForm extends React.Component {
                         <Tab label="Hotel" />
                     </Tabs>
                 </Paper>
-
             )
         }
         return null;
@@ -119,7 +119,7 @@ export default class ItemForm extends React.Component {
 
     render() {
         return (
-            <Card id="add-form-container">
+            <Card id="add-form-container" style={{height: "350px"}}>
                 <CardContent>
                     {this.renderTab()}
                     {this.getForm()}
@@ -127,6 +127,7 @@ export default class ItemForm extends React.Component {
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
                     <Button onClick={this.handleSave} size="small">Save</Button>
+                    <Button onClick={() => this.props.onRemoveItem(this.state.data)} size="small">Delete</Button>
                 </CardActions>
             </Card>
         )

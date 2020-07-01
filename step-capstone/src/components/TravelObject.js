@@ -9,6 +9,19 @@ import '../styles/TimeLine.css';
 
 export default function TravelObject(props) {
     let content = null;
+    
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    
+    const open = Boolean(anchorEl);
+    
     switch (props.data.type) {
         case 'event':
             content = <Event data={props.data} styleConfig={props.styleConfig} />
@@ -24,38 +37,11 @@ export default function TravelObject(props) {
     }
 
     return (
-        
-        <div>
+    <div>
+        <div onClick={handleClick}>
             {content}
         </div>
-
-    )
-}
-
-/*
- * Edit Button triggers FormPopover and populates it with previously set data. Any changes will override existing item
- */
-function EditButton(props) {
-    // reference point
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    return (
-        <div>
-            <IconButton aria-label="edit">
-                <Edit
-                    onClick={handleClick}
-                />
-            </IconButton>
-            <FormPopover
+        <FormPopover
                 data={props.data}
                 open={open}
                 anchorEl={anchorEl}
@@ -70,7 +56,9 @@ function EditButton(props) {
                 }}
                 onAddItem={props.onAddItem}
                 onEditItem={props.onEditItem}
+                onRemoveItem={props.onRemoveItem}
             />
-        </div>
+    </div>
+
     )
 }

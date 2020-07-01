@@ -18,10 +18,7 @@ Takes data in this form:
 export default function Flight( props ) {
     return(
         <div className="event double flights" style={props.styleConfig}>
-            <p>Flight from { props.data.departureAirport } to { props.data.arrivalAirport }</p>
-            <p>Departure: { props.data.timeStart.toLocaleString() }</p>
-            <p>Arrival: { props.data.timeEnd.toLocaleString() }</p>
-            {/* <Typography variant="body2" gutterBottom>{ data.description }</Typography> */}
+            <p>{props.data.timeStart.toLocaleString()} - {props.data.timeEnd.toLocaleString()}: Flight from { props.data.departureAirport } to { props.data.arrivalAirport }</p>
         </div>
     )
 }

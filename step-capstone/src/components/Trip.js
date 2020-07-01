@@ -15,19 +15,19 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T02:00:00Z"),
-        timeEnd: new Date("2015-03-25T03:30:00Z"),
+        timeStart: new Date("2020-03-25T02:00:00Z"),
+        timeEnd: new Date("2020-03-25T03:30:00Z"),
         description: "Additional notes"
     },
     {
-        id: 1,
+        id: 100,
         finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T05:00:00Z"),
-        timeEnd: new Date("2015-03-25T06:00:00Z"),
-        description: "Additional notes"
+        type: "hotel",
+        title: "Hotel ZED",
+        location: "London",
+        timeStart: new Date("2020-03-25T19:43:00Z"),
+        timeEnd: new Date("2020-03-25T22:50:00Z"),
+        description: 'description',
     },
     {
         id: 2,
@@ -35,18 +35,18 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T07:00:00Z"),
-        timeEnd: new Date("2015-03-25T07:30:00Z"),
+        timeStart: new Date("2020-03-25T07:00:00Z"),
+        timeEnd: new Date("2020-03-25T07:30:00Z"),
         description: "Additional notes"
     },
     {
-        id: 3,
+        id: 54253,
         finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T09:00:00Z"),
-        timeEnd: new Date("2015-03-25T10:30:00Z"),
+        type: "event",
+        title: "Visiting Sherlock",
+        location: "221b Baker Street, London",
+        timeStart: new Date("2020-03-25T17:45:00Z"),
+        timeEnd: new Date("2020-03-25T19:50:00Z"),
         description: "Additional notes"
     },
     {
@@ -55,8 +55,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T11:00:00Z"),
-        timeEnd: new Date("2015-03-25T14:00:00Z"),
+        timeStart: new Date("2020-03-25T11:00:00Z"),
+        timeEnd: new Date("2020-03-25T14:00:00Z"),
         description: "Additional notes"
     },
     {
@@ -65,8 +65,8 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T14:00:00Z"),
-        timeEnd: new Date("2015-03-25T15:00:00Z"),
+        timeStart: new Date("2020-03-25T14:00:00Z"),
+        timeEnd: new Date("2020-03-25T15:00:00Z"),
         description: "Additional notes"
     },
     {
@@ -75,18 +75,18 @@ const testData = [
         type: "flight",
         departureAirport: "BOS",
         arrivalAirport: "SFO",
-        timeStart: new Date("2015-03-25T16:00:00Z"),
-        timeEnd: new Date("2015-03-25T17:30:00Z"),
+        timeStart: new Date("2020-03-25T16:00:00Z"),
+        timeEnd: new Date("2020-03-25T17:30:00Z"),
         description: "Additional notes"
     },
     {
         id: 5425,
         finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        timeStart:new Date("2015-03-25T17:45:00Z"),
-        timeEnd: new Date("2015-03-25T19:50:00Z"),
+        type: "event",
+        title: "Visiting Sherlock",
+        location: "221b Baker Street, London",
+        timeStart: new Date("2020-03-25T17:45:00Z"),
+        timeEnd: new Date("2020-03-25T19:50:00Z"),
         description: "Additional notes"
     },
     {
@@ -95,22 +95,35 @@ const testData = [
         type: "hotel",
         title: "Hotel ZED",
         location: "London",
-        timeStart: new Date("2015-03-25T19:43:00Z"),
-        timeEnd: new Date("2015-03-25T22:50:00Z"),
+        timeStart: new Date("2020-03-25T19:43:00Z"),
+        timeEnd: new Date("2020-03-25T22:50:00Z"),
         description: 'description',
     }
 ]
 
+const tripSetting = {
+    destinations : ["London, England"],
+    timeStart : new Date(),
+    timeEnd : new Date(),
+    description: ""
+}
 export default class Trip extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: []
+            items: [],
+            tripSetting: {
+                destination : [],
+                timeStart : new Date(),
+                timeEnd : new Date(),
+                description : ""
+            }
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleEditItem = this.handleEditItem.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
+        this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
     }
 
     fetchData() {
@@ -118,11 +131,26 @@ export default class Trip extends React.Component {
         return testData;
     }
 
+    fetchTripSetting() {
+        //TODO: fetch trip setting from datastore
+        return tripSetting;
+    }
+
+    saveData() {
+        //TODO: save the travelobjects to datastore
+    }
+
+    saveTripSetting() {
+        //TODO: save tripSetting
+        //SOMETHING TO THINK ABOUT: allowing users to move all the travelobjects of one day to another day
+    }
     componentDidMount() {
         let data = this.fetchData();
+        let tripSetting = this.fetchTripSetting();
         this.setState({
-            items: data
-        })
+            items: data,
+            tripSetting: tripSetting
+        });
     }
 
     handleRemoveItem(id) {
@@ -137,11 +165,12 @@ export default class Trip extends React.Component {
                 if (item.id !== data.id) {
                     return item;
                 } else {
-                    return data
+                    return data;
                 }
             })
-        })
+        });
     }
+
 
     handleAddItem(data) {
         if (data === undefined) {
@@ -152,7 +181,19 @@ export default class Trip extends React.Component {
             // TODO: Add item to datastore
             switch (data.type) {
                 case "event":
-                    console.log("adding event");
+                    this.setState({
+                        items: this.state.items.concat([{
+                            id: this.state.items.length,
+                            finalized: data.finalized,
+                            type: data.type,
+                            title: data.title,
+                            location: data.location,
+                            timeStart: data.startDate,
+                            timeEnd: data.endDate,
+                            description: data.description,
+
+                        }])
+                    })
                     break;
                 case "hotel":
                     this.setState({
@@ -162,8 +203,8 @@ export default class Trip extends React.Component {
                             type: data.type,
                             title: data.title,
                             location: data.location,
-                            startDate: data.startDate,
-                            endDate: data.endDate,
+                            timeStart: data.startDate,
+                            timeEnd: data.endDate,
                             description: data.description,
 
                         }])
@@ -177,8 +218,8 @@ export default class Trip extends React.Component {
                             type: data.type,
                             departureAirport: data.departureAirport,
                             arrivalAirport: data.arrivalAirport,
-                            departureDate: data.departureDate,
-                            arrivalDate: data.arrivalDate,
+                            timeStart: data.departureDate,
+                            timeEnd: data.arrivalDate,
                             description: data.description
                         }])
                     })
@@ -186,6 +227,12 @@ export default class Trip extends React.Component {
                 default: throw "Invalid input";
             }
         }
+    }
+
+    handleEditTripSetting(newSetting) {
+        this.setState({
+            tripSetting: newSetting
+        });
     }
 
     render() {
@@ -207,6 +254,8 @@ export default class Trip extends React.Component {
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
+                            tripSetting= {this.state.tripSetting}
+                            onEditTripSetting = {this.handleEditTripSetting}
                         />
                     </Grid>
                 </Grid>
