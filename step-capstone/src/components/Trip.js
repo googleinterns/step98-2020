@@ -3,7 +3,7 @@ import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
-import Map from "./Map"
+import MapComponent from "./Map"
 
 // Data just for testing purposes
 const testData = [
@@ -12,77 +12,15 @@ const testData = [
         finalized: true,
         type: "flight",
         departureAirport: "BOS",
+        departureCoordinates: {
+            lat: 42.365360,
+            lng: -71.008187
+        },
         arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 1,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 2,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 3,
-        finalized: false,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 125,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 87,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 231,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
-        departureDate: new Date(),
-        arrivalDate: new Date(),
-        description: "Additional notes"
-    },
-    {
-        id: 5425,
-        finalized: true,
-        type: "flight",
-        departureAirport: "BOS",
-        arrivalAirport: "SFO",
+        arrivalCoordinates: {
+            lat: 51.514212,
+            lng: 0.057513
+        },
         departureDate: new Date(),
         arrivalDate: new Date(),
         description: "Additional notes"
@@ -91,20 +29,68 @@ const testData = [
         id: 100,
         finalized: true,
         type: "hotel",
-        title: "Hotel ZED",
-        location: "London",
+        title: "The Goring",
+        location: "15 Beeston Pl, Westminster, London SW1W 0JW, United Kingdom",
+        coordinates: {
+            lat: 51.497735,
+            lng: -0.145621
+        },
+        startDate: new Date(),
+        endDate: new Date(),
+        description: 'description',
+    },
+    {
+        id: 327,
+        finalized: false,
+        type: "hotel",
+        title: "Some museum",
+        location: "15 Beeston Pl, Westminster, London SW1W 0JW, United Kingdom",
+        coordinates: {
+            lat: 51.511645,
+            lng: -0.131944
+        },
+        startDate: new Date(),
+        endDate: new Date(),
+        description: 'description',
+    },
+    {
+        id: 239857,
+        finalized: true,
+        type: "hotel",
+        title: "Chinatown Gate",
+        location: "15 Beeston Pl, Westminster, London SW1W 0JW, United Kingdom",
+        coordinates: {
+            lat: 51.509963,
+            lng: -0.129336
+        },
+        startDate: new Date(),
+        endDate: new Date(),
+        description: 'description',
+    },
+    {
+        id: 4781,
+        finalized: false,
+        type: "hotel",
+        title: "The Shard",
+        location: "15 Beeston Pl, Westminster, London SW1W 0JW, United Kingdom",
+        coordinates: {
+            lat: 51.505278,
+            lng: -0.085690
+        },
         startDate: new Date(),
         endDate: new Date(),
         description: 'description',
     }
 ]
 
+
 export default class Trip extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            items: []
+            items: [],
+            loaded: false
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -120,7 +106,8 @@ export default class Trip extends React.Component {
     componentDidMount() {
         let data = this.fetchData();
         this.setState({
-            items: data
+            items: data,
+            loaded: true
         })
     }
 
@@ -191,9 +178,19 @@ export default class Trip extends React.Component {
         if (this.props.items === undefined) {
             // TODO: redirect to Home page
         }
+        if (!this.state.loaded) {
+            return null;
+        }
         return (
             <div className="trip">
-                <Grid id="map-component"><Map zoom={13} center={{ lat: 51.5, lng: 0.087 }} /></Grid>
+                <Grid id="map-component">
+                    <MapComponent
+                        zoom={13}
+                        center={{ lat: 51.5, lng: 0.087 }}
+                        finalized={this.state.items.filter((item) => item.finalized)}
+                        unfinalized={this.state.items.filter((item) =>!item.finalized && item.coordinates !== undefined)}
+                    />
+                </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
                         <Finalized
