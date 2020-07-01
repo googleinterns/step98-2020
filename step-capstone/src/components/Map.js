@@ -19,6 +19,7 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
+    console.log("MOUNTING");
     const loadGoogleMapScript = document.createElement('script');
     loadGoogleMapScript.src =
       'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_API_KEY + '&libraries=place';
@@ -27,9 +28,19 @@ class MapComponent extends React.Component {
 
     loadGoogleMapScript.addEventListener('load', () => {
       this.googleMap = this.createMap();
-      let bounds = this.drawMap(this.googleMap)
+      let bounds = this.drawMap()
       this.googleMap.fitBounds(bounds);
     });
+  }
+
+  /*
+   * Updates state with any changes in props
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.clearMap();
+      this.drawMap();
+    }
   }
 
   createMap() {
@@ -39,10 +50,9 @@ class MapComponent extends React.Component {
     })
   }
 
-  addMarker(map, coordinates, bounds, type) {
+  addMarker(coordinates, type) {
     // TODO: firebase will provide coordinates as a GeoPoint --> convert to {lat, lng}
     // { lat: coordinates.lat(), lng: coordinates.lng() }
-    bounds.extend(coordinates);
 
     var iconUrl;
     if (type === "flight") {
@@ -55,20 +65,23 @@ class MapComponent extends React.Component {
 
     var newMarker = new window.google.maps.Marker({
       position: coordinates,
-      map: map,
+      map: this.googleMap,
       animation: window.google.maps.Animation.DROP,
       icon: { url: iconUrl }
     })
 
     // zoom to marker when clicked
-    newMarker.addListener('click', function () {
-      map.setZoom(15);
-      map.setCenter(newMarker.getPosition());
+    newMarker.addListener('click', () => {
+      this.googleMap.setZoom(15);
+      this.googleMap.setCenter(newMarker.getPosition());
+
+      // TODO: this.props.onMarkerClicked(id) --> notifies parent that marker clicked
     });
 
     return newMarker;
   }
 
+  // constructs path object and places on map. Returns path object.
   addPath(map, path) {
     // dotted line
     var lineSymbol = {
@@ -96,20 +109,37 @@ class MapComponent extends React.Component {
     return geoPath;
   }
 
-  drawUnfinalizedMarkers(map, bounds) {
+  /* 
+   * Given a list of travel object data, draws corresponding markers on map and 
+   * returns hash map containing marker objects 
+   */
+  drawMarkers(list, bounds) {
     // construct hashmap with key: travelObject id, value: marker object
-    return this.props.unfinalized.reduce((hashMap, item) => {
-      hashMap.set(item.id, this.addMarker(map, item.coordinates, bounds, item.type));
+    return list.reduce((hashMap, item) => {
+      if (item.type !== "flight") {
+        hashMap.set(item.id, {marker: this.addMarker(item.coordinates, item.type, item.id), type: item.type});
+        bounds.extend(item.coordinates);
+      } else {
+        hashMap.set(item.id, {
+          marker: {
+            departure: this.addMarker(item.departureCoordinates, item.type, item.id),
+            arrival: this.addMarker(item.arrivalCoordinates, item.type, item.id)
+          }, type: item.type});
+
+        bounds.extend(item.departureCoordinates);
+        bounds.extend(item.arrivalCoordinates);
+      }
       return hashMap;
     }, new Map())
   }
 
-  drawPaths(map, bounds) {
-    // Connect finalized components
-    // First: separate into different segments: flight vs non-flight
+  /*
+   *  Draws path between all finalized travel objects, returns list of path objects
+   */
+  drawPaths() {
+    // Separate into different segments: flight vs non-flight
     var paths = [];
     var curPath = [];
-    var finalizedMarkers = new Map();
 
     for (let i = 0; i < this.props.finalized.length; i++) {
       let item = this.props.finalized[i];
@@ -128,39 +158,34 @@ class MapComponent extends React.Component {
 
         // start of next path is arrival location of flight
         curPath = [item.arrivalCoordinates];
-
-        finalizedMarkers.set(item.id, this.addMarker(map, item.departureCoordinates, bounds, item.type));
-        finalizedMarkers.set(item.id, this.addMarker(map, item.arrivalCoordinates, bounds, item.type));
       } else {
         curPath.push(item.coordinates);
-        finalizedMarkers.set(item.id, this.addMarker(map, item.coordinates, bounds, item.type));
       }
     }
 
+    // add remaining path, if any, to paths
     if (curPath.length > 1) {
       paths.push({ path: curPath, type: "normal" });
     }
 
-    return {
-      geoPaths: paths.map((path) => {
-        return this.addPath(map, path);
-      }),
-      finalizedMarkers: finalizedMarkers
-    }
+    // add each path to the map and return array of path objects
+    return paths.map((path) => {
+      return this.addPath(this.googleMap, path);
+    })
   }
 
-  drawMap(map) {
+  drawMap() {
     var bounds = new window.google.maps.LatLngBounds();
 
-    // unfinalized places are disconnected markers
-    let unfinalizedMarkers = this.drawUnfinalizedMarkers(map, bounds);
+    let unfinalizedMarkers = this.drawMarkers(this.props.unfinalized, bounds);
+    let finalizedMarkers = this.drawMarkers(this.props.finalized, bounds);
 
-    let pathArr = this.drawPaths(map, bounds);
+    let pathArr = this.drawPaths();
 
     this.setState({
       unfinalizedMarkers: unfinalizedMarkers,
-      finalizedMarkers: pathArr.finalizedMarkers,
-      geoPaths: pathArr.geoPaths
+      finalizedMarkers: finalizedMarkers,
+      geoPaths: pathArr
     });
 
     return bounds;
@@ -168,7 +193,12 @@ class MapComponent extends React.Component {
 
   removeAllMarkers(hashMap) {
     for (const [key, value] of hashMap) {
-      value.setMap(null);
+      if (value.type !== "flight") {
+        value.marker.setMap(null);
+      } else {
+        value.marker.departure.setMap(null);
+        value.marker.arrival.setMap(null);
+      }
     }
   }
 
@@ -176,12 +206,12 @@ class MapComponent extends React.Component {
     this.removeAllMarkers(this.state.unfinalizedMarkers);
     this.removeAllMarkers(this.state.finalizedMarkers);
 
-    this.state.geoPaths.map((path) => {
-      path.setMap(null);
-    })
+    // remove all paths
+    this.state.geoPaths.map((path) => path.setMap(null));
   }
 
   render() {
+    console.log("RENDERING")
     return (
       <div
         id='map'
