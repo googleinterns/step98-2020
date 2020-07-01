@@ -19,7 +19,6 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
-    console.log("MOUNTING");
     const loadGoogleMapScript = document.createElement('script');
     loadGoogleMapScript.src =
       'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_API_KEY + '&libraries=place';
@@ -211,7 +210,6 @@ class MapComponent extends React.Component {
   }
 
   render() {
-    console.log("RENDERING")
     return (
       <div
         id='map'
