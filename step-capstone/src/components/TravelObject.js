@@ -41,7 +41,7 @@ export default function TravelObject(props) {
                             <Grid item>
                                 <IconButton arial-label="delete">
                                     <Delete
-                                        onClick={() => props.onRemoveItem(props.data.id)}
+                                        onClick={() => props.onRemoveItem(props.data)}
                                     />
                                 </IconButton>
                             </Grid>
