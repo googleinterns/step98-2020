@@ -80,13 +80,12 @@ export default function Finalized(props) {
         separateDates();
         sortHashMap();
         let zIndex = 1;
-        console.log(hashMap);
-        console.log(displayDate);
+
+        prevDiv.current.forEach((div) => {
+            ReactDOM.unmountComponentAtNode(document.getElementById(div));
+        })
+
         if (hashMap.has(displayDate.toDateString())) {
-            
-            prevDiv.current.forEach((div) => {
-                ReactDOM.unmountComponentAtNode(document.getElementById(div));
-            })
 
             let divs = []
 
@@ -117,7 +116,6 @@ export default function Finalized(props) {
             });
 
             prevDiv.current = divs;
-            console.log("inside rendering loop prevDiv ", prevDiv.current);
         }
 
     })
