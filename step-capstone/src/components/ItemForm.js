@@ -126,7 +126,7 @@ export default class ItemForm extends React.Component {
                 <CardActions>
                     <Button onClick={this.state.onClose} size="small">Cancel</Button>
                     <Button onClick={this.handleSave} size="small">Save</Button>
-                    <Button onClick={() => this.props.onRemoveItem(this.state.data)} size="small">Delete</Button>
+                    <Button onClick={() => this.props.onRemoveItem(this.state.data.id)} size="small">Delete</Button>
                 </CardActions>
             </Card>
         )

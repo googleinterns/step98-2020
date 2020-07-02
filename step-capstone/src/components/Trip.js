@@ -119,6 +119,7 @@ export default class Trip extends React.Component {
       this.setState({
           items: this.state.items.filter((item) => item.id !== id)
       });
+      console.log("HEYYY, this is the new state ", this.state.items);
   }
   handleEditItem(data) {
       this.setState({

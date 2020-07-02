@@ -16,6 +16,7 @@ export default function FormPopver(props) {
                     onClose={props.onClose}
                     onAddItem={props.onAddItem}
                     onEditItem={props.onEditItem}
+                    onRemoveItem={props.onRemoveItem}
                     data={props.data}
                 />
             </Popover>
