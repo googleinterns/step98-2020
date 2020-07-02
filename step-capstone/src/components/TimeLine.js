@@ -25,9 +25,11 @@ function Header() {
     </div>
   )
 }
+
 function handleOnClickInterval(idV) {
   console.log(idV);
 }
+
 function OneHourInterval(props) {
   return (
     <div className="OneHourInterval">
