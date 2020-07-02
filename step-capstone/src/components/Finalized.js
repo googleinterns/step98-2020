@@ -6,7 +6,12 @@ import TimeLine from './TimeLine';
 export default function Finalized(props) {
     const hashMap = new Map();
     let prevDiv = useRef([]);
-    const [displayDate, setDisplayDate] = useState(props.startDate.toDateString());
+    const [displayDate, setDisplayDate] = useState(props.startDate);
+
+    const handleDisplayDateChange = (newDisplayDate) => {
+        setDisplayDate(newDisplayDate);
+    }
+
     const sameDate = (timeA, timeB) => {
       return (timeA.getDate() === timeB.getDate() && timeA.getMonth() === timeB.getMonth() && timeA.getFullYear() === timeB.getFullYear());
     }
@@ -49,9 +54,11 @@ export default function Finalized(props) {
             V.sort(travelObjectstartDateComparator);
         }
     }
+    
     useEffect(() => {
-        setDisplayDate(props.startDate.toDateString());
+        setDisplayDate(props.startDate);
     }, [props.startDate]);
+    
     const getAssociatedDiv = (startDate) => {
         let output = startDate.getHours().toString();
         if (startDate.getMinutes() < 30) {
@@ -74,8 +81,8 @@ export default function Finalized(props) {
         sortHashMap();
         let zIndex = 1;
         console.log(hashMap);
-        console.log(prevDiv);
-        if (hashMap.has(displayDate)) {
+        console.log(displayDate);
+        if (hashMap.has(displayDate.toDateString())) {
             
             prevDiv.current.forEach((div) => {
                 ReactDOM.unmountComponentAtNode(document.getElementById(div));
@@ -83,7 +90,7 @@ export default function Finalized(props) {
 
             let divs = []
 
-            hashMap.get(displayDate).forEach((sample) => {
+            hashMap.get(displayDate.toDateString()).forEach((sample) => {
                 let div = getAssociatedDiv(sample.startDate);
                 let height = getHeightPercentage(sample.startDate, sample.endDate);
                 let top = getTopPixel(sample.startDate);
@@ -115,7 +122,10 @@ export default function Finalized(props) {
 
     })
     return (
-        <TimeLine />
+        <TimeLine 
+            displayDate = {displayDate}
+            onChangeDisplayDate = {handleDisplayDateChange}
+        />
     )
 }
  

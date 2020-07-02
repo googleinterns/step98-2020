@@ -1,14 +1,48 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import '../styles/TimeLine.css';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+ MuiPickersUtilsProvider,
+ KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { isValid } from 'date-fns';
 
-function Header() {
+function PickDisplayDate(props) {
+  const [displayDate, setDisplayDate] = useState(props.displayDate);
+
+  useEffect(() => {
+    setDisplayDate(props.displayDate);
+  }, [props.displayDate])
+
+  useEffect(() => {
+    props.onChangeDisplayDate(displayDate);
+  }, [displayDate])
+
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <KeyboardDatePicker
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="displayDate"
+          label="Display Date"
+          value={displayDate}
+          onChange={setDisplayDate}
+      />
+    </MuiPickersUtilsProvider>
+  )
+}
+
+function Header(props) {
   return (
     <div>
       <header className="header">
-              <button className="secondary">EST</button>
               <div className="calendar__title">
                 <div className="icon secondary chevron_left">‹</div>
-                <h1 className="duration"><span></span><strong>18 JAN – 21 JAN</strong> 2016</h1>
+                <PickDisplayDate 
+                  displayDate = {props.displayDate}
+                  onChangeDisplayDate = {props.onChangeDisplayDate}
+                />
                 <div className="icon secondary chevron_left">›</div>
               </div> 
               <div className="gap"></div>
@@ -44,11 +78,14 @@ function OneHourInterval(props) {
     </div>
   )
 }
-export default function TimeLine() {
+export default function TimeLine(props) {
   return (
     <div className="overall">
         <div className="calendar">
-          <Header />
+          <Header 
+            displayDate = {props.displayDate}
+            onChangeDisplayDate = {props.onChangeDisplayDate}  
+          />
 
           <div className="outer">
             <div className="wrap"> 
