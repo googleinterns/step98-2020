@@ -30,7 +30,10 @@ export default class Trip extends React.Component {
         });
         this.setState({items : travelObjectList});
       })
-      .catch(error => {console.log("Error Getting Trip Data")});
+      .catch(error => {
+        console.log("Error Getting Trip Data")
+        console.error(error)
+      });
     }
 
     handleRemoveItem(data) {
@@ -40,7 +43,10 @@ export default class Trip extends React.Component {
           items: this.state.items.filter((item) => item.id !== data.id)
         });
       })
-      .catch(error => console.log("Error Removing Item"));
+      .catch(error => {
+        console.log("Error Removing Item")
+        console.error(error)
+      });
     }
 
     handleEditItem(data) {
@@ -73,7 +79,10 @@ export default class Trip extends React.Component {
             .then(() => {
               this.setState({items : this.state.items.concat(data)});
             })
-            .catch(error => {console.log("Error Adding Item")});
+            .catch(error => {
+              console.log("Error Adding Item")
+              console.error(error)
+            });
         }
     }
 
