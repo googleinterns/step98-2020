@@ -23,7 +23,7 @@ export default class Trip extends React.Component {
 
     componentDidMount() {
       let travelObjectList = [];
-      this.context.getData(this.state.reference)
+      this.context.getTrip(this.state.reference)
       .then(data => {
         data.data().travelObjects.forEach(travelObject => {
           travelObjectList.push(travelObject)
