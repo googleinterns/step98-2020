@@ -40,7 +40,7 @@ function PickDisplayDate(props) {
 function ArrowLeft(props) {
   const handleOnClick = () => {
     var prevDay = new Date(props.displayDate);
-    prevDay.setDate(prevDay.getDate() - 1)
+    prevDay.setDate(prevDay.getDate() - 1);
     props.onChangeDisplayDate(prevDay);
   }
   return (
@@ -51,7 +51,7 @@ function ArrowLeft(props) {
 function ArrowRight(props) {
   const handleOnClick = () => {
     var nextDay = new Date(props.displayDate);
-    nextDay.setDate(nextDay.getDate() + 1)
+    nextDay.setDate(nextDay.getDate() + 1);
     props.onChangeDisplayDate(nextDay);
   }
   return (

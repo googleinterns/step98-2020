@@ -14,8 +14,8 @@ import DateFnsUtils from "@date-io/date-fns";
 export default function AddEvent(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
-    const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
-    const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
+    const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : new Date());
+    const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
     const [location, setLocation] = useState(overwriting ? props.data.location : "");
@@ -33,11 +33,34 @@ export default function AddEvent(props) {
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     }
+
+    const handleStartDateChange = (newStartDate) => {
+        
+
+        if (newStartDate >= endDate) {
+            var newEndDate = new Date(newStartDate);
+            newEndDate.setTime(newStartDate.getTime() + 5*60000);
+            console.log(newEndDate);
+            console.log(newEndDate instanceof Date);
+            setEndDate(newEndDate);
+        }
+        setStartDate(newStartDate);
+
+    }
+    const handleEndDateChange = (newEndDate) => {
+        if (startDate >= newEndDate) {
+            var newStartDate = new Date(newEndDate);
+            newStartDate.setTime(newEndDate.getTime() - 5*60000);
+            setStartDate(newStartDate);
+        }
+        setEndDate(newEndDate);
+    }
+
+
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
-        console.log(title)
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,
@@ -128,13 +151,13 @@ export default function AddEvent(props) {
                     <DateTimePicker
                         label={props.type === "event" ? "Start" : "Check in"}
                         value={startDate}
-                        onChange={handleStartChange} />
+                        onChange={handleStartDateChange} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
                         label={props.type === "event" ? "End" : "Check out"}
                         value={endDate}
-                        onChange={handleEndChange} />
+                        onChange={handleEndDateChange} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>

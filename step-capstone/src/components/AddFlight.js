@@ -14,8 +14,8 @@ import DateFnsUtils from '@date-io/date-fns';
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
-    const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
-    const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
+    const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : new Date());
+    const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : new Date());
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
     const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
@@ -34,6 +34,27 @@ export default function AddFlight(props) {
         setDescription(e.target.value);
     }
     
+    const handleStartDateChange = (newStartDate) => {
+
+        if (newStartDate >= endDate) {
+            var newEndDate = new Date(newStartDate);
+            newEndDate.setTime(newStartDate.getTime() + 5*60000);
+            console.log(newEndDate);
+            console.log(newEndDate instanceof Date);
+            setEndDate(newEndDate);
+        }
+        setStartDate(newStartDate);
+
+    }
+    const handleEndDateChange = (newEndDate) => {
+        if (startDate >= newEndDate) {
+            var newStartDate = new Date(newEndDate);
+            newStartDate.setTime(newEndDate.getTime() - 5*60000);
+            setStartDate(newStartDate);
+        }
+        setEndDate(newEndDate);
+    }
+
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
@@ -121,10 +142,10 @@ export default function AddFlight(props) {
             </Grid>
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker label="Departure" value={startDate} onChange={handleStartChange} />
+                    <DateTimePicker label="Departure" value={startDate} onChange={handleStartDateChange} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker label="Arrival" value={endDate} onChange={handleEndChange} />
+                    <DateTimePicker label="Arrival" value={endDate} onChange={handleEndDateChange} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
