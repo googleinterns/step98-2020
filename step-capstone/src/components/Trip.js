@@ -175,8 +175,8 @@ export default class Trip extends React.Component {
                           type: data.type,
                           departureAirport: data.departureAirport,
                           arrivalAirport: data.arrivalAirport,
-                          startDate: data.departureDate,
-                          endDate: data.arrivalDate,
+                          startDate: data.startDate,
+                          endDate: data.endDate,
                           description: data.description
                       }])
                   })
