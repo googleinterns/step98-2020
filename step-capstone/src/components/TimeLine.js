@@ -33,23 +33,53 @@ function PickDisplayDate(props) {
   )
 }
 
+function ArrowLeft(props) {
+  const handleOnClick = () => {
+    var prevDay = new Date(props.displayDate);
+    prevDay.setDate(prevDay.getDate() - 1)
+    props.onChangeDisplayDate(prevDay);
+  }
+  return (
+    <div className="icon secondary chevron_left" onClick={handleOnClick}>‹</div>
+  )
+}
+
+function ArrowRight(props) {
+  const handleOnClick = () => {
+    var nextDay = new Date(props.displayDate);
+    nextDay.setDate(nextDay.getDate() + 1)
+    props.onChangeDisplayDate(nextDay);
+  }
+  return (
+    <div className="icon secondary chevron_left" style={{left: "15px"}} onClick={handleOnClick}>›</div>
+  )
+}
+
+
 function Header(props) {
   return (
     <div>
       <header className="header">
               <div className="calendar__title">
-                <div className="icon secondary chevron_left">‹</div>
+                <ArrowLeft 
+                  displayDate = {props.displayDate}
+                  onChangeDisplayDate = {props.onChangeDisplayDate}
+                />
+                <button className="secondary">EST</button>
                 <PickDisplayDate 
                   displayDate = {props.displayDate}
                   onChangeDisplayDate = {props.onChangeDisplayDate}
                 />
-                <div className="icon secondary chevron_left">›</div>
+                <ArrowRight 
+                  displayDate = {props.displayDate}
+                  onChangeDisplayDate = {props.onChangeDisplayDate}
+                />
               </div> 
               <div className="gap"></div>
           </header>
-        
+        .
           <table>
-              <thead className="header">
+              <thead className="header name">
                 <tr>
                   <th className="headcol"></th>
                   <th>Finalized</th>

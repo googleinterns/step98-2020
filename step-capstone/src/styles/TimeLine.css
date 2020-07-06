@@ -82,12 +82,11 @@
   
   header {
     background: #fff;
-    padding: 1rem;
+    padding: 0.25rem;
     color: rgba(0, 0, 0, 0.7);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: absolute;
     left: 0px;
-    width: 270px;
+    width: 300px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -220,7 +219,9 @@
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     font-weight: 500;
-  }
+    top: 30px;
+    position: relative;
+}
   
   button.secondary:hover {
     background: #fafafa;
@@ -243,8 +244,8 @@
     cursor: pointer;
     vertical-align: middle;
     position: relative;
-    top: -2px;
-  }
+    top: 35px;
+}
   
   .icon:hover {
     color: red;
@@ -267,6 +268,7 @@
     position: inherit;
     left: 30px;
     width: 92px;
+    top: 13px;
     
   }
   
@@ -308,3 +310,16 @@
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;}
+
+  .MuiFormControl-root {
+    border: 0;
+    margin: 0;
+    display: inline-flex;
+    padding: 0;
+    position: relative;
+    min-width: 0;
+    flex-direction: column;
+    vertical-align: top;
+    max-width: 141px;
+    left: 20px;
+}
