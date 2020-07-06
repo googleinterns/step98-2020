@@ -30,7 +30,10 @@ class TripList extends React.Component{
       })
       this.setState({trips : trips})
     })
-    .catch(error => {console.log("Error Getting Trips")});
+    .catch(error => {
+      console.log("Error Getting Trips")
+      console.error(error)
+    });
   }
 
   handleOpenTrip(tripId) {
