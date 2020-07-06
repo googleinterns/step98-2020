@@ -311,7 +311,7 @@
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;}
 
-  .MuiFormControl-root {
+  .timeline .MuiFormControl-root {
     border: 0;
     margin: 0;
     display: inline-flex;

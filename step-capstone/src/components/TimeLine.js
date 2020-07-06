@@ -19,8 +19,12 @@ function PickDisplayDate(props) {
   }, [displayDate])
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <KeyboardDatePicker
+    <MuiPickersUtilsProvider utils={DateFnsUtils} id="timeline">
+      <KeyboardDatePicker style={{    
+                              maxWidth: "141px",
+                              position: "relative",
+                              left: "15px"}}
+
           variant="inline"
           format="MM/dd/yyyy"
           margin="normal"
