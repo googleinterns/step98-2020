@@ -71,41 +71,21 @@ export default class Trip extends React.Component {
       console.log(newItems.length);
       this.setState({items : newItems});
       console.log(this.state.items);
-      // this.setState({
-      //     items: this.state.items.map((item) => {
-      //         if (item.id === data.id) {
-      //           let success = this.context.editTravelObject(this.state.reference, item, data)
-      //             .then(() => {
-      //               return true;
-      //             })
-      //             .catch(error => {
-      //               console.log("Error Editing Item");
-      //               return false; 
-      //             });
-      //           return (success ? data : item);
-      //         } else {
-      //             return item;
-      //         }
-      //     })
-      // })
     }
 
     handleAddItem(data) {
-        if (data === undefined) {
-            console.log("please enter information");
-        } else {
-            // Add to database here
-            data.id = Date.now();
-            this.context.addTravelObject(this.state.reference, data)
-            .then(() => {
-              this.setState({items : this.state.items.concat(data)});
-            })
-            .catch(error => {
-              console.log("Error Adding Item")
-              console.error(error)
-            });
-        }
+      // Add to database here
+      data.id = Date.now();
+      this.context.addTravelObject(this.state.reference, data)
+      .then(() => {
+        this.setState({items : this.state.items.concat(data)});
+      })
+      .catch(error => {
+        console.log("Error Adding Item")
+        console.error(error)
+      });
     }
+    
 
     render() {
         if (this.props.items === undefined) {
