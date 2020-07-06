@@ -18,6 +18,7 @@ export default function FormPopver(props) {
                     onEditItem={props.onEditItem}
                     onRemoveItem={props.onRemoveItem}
                     data={props.data}
+                    startDate={props.startDate}
                 />
             </Popover>
         </div>

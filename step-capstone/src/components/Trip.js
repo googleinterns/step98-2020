@@ -217,7 +217,9 @@ export default class Trip extends React.Component {
                   </Grid>
               </Grid>
               <Grid id="add-button-component">
-                  <AddItemButton onAddItem={this.handleAddItem} />
+                  <AddItemButton 
+                    startDate={this.state.tripSetting.startDate}
+                    onAddItem={this.handleAddItem} />
               </Grid>
           </div>
       );

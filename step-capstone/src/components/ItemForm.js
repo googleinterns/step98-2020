@@ -60,6 +60,7 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         } else if ((!isNew && this.state.data.type === "flight") || (isNew && this.state.value === 1)) {
@@ -68,6 +69,7 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         } else {
@@ -76,6 +78,7 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         }
@@ -118,7 +121,7 @@ export default class ItemForm extends React.Component {
 
     render() {
         return (
-            <Card id="add-form-container" style={{height: "350px"}}>
+            <Card id="add-form-container">
                 <CardContent>
                     {this.renderTab()}
                     {this.getForm()}

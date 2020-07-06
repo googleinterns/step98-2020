@@ -14,8 +14,8 @@ import DateFnsUtils from '@date-io/date-fns';
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
-    const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : new Date());
-    const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : new Date());
+    const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
+    const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
     const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")

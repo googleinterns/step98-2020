@@ -56,8 +56,9 @@
 }
 
 #add-form-container {
-    height: 500px;
-    width: 600px;;
+    height: 400px;
+    width: 600px;
+    overflow: scroll;
 }
 
 .MuiGrid-container {
