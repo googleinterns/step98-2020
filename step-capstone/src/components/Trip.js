@@ -50,23 +50,44 @@ export default class Trip extends React.Component {
     }
 
     handleEditItem(data) {
-      this.setState({
-          items: this.state.items.map((item) => {
-              if (item.id === data.id) {
-                let success = this.context.editTravelObject(this.state.reference, item, data)
-                  .then(() => {
-                    return true;
-                  })
-                  .catch(error => {
-                    console.log("Error Editing Item");
-                    return false; 
-                  });
-                return (success ? data : item);
-              } else {
-                  return item;
-              }
+      let newItems = [];
+      let itemToChange;
+      this.state.items.forEach((item) => {
+        if(item.id === data.id) {
+            itemToChange = item;
+            newItems.push(data);
+        } else {
+          newItems.push(item);
+        }
+      });
+      this.context.editTravelObject(this.state.reference, itemToChange, data)
+          .then(() => {
+            this.setState ({items : newItems});
           })
-      })
+          .catch((error) => {
+            console.log("Error Editing Item");
+            console.log(error);
+          });
+      console.log(newItems.length);
+      this.setState({items : newItems});
+      console.log(this.state.items);
+      // this.setState({
+      //     items: this.state.items.map((item) => {
+      //         if (item.id === data.id) {
+      //           let success = this.context.editTravelObject(this.state.reference, item, data)
+      //             .then(() => {
+      //               return true;
+      //             })
+      //             .catch(error => {
+      //               console.log("Error Editing Item");
+      //               return false; 
+      //             });
+      //           return (success ? data : item);
+      //         } else {
+      //             return item;
+      //         }
+      //     })
+      // })
     }
 
     handleAddItem(data) {
