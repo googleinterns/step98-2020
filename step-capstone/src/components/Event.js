@@ -12,7 +12,7 @@ Takes data in this form:
          description: "Additional notes"
        }
 */
-export default function Flight( props ) {
+export default function Event( props ) {
    return(
        <div className="event double events" style={props.styleConfig}>
            <p>{props.data.startDate.toLocaleString()} - {props.data.endDate.toLocaleString()}: {props.data.title}</p>
