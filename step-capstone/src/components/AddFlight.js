@@ -35,12 +35,9 @@ export default function AddFlight(props) {
     }
     
     const handleStartDateChange = (newStartDate) => {
-
         if (newStartDate >= endDate) {
             var newEndDate = new Date(newStartDate);
             newEndDate.setTime(newStartDate.getTime() + 5*60000);
-            console.log(newEndDate);
-            console.log(newEndDate instanceof Date);
             setEndDate(newEndDate);
         }
         setStartDate(newStartDate);
