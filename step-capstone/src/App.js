@@ -33,7 +33,6 @@ class App extends React.Component {
 
     if (status.signInStatus) {
       this.setState({authState: true, user: status.user});
-      // this.setState({authState: true, user: status.user, reference: "/users/"+this.context.auth.currentUser.uid});
       console.log("You have logged in.");
     }
     else {
