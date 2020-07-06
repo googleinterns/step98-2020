@@ -15,7 +15,6 @@ Takes data in this form:
  
 */
 export default function Flight( props ) {
-  console.log(props.data);
    return(
        <div className="event double flights" style={props.styleConfig}>
            <p>{props.data.startDate.toLocaleString()} - {props.data.endDate.toLocaleString()}: Flight from { props.data.departureAirport } to { props.data.arrivalAirport }</p>
