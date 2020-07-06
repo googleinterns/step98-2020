@@ -24,7 +24,7 @@ class TripList extends React.Component{
   componentDidMount() {
     let trips = [];
     const reference = "/users/" + this.state.userId + "/trips";
-    this.context.getCollection(reference).then(tripList => {
+    this.context.getTripList(reference).then(tripList => {
       tripList.forEach(trip => {
         trips.push(trip)
       })

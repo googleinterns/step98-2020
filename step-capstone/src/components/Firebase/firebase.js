@@ -55,12 +55,12 @@ class Firebase {
     });
   }
 
-  getData(reference){
+  getTrip(reference){
     const doc = this.db.doc(reference);
     return doc.get();
   }
 
-  getCollection(reference){
+  getTripList(reference){
     const collec = this.db.collection(reference);
     return collec.get();
   }
