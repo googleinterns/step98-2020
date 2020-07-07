@@ -92,21 +92,26 @@ export default class Trip extends React.Component {
       this.handleAddItem = this.handleAddItem.bind(this);
       this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
   }
+
   fetchData() {
       // TODO: fetch from datastore
       return testData;
   }
+
   fetchTripSetting() {
       //TODO: fetch trip setting from datastore
       return tripSetting;
   }
+
   saveData() {
       //TODO: save the travelobjects to datastore
   }
+
   saveTripSetting() {
       //TODO: save tripSetting
       //SOMETHING TO THINK ABOUT: allowing users to move all the travelobjects of one day to another day
   }
+
   componentDidMount() {
       let data = this.fetchData();
       let tripSetting = this.fetchTripSetting();
@@ -115,11 +120,13 @@ export default class Trip extends React.Component {
           tripSetting: tripSetting
       });
   }
+  
   handleRemoveItem(id) {
       this.setState({
           items: this.state.items.filter((item) => item.id !== id)
       });
   }
+
   handleEditItem(data) {
       this.setState({
           items: this.state.items.map((item) => {
@@ -131,6 +138,7 @@ export default class Trip extends React.Component {
           })
       });
   }
+
   handleAddItem(data) {
       if (data === undefined) {
           console.log("please enter information")
@@ -185,11 +193,13 @@ export default class Trip extends React.Component {
           }
       }
   }
+
   handleEditTripSetting(newSetting) {
       this.setState({
           tripSetting: newSetting
       });
   }
+  
   render() {
       return (
           <div className="trip">
