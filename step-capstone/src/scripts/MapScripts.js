@@ -12,7 +12,7 @@ const getTimezoneFromCoordinates = (lat, lng) => {
 }
 
 /* Gets placeID and returns string representation of address and coordinates */
-const getLocation = (placeID) => {
+const getLocationByPlaceID = (placeID) => {
     return new Promise(resolve => {
         fetch("https://maps.googleapis.com/maps/api/geocode/json?place_id="+placeID+"&key=" + APIKEY)
             .then(result => result.json())
@@ -23,5 +23,5 @@ const getLocation = (placeID) => {
 }
 
 
-export default { getTimezoneFromCoordinates, getLocation}
+export default { getTimezoneFromCoordinates, getLocationByPlaceID}
 
