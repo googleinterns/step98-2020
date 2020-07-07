@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TripList displays correctly 1`] = `
+<div>
+  <div>
+    <div
+      className="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-2"
+      id="trips"
+    >
+       
+    </div>
+    <div
+      className="MuiGrid-root"
+      id="add-trip-button"
+    >
+      <p>
+        Get started on your next advenure
+      </p>
+      <div>
+        <button
+          aria-label="add"
+          className="MuiButtonBase-root MuiFab-root"
+          disabled={false}
+          onBlur={[Function]}
+          onClick={[Function]}
+          onDragLeave={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseLeave={[Function]}
+          onMouseUp={[Function]}
+          onTouchEnd={[Function]}
+          onTouchMove={[Function]}
+          onTouchStart={[Function]}
+          tabIndex={0}
+          type="button"
+        >
+          <span
+            className="MuiFab-label"
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+              />
+            </svg>
+          </span>
+        </button>
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
