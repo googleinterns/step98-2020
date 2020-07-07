@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
 } from 'react-places-autocomplete';
-import { TextField, Typography} from "@material-ui/core"
+import { TextField, Typography } from "@material-ui/core"
 
 export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
@@ -16,8 +16,8 @@ export default class LocationAutocompleteInput extends React.Component {
 
     componentDidMount() {
         // Sets search bounds to worldwide
-        this.state.bounds.extend(new window.google.maps.LatLng(-90, -180))
-        this.state.bounds.extend(new window.google.maps.LatLng(90, 180))
+        this.state.bounds.extend(new window.google.maps.LatLng(-90, -180));
+        this.state.bounds.extend(new window.google.maps.LatLng(90, 180));
     }
 
     handleChange = place => {
@@ -27,9 +27,9 @@ export default class LocationAutocompleteInput extends React.Component {
     handleSelect = place => {
         // retrieves latitue and logitude from address selected
         geocodeByAddress(place)
-                .then(results => getLatLng(results[0]))
-                .then(latLng => this.props.onChangeLocation({ address: place, coordinates: latLng }))
-                .catch(error => console.error('Error', error));
+            .then(results => getLatLng(results[0]))
+            .then(latLng => this.props.onChangeLocation({ address: place, coordinates: latLng }))
+            .catch(error => console.error('Error', error));
     };
 
     renderSuggestions({ getInputProps, suggestions, getSuggestionItemProps, loading }) {
