@@ -8,8 +8,8 @@ export default function Hotel(data) {
    * type : 'hotel
    * name : ' Hotel ZED ' 
    * location : 'London'
-   * checkIn : December 17, 2020 15:30:00
-   * checkOut:  December 20, 2020 11:00:00
+   * startDate : December 17, 2020 15:30:00
+   * endDate:  December 20, 2020 11:00:00
    * description: 'description'
    * finalized : true
   **/
