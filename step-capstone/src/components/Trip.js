@@ -3,8 +3,8 @@ import TravelObject from './TravelObject'
 import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
-import Map from "./Map"
 import {FirebaseContext} from './Firebase';
+import MapComponent from "./Map"
 
 export default class Trip extends React.Component {
   static contextType = FirebaseContext;
@@ -91,9 +91,19 @@ export default class Trip extends React.Component {
         if (this.props.items === undefined) {
             // TODO: redirect to Home page
         }
+        if (!this.state.loaded) {
+            return null;
+        }
         return (
             <div className="trip">
-                <Grid id="map-component"><Map zoom={13} center={{ lat: 51.5, lng: 0.087 }} /></Grid>
+                <Grid id="map-component">
+                    <MapComponent
+                        zoom={13}
+                        center={{ lat: 51.5, lng: 0.087 }}
+                        finalized={this.state.items.filter((item) => item.finalized)}
+                        unfinalized={this.state.items.filter((item) =>!item.finalized && item.coordinates !== undefined)}
+                    />
+                </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
                         <Finalized
