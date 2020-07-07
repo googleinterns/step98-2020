@@ -56,13 +56,13 @@ class Firebase {
   }
 
   getTrip(reference){
-    const doc = this.db.doc(reference);
-    return doc.get();
+    const tripRef = this.db.doc(reference);
+    return tripRef.get();
   }
 
   getTripList(reference){
-    const collec = this.db.collection(reference);
-    return collec.get();
+    const tripListRef = this.db.collection(reference);
+    return tripListRef.get();
   }
 
   addTrip(reference, trip) {
@@ -85,10 +85,10 @@ class Firebase {
      })
     });
   }
-
-  editTrip(reference, data) {
-    //TODO: Implement when details of trip editing and settings are implemented
-  }
+// TODO: Implement when details of trip editing and settings are implemented
+//   editTrip(reference, data) {
+    
+//   }
 
   deleteTravelObject(reference, travelObject) {
     const tripRef = this.db.doc(reference);
