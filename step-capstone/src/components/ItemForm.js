@@ -29,6 +29,10 @@ export default class ItemForm extends React.Component {
         this.handleToggleValidation = this.handleToggleValidation.bind(this);
     }
 
+    renderDeleteButton() {
+        return (this.props.data === undefined)? null :  <Button onClick={() => this.props.onRemoveItem(this.state.data.id)} size="small">Delete</Button>;
+    }
+
     // clears data when tab is changed
     handleToggleTab(event, newVal) {
         this.setState({
@@ -129,7 +133,7 @@ export default class ItemForm extends React.Component {
                 <CardActions>
                     <Button onClick={this.props.onClose} size="small">Cancel</Button>
                     <Button onClick={this.handleSave} size="small">Save</Button>
-                    <Button onClick={() => this.props.onRemoveItem(this.state.data.id)} size="small">Delete</Button>
+                    {this.renderDeleteButton()}
                 </CardActions>
             </Card>
         )
