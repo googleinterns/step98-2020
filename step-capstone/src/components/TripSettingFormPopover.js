@@ -99,35 +99,18 @@ function EditTripSetting(props) {
         // notifies form if necessary inputs are present
         props.onValidation(!(destinations === ""))
     }, [destinations, startDate, endDate, description])
-    // Users must input destinations --> renders error input if not
-    let renderDestinations = () => {
-        if (destinations === "") {
-            return (
-                <TextField
-                    error
-                    helperText="Cannot leave field blank, list your destinations, and separate them using comma"
-                    id="destinations"
-                    label={"Destinations"}
-                    defaultValue={destinations}
-                    onChange={handleDestinationsChange}
-                />
-            )
-        } else {
-            return (
-                <TextField
-                    helperText="List your destinations and separate them using comma"
-                    id="destinations"
-                    label={"Destinations"}
-                    defaultValue={destinations}
-                    onChange={handleDestinationsChange}
-                />
-            )
-        }
-    }
+
     return (
         <Grid container direction="column">
             <Grid item container direction="row" justify="space-between">
-                {renderDestinations()}
+                <TextField
+                    error={destinations === ""}
+                    helperText={(destinations === "")? "Cannot leave field blank, list your destinations, and separate them using comma": null}
+                    id="destinations"
+                    label={"Destinations"}
+                    defaultValue={destinations}
+                    onChange={handleDestinationsChange}
+                />
             </Grid>
             <Grid item>
             </Grid>
