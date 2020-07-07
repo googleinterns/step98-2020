@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flight displays correctly 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-item"
+>
+  <h6
+    className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
+  >
+    Flight from 
+    BOS
+     to 
+    SFO
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    Departure: 
+    4:00pm EST
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    Arrival: 
+    7:00pm PST
+  </h6>
+  <p
+    className="MuiTypography-root MuiTypography-body2 MuiTypography-gutterBottom"
+  >
+    Additional notes
+  </p>
+</div>
+`;
+
+exports[`Hotel displays correctly 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-item"
+>
+  <h6
+    className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
+  >
+     
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    Sun Feb 09 1913 00:00:00 GMT-0500 (Eastern Standard Time) - Sun Feb 09 1913 00:00:00 GMT-0500 (Eastern Standard Time)
+     
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    London
+  </h6>
+  <p
+    className="MuiTypography-root MuiTypography-body2 MuiTypography-gutterBottom"
+  >
+    description
+  </p>
+</div>
+`;
