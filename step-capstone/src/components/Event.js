@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/TimeLine.css';
+import {Typography} from '@material-ui/core';
 /*
 Takes data in this form:
        {
@@ -13,10 +14,15 @@ Takes data in this form:
        }
 */
 export default function Event( props ) {
+  let timeString = props.data.startDate.toLocaleString() + ' - ' + props.data.endDate.toLocaleString();
+  if (props.data.finalized) {
+    timeString = props.data.startDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) + ' - ' + props.data.endDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+  }
    return(
        <div className="event double events" style={props.styleConfig}>
-           <p>{props.data.startDate.toLocaleString()} - {props.data.endDate.toLocaleString()}: {props.data.title}</p>
-           <p>{props.data.location}</p>
+          <Typography variant="h6" gutterBottom>{props.data.title} </Typography>
+          <Typography variant="subtitle2" gutterBottom>{timeString} </Typography>
+          <Typography variant="subtitle2" gutterBottom>{props.data.location}</Typography>
        </div>
    )
 }
