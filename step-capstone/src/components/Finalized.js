@@ -112,11 +112,7 @@ export default function Finalized(props) {
                 let div = getAssociatedDiv(sample.startDate);
                 let height = getHeightPercentage(sample.startDate, sample.endDate);
                 let top = getTopPixel(sample.startDate);
-                var all = document.getElementsByTagName("*");
 
-                for (var i=0, max=all.length; i < max; i++) {
-                    console.log(all[i]);
-                }
                 ReactDOM.render(
                     <TravelObject
                         key={sample.id}
@@ -150,9 +146,10 @@ export default function Finalized(props) {
                 ReactDOM.unmountComponentAtNode(document.getElementById(div));
             }
         }
+
         mountElement();
         
-    });
+    }, [props.list, displayDate]);
 
     return (
         <TimeLine
