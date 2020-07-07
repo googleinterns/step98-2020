@@ -20,10 +20,11 @@ function PickDisplayDate(props) {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} id="timeline">
-      <KeyboardDatePicker style={{    
-                              maxWidth: "141px",
-                              position: "relative",
-                              left: "15px"}}
+      <KeyboardDatePicker 
+        style={{    
+          maxWidth: "141px",
+          position: "relative",
+          left: "15px"}}
 
           variant="inline"
           format="MM/dd/yyyy"
@@ -32,7 +33,7 @@ function PickDisplayDate(props) {
           label="Display Date"
           value={displayDate}
           onChange={setDisplayDate}
-      />
+        />
     </MuiPickersUtilsProvider>
   )
 }
@@ -64,32 +65,32 @@ function Header(props) {
   return (
     <div>
       <header className="header">
-              <div className="calendar__title">
-                <ArrowLeft 
-                  displayDate = {props.displayDate}
-                  onChangeDisplayDate = {props.onChangeDisplayDate}
-                />
-                <button className="secondary">EST</button>
-                <PickDisplayDate 
-                  displayDate = {props.displayDate}
-                  onChangeDisplayDate = {props.onChangeDisplayDate}
-                />
-                <ArrowRight 
-                  displayDate = {props.displayDate}
-                  onChangeDisplayDate = {props.onChangeDisplayDate}
-                />
-              </div> 
-              <div className="gap"></div>
-          </header>
-        .
-          <table>
-              <thead className="header name">
-                <tr>
-                  <th className="headcol"></th>
-                  <th>Finalized</th>
-                </tr>
-              </thead>
-            </table>
+        <div className="calendar__title">
+          <ArrowLeft 
+            displayDate = {props.displayDate}
+            onChangeDisplayDate = {props.onChangeDisplayDate}
+          />
+          <button className="secondary">EST</button>
+          <PickDisplayDate 
+            displayDate = {props.displayDate}
+            onChangeDisplayDate = {props.onChangeDisplayDate}
+          />
+          <ArrowRight 
+            displayDate = {props.displayDate}
+            onChangeDisplayDate = {props.onChangeDisplayDate}
+          />
+        </div> 
+        <div className="gap"></div>
+      </header>
+
+      <table>
+        <thead className="header name">
+          <tr>
+            <th className="headcol"></th>
+            <th>Finalized</th>
+          </tr>
+        </thead>
+      </table>
     </div>
   )
 }
