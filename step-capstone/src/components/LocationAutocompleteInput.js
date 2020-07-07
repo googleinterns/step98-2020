@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
 } from 'react-places-autocomplete';
-import { TextField } from "@material-ui/core"
+import { TextField, Typography} from "@material-ui/core"
 
 export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
@@ -40,7 +40,7 @@ export default class LocationAutocompleteInput extends React.Component {
                         placeholder: 'Ex. London Bridge',
                         className: 'location-search-input',
                     })}
-                    error={this.props.error}
+                    error={false}
                     helperText="Please select a location."
                 />
                 <div className="autocomplete-dropdown-container">
@@ -56,7 +56,7 @@ export default class LocationAutocompleteInput extends React.Component {
                                     style,
                                 })}
                             >
-                                <span>{suggestion.description}</span>
+                                <Typography variant="body2" gutterBottom>{suggestion.description}</Typography>
                             </div>
                         );
                     })}
