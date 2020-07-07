@@ -34,33 +34,13 @@ export default function AddFlight(props) {
         setDescription(e.target.value);
     }
     
-    /* Mimic Google Calendar's behavior: when user edits the newStartDate to be bigger than the current endDate,
-    this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editting.
-    This behavior happends during editting, so the user can never submit an invalid time range.
-    */
-   const handleStartDateChange = (newStartDate) => {
-        if (newStartDate >= endDate) {
-            var newEndDate = new Date(newStartDate);
-            newEndDate.setTime(newStartDate.getTime() + endDate.getTime() - startDate.getTime());
-            setEndDate(newEndDate);
-        }
-        setStartDate(newStartDate);
-
-    }
+    useEffect(() => {
+        setStartDate(props.data.startDate);
+    }, [props.data.startDate]);
     
-    /* Mimic Google Calendar's behavior: when user edits the newEndDate to be smaller than the current startDate,
-    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editting.
-    This behavior happends during editting, so the user can never submit an invalid time range. 
-    */
-    const handleEndDateChange = (newEndDate) => {
-        if (startDate >= newEndDate) {
-            var newStartDate = new Date(newEndDate);
-            newStartDate.setTime(newEndDate.getTime() - endDate.getTime() + startDate.getTime());
-            setStartDate(newStartDate);
-        }
-        setEndDate(newEndDate);
-    }
-
+    useEffect(() => {
+        setEndDate(props.data.endDate);
+    }, [props.data.endDate]);
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
@@ -116,10 +96,10 @@ export default function AddFlight(props) {
             </Grid>
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker label="Departure" value={startDate} onChange={handleStartDateChange} />
+                    <DateTimePicker label="Departure" value={startDate} onChange={setStartDate} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DateTimePicker label="Arrival" value={endDate} onChange={handleEndDateChange} />
+                    <DateTimePicker label="Arrival" value={endDate} onChange={setEndDate} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
