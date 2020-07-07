@@ -15,6 +15,7 @@ export default class LocationAutocompleteInput extends React.Component {
     }
 
     componentDidMount() {
+        // Sets search bounds to worldwide
         this.state.bounds.extend(new window.google.maps.LatLng(-90, -180))
         this.state.bounds.extend(new window.google.maps.LatLng(90, 180))
     }
@@ -24,7 +25,7 @@ export default class LocationAutocompleteInput extends React.Component {
     };
 
     handleSelect = place => {
-        console.log(place)
+        // retrieves latitue and logitude from address selected
         geocodeByAddress(place)
             .then(results => getLatLng(results[0]))
             .then(latLng => console.log('Success', {address: place, coordinates: latLng}))
