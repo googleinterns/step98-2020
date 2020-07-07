@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 export default function TripItemComponent(props) {
     const classes = useStyles();
     let dateRange = props.data.startDate.toString() + " - " + props.data.endDate.toString();
+
     return(
         <Card className={classes.root}>
             <CardHeader title={props.data.title} subheader={dateRange}/>
@@ -37,7 +38,7 @@ export default function TripItemComponent(props) {
             </CardContent>
             <CardActions>
                 <Button size="small">Share</Button>
-                <Button size="small" onClick={() => props.onOpenTrip(props.data.id)}>Open</Button>
+                <Button size="small" onClick={() => props.onOpenTrip(props.tripId)}>Open</Button>
             </CardActions>
         </Card>
     )
