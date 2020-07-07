@@ -135,18 +135,24 @@ export default function Finalized(props) {
         }
     }
 
-    useEffect(() => {
-        separateDates();
-        sortItemList();
-        
+    const unmountElement = () => {
         let minutes = [":00", ":30"];
         for(var i = 0; i < 24; i++) {
             for (var j = 0; j < 2; j++) {
                 let div = i.toString() + minutes[j];
-                ReactDOM.unmountComponentAtNode(document.getElementById(div));
+                var element =  document.getElementById(div);
+                if (typeof(element) != 'undefined' && element != null) {
+                    ReactDOM.unmountComponentAtNode(document.getElementById(div));
+                }
+               
             }
         }
+    }
 
+    useEffect(() => {
+        separateDates();
+        sortItemList();
+        unmountElement();
         mountElement();
         
     }, [props.list, displayDate]);

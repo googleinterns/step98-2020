@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react';
+import ReactDOM from 'react-dom';
 import '../styles/TimeLine.css';
 import DateFnsUtils from '@date-io/date-fns';
 import {
  MuiPickersUtilsProvider,
  KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { isValid } from 'date-fns';
 
 function PickDisplayDate(props) {
   const [displayDate, setDisplayDate] = useState(props.displayDate);
@@ -113,7 +113,24 @@ function OneHourInterval(props) {
     </div>
   )
 }
+
+function ListOfIntervals() {
+  const intervals = [];
+  for(var i = 0; i < 24; i++) {
+    intervals.push(<OneHourInterval idV={i.toString()} />);
+  }
+  return intervals;
+
+}
+
 export default function TimeLine(props) {
+  
+  useEffect(() => {
+    ReactDOM.render(
+      <ListOfIntervals />,
+      document.getElementById('intervals')
+    );
+  })
   return (
     <div className="overall">
         <div className="calendar">
@@ -127,31 +144,7 @@ export default function TimeLine(props) {
               <table className="offset">
                 <tbody>
                   <tr></tr>
-                  <OneHourInterval idV="0" />
-                  <OneHourInterval idV="1" />
-                  <OneHourInterval idV="2" />
-                  <OneHourInterval idV="3" />
-                  <OneHourInterval idV="4" />
-                  <OneHourInterval idV="5" />
-                  <OneHourInterval idV="6" />
-                  <OneHourInterval idV="7" />
-                  <OneHourInterval idV="8" />
-                  <OneHourInterval idV="9" />
-                  <OneHourInterval idV="10" />
-                  <OneHourInterval idV="11" />
-                  <OneHourInterval idV="12" />
-                  <OneHourInterval idV="13" />
-                  <OneHourInterval idV="14" />
-                  <OneHourInterval idV="15" />
-                  <OneHourInterval idV="16" />
-                  <OneHourInterval idV="17" />
-                  <OneHourInterval idV="18" />
-                  <OneHourInterval idV="19" />
-                  <OneHourInterval idV="20" />
-                  <OneHourInterval idV="21" />
-                  <OneHourInterval idV="22" />
-                  <OneHourInterval idV="23" />
-
+                  <div id="intervals"></div>
                   <tr>
                     <td className="headcol"></td>
                     <td></td>
