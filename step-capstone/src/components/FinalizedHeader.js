@@ -5,6 +5,7 @@ import {
  MuiPickersUtilsProvider,
  KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { Typography } from "@material-ui/core"
  
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
 const sameDate = (timeA, timeB) => {
@@ -86,13 +87,9 @@ export default function FinalizedHeader(props) {
           </div> 
           <div className="gap"></div>
         </header>
-  
         <table>
-          <thead className="header name">
-            <tr>
-              <th className="headcol"></th>
-              <th>Finalized</th>
-            </tr>
+          <thead className="header-name">
+            <Typography variant="h6" gutterBottom>Itinerary</Typography>
           </thead>
         </table>
       </div>
