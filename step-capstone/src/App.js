@@ -6,64 +6,79 @@ import {
   Redirect,
 } from "react-router-dom";
 import './styles/App.css';
-import {Grid} from '@material-ui/core'
+import {FirebaseContext} from './components/Firebase';
+import SignInWidget from './components/Firebase/SignInWidget';
+import SignOutButton from './components/Firebase/SignOutButton';
+import TripList from "./components/TripList"
 import Trip from "./components/Trip"
 
 class App extends React.Component {
-  isLoggedIn = true; 
-  handleLogin(){
-    if(this.isLoggedIn){
-      return(
-        <Redirect to = "/trip-list"/>
-      ); 
-    } else {
-      return (
-        <Redirect to = "/login-page"/>
-      );
+  static contextType = FirebaseContext;
+
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+      authState: null,
+      user: null,
+    };
+
+  }
+
+  componentDidMount() {
+    this.context.getUserInfo().then( (status) => this.afterAuthStateCheck(status));
+  }
+
+  afterAuthStateCheck(status) {
+
+    if (status.signInStatus) {
+      this.setState({authState: true, user: status.user});
+      console.log("You have logged in.");
+    }
+    else {
+      this.setState({authState: false, user: null});
+      console.log("You havent logged in yet");
     }
   }
+
+  handleLogin(){
+    if(this.state.authState){
+      //TODO: replace the hardcoded test user with logged in user once all users can create trips
+      //sessionStorage.setItem("reference", "/users/"+this.context.auth.currentUser.uid);
+      sessionStorage.setItem("userId", "0fmXVWHePsZoCV6ex1Z2");
+      return <Redirect to = "/trips/"/>;
+    } else {
+      return <Redirect to = "/login-page"/>;
+    }
+  }
+
   render () {
+   
     return(
       <div className="App">
+        {this.state.authState ? <SignOutButton/> :''}
         <Router>
           {this.handleLogin()}
           <Switch>
-            <Route path="/trip-list">
-              <TripList userId = 'userId' />
-            </Route>
-            <Route path="/login-page">
+            <Route exact path="/login-page">
               <Login />
+            </Route>
+            <Route path = "/trips/:tripId">
+              <Trip/>
+            </Route>
+            <Route exact path = "/trips/">
+              <TripList />
             </Route>
           </Switch>
         </Router>
       </div>
-    );
-  }
-}
-function Login(){
-  return ( 
-    <Login/>
-    //Login Page
-  );
+    ) 
+  }  
 }
 
-function TripList(){
-  // const trips = firestore.getTrips(props.userId);
-  // const tripList = trips.map((trip) =>
-  //   <li><TripBox {...trip}/></li>
-  // );
+function Login(){
   return (
-    <Trip />
-    // <Grid> {
-    //    trips.map((trip) => {
-    //      return(
-    //        <TripBox {...trip}/>
-    //      );
-    //      })
-    //   }
-    // </Grid>
-    
-   // <ul> {tripList} </ul>
+    <SignInWidget/>
   );
 }
 

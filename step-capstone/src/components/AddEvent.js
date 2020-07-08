@@ -65,13 +65,13 @@ export default function AddEvent(props) {
         }
     }, [startDate, endDate, checked, title, location, description])
 
-    
     return (
         <Grid container direction="column">
             <Grid item>
                 <TextField
                     error={(title === "")}
                     helperText={(title === "")? "Cannot leave field blank": ""}
+
                     id="title"
                     label={"Add Title"}
                     defaultValue={title}
@@ -108,6 +108,7 @@ export default function AddEvent(props) {
                 <TextField
                     error={(checked && location === "")}
                     helperText={(checked && location === "")? "Cannot leave field blank": ""}
+
                     id="location"
                     label={location.length !== 0 ? location : "Add Location"}
                     fullWidth

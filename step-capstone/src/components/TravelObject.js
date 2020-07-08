@@ -35,28 +35,28 @@ export default function TravelObject(props) {
     }
 
     return (
-    <div>
-        <div onClick={handleClick}>
-            {content}
+        <div>
+            <div onClick={handleClick}>
+                {content}
+            </div>
+            <FormPopover
+                    data={props.data}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    onAddItem={props.onAddItem}
+                    onEditItem={props.onEditItem}
+                    onRemoveItem={props.onRemoveItem}
+                />
         </div>
-        <FormPopover
-                data={props.data}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                onAddItem={props.onAddItem}
-                onEditItem={props.onEditItem}
-                onRemoveItem={props.onRemoveItem}
-            />
-    </div>
 
     )
 }
