@@ -28,9 +28,13 @@ const testTrips = [londonTestTrip]
 class firebaseMock {
   getTripList() {
     return new Promise((resolve) => {
-      resolve(testTrips)
+      resolve(testTrips);
     });
- 
+  }
+  getTrip() {
+    return new Promise ((resolve) => {
+      resolve(londonTestTrip);
+    })
   }
 }
 export default firebaseMock;
