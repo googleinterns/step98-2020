@@ -37,7 +37,10 @@ function OneHourInterval(props) {
 
   /*Given a startDate of a TravelObject, return the top pixel*/
   const getTopPixel = (startDate)  => {
-      let dif = (startDate.getMinutes() < 30)? startDate.getMinutes() : startDate.getMinutes() - 30;
+    if (!sameDate(props.displayDate, startDate)) {
+      return 0;
+    }
+    let dif = (startDate.getMinutes() < 30)? startDate.getMinutes() : startDate.getMinutes() - 30;
       return dif/minPerDiv*displayHeightOfADiv;
   }
 
