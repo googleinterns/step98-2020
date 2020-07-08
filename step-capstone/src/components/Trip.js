@@ -46,8 +46,10 @@ export default class Trip extends React.Component {
     }
 
     handleRemoveItem(data) {
+        console.log("deleting!")
         this.context.deleteTravelObject(this.state.reference, data)
             .then(() => {
+                console.log()
                 this.setState({
                     items: this.state.items.filter((item) => item.id !== data.id)
                 });
