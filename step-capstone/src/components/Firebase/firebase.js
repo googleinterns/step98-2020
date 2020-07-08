@@ -35,15 +35,13 @@ class Firebase {
     };
   }
 
-  getTrips = (email) => {return {"1" : "tripA"}};
   createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
   getUserInfo = () => {
     return new Promise((resolve, reject) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
-          let trips = this.getTrips(user.email);
-          let userObject = new User(user.email, user.displayName, trips);
+          let userObject = new User(user.email, user.displayName);
           resolve({signInStatus: true, user: userObject});
 
         } else {
@@ -57,6 +55,7 @@ class Firebase {
 
   getTrip(reference){
     const tripRef = this.db.doc(reference);
+    console.log(tripRef)
     return tripRef.get();
   }
 

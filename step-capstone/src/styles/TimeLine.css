@@ -17,12 +17,8 @@
     height: 100vh;
   
   }
-  .overall {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      
-  }
+
+
   .offset {
     position: absolute;
     top: 120px;
@@ -30,22 +26,13 @@
   
   .outer {
     width: 300px;
+    height: 100%;
     position: fixed;
     left: 0px;
-    top: 0px;
-    overflow-y : scroll; 
-    
+    top: 0px; 
+    overflow-y: scroll;
   }
-  .timeline {
-    height: 800px;   
-  }
-  .calendar {
-    margin: 0 auto;
-    max-width: 300px;
-    min-width: 500px;
-    box-shadow: 0px 30px 50px rgba(0, 0, 0, 0.2) ,0px 3px 7px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
+
   .calendar__title {
       display: flex; 
       justify-content: center; 
@@ -58,14 +45,6 @@
     align-self: flex-start; 
     flex: 0 0 1;
   }
-  .wrap {
-    overflow-x: hidden;
-    height: 800px;   
-    overflow-y : scroll; 
-    max-width: 300px;
-    height: 800px;
-    border-radius: 8px;
-  }
   
   thead {
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
@@ -74,19 +53,17 @@
   }
   
   thead th {
-  
     text-align: center;
     width: 100%;
-  
   }
-  
+
+
   header {
     background: #fff;
-    padding: 0.25rem;
     color: rgba(0, 0, 0, 0.7);
     position: absolute;
     left: 0px;
-    width: 300px;
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -94,27 +71,31 @@
     z-index: 7;
   }
   
+  .header-name {
+    text-align: center;
+    padding-top: 7px;
+    padding-bottom: 0px;
+  }
+
   header h1 {
    font-size: 1rem;
    text-align: center;
    font-weight: normal;
-  
   }
 
   table {
     background: #fff;
-    width: 300px;
+    width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
   }
-  
-  
+ 
   .headcol {
     width: 60px;
     font-size: 0.875rem;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.5);
-    padding: 0.25rem 0;
+    padding-left: 10px;
     text-align: center;
     border: 0;
     position: relative;
@@ -122,19 +103,21 @@
     border-bottom: 1px solid transparent;
   }
   
-  thead th {
-    font-size: 1rem;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.9);
-    padding: 1rem;
-  }
-  
   thead {
       position: absolute;
       top: 69px;
       z-index: 2;
       background: white;
-      width:300px;
+      width: 100%;
+  }
+
+  #finalized-header {
+    font-size: 1rem;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.9);
+    padding: 1rem;
+    width: 100%;
+    background-color: #DB4437;
   }
  
   tr, tr td {
@@ -163,10 +146,13 @@
     vertical-align: top;
     height: 40px;
     padding: 0.25rem 0.25rem 0 0.25rem;
-    width: 300px;
-  
+    width: 100%;
   }
-  
+
+  tbody {
+    width: 100%;
+  }
+
   .secondary {
     color: rgba(0, 0, 0, 0.4);
     align-self: flex-start; 
@@ -251,7 +237,7 @@
     color: red;
   }
   .OneHourInterval {
-    width: 300px !important;
+    width: 100% !important;
   }
 
   .dropbtn {
@@ -268,7 +254,7 @@
     position: inherit;
     left: 30px;
     width: 92px;
-    top: 13px;
+    top: 16px;
     
   }
   
