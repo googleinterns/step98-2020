@@ -1,5 +1,6 @@
 import React from 'react';
-import TravelObject from './TravelObject'
+import Finalized from './Finalized';
+import Unfinalized from './Unfinalized';
 import AddItemButton from './AddItemButton'
 import { Grid } from '@material-ui/core'
 import '../styles/Trip.css'
@@ -15,12 +16,7 @@ export default class Trip extends React.Component {
             reference :"/users/" + sessionStorage.getItem("userId") +"/trips/" + sessionStorage.getItem("tripId"),
             items: []
         }
-
-        this.handleRemoveItem = this.handleRemoveItem.bind(this);
-        this.handleEditItem = this.handleEditItem.bind(this);
-        this.handleAddItem = this.handleAddItem.bind(this);
     }
-
     componentDidMount() {
       let travelObjectList = [];
       this.context.getTrip(this.state.reference)
@@ -87,27 +83,22 @@ export default class Trip extends React.Component {
     }
     
 
+    handleEditTripSetting(newSetting) {
+        this.setState({
+            tripSetting: newSetting
+        });
+    }
+    
     render() {
-        if (this.props.items === undefined) {
-            // TODO: redirect to Home page
-        }
-        if (!this.state.loaded) {
-            return null;
-        }
         return (
             <div className="trip">
-                <Grid id="map-component">
-                    <MapComponent
-                        zoom={13}
-                        center={{ lat: 51.5, lng: 0.087 }}
-                        finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) =>!item.finalized && item.coordinates !== undefined)}
-                    />
-                </Grid>
+                <Grid id="map-component"><Map zoom={13} center={{ lat: 51.5, lng: 0.087 }} /></Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
                         <Finalized
                             list={this.state.items.filter((item) => item.finalized)}
+                            startDate={this.state.tripSetting.startDate}
+                            endDate={this.state.tripSetting.endDate}
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
@@ -119,52 +110,23 @@ export default class Trip extends React.Component {
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
+                            tripSetting= {this.state.tripSetting}
+                            onEditTripSetting = {this.handleEditTripSetting}
                         />
                     </Grid>
                 </Grid>
                 <Grid id="add-button-component">
-                    <AddItemButton onAddItem={this.handleAddItem} />
+                    <AddItemButton 
+                      startDate={this.state.tripSetting.startDate}
+                      onAddItem={this.handleAddItem} />
                 </Grid>
             </div>
         );
     }
 }
 
-/*
- Classes for testing UI purposes
-*/
-function Finalized(props) {
-    return (
-        <Grid>
-            {
-                props.list.map((item) => {
-                    return <TravelObject
-                        key={item.id}
-                        data={item}
-                        onRemoveItem={props.onRemoveItem}
-                        onEditItem={props.onEditItem}
-                        onAddItem={props.onAddItem}
-                    />
-                })
-            }
-        </Grid>
-    )
-}
 
-function Unfinalized(props) {
-    return (
-        <Grid>
-            {
-                props.list.map((item) => {
-                    return <TravelObject
-                        key={item.id}
-                        data={item}
-                        onRemoveItem={props.onRemoveItem}
-                        onEditItem={props.onEditItem}
-                        onAddItem={props.handleAddItem}
-                    />
-                })
-            }
-        </Grid>
-    )
-}
+  
+ 
+ 
+ 
