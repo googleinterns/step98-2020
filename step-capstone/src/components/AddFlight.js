@@ -61,6 +61,7 @@ export default function AddFlight(props) {
     }, [startDate, endDate, checked, departureAirport, arrivalAirport, description])
     
 
+
     return (
         <Grid container direction="column">
             <Grid item container direction="row" justify="space-between">
@@ -76,6 +77,7 @@ export default function AddFlight(props) {
                 <TextField
                     error={(arrivalAirport === "")}
                     helperText={(arrivalAirport === "")? "Cannot leave field blank": ""}
+
                     id="arrival"
                     label={"Arrival IATA code"}
                     defaultValue={arrivalAirport}
