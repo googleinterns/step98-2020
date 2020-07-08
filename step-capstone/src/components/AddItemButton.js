@@ -16,7 +16,6 @@ export default function AddItemButton(props) {
     };
 
     const open = Boolean(anchorEl);
-
     return (
         <div>
             <Fab aria-label="add" onClick={handleClick}>
@@ -24,6 +23,7 @@ export default function AddItemButton(props) {
             </Fab>
             <FormPopover
                 data={undefined}
+                startDate={props.startDate}
                 open={open}
                 anchorEl={anchorEl}
                 onClose={handleClose}
