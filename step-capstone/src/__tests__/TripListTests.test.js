@@ -9,12 +9,15 @@ test('TripList displays correctly', () => {
   sessionStorage.setItem("userId", "testUser");
   const tripListComponent = renderer.create(
     <FirebaseContext.Provider value={new firebaseMock()}>
-    
       <TripList/>
     </FirebaseContext.Provider>
     
   );
   let test = tripListComponent.toJSON();
   expect(test).toMatchSnapshot();
+
+  // tripListComponent.handleOpenTrip(0)
+  // test = tripListComponent.toJSON();
+  // expect(test).toMatchSnapshot();
 
 });
