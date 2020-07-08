@@ -4,7 +4,6 @@ import './styles/index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
-import LocationAutocompleteInput from "./components/LocationAutocompleteInput"
 
 const loadGoogleMapScript = document.createElement('script');
 loadGoogleMapScript.src =
@@ -15,8 +14,7 @@ window.document.body.appendChild(loadGoogleMapScript);
 loadGoogleMapScript.addEventListener("load", () => {
   ReactDOM.render(
     <FirebaseContext.Provider value={new Firebase()}>
-      {/* <App /> */}
-      <LocationAutocompleteInput />
+      <App />
     </FirebaseContext.Provider>,
     document.getElementById('root')
   );
