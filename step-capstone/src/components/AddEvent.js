@@ -34,17 +34,12 @@ export default function AddEvent(props) {
         setDescription(e.target.value);
     }
 
-    useEffect(() => {
-        setStartDate(props.data.startDate);
-    }, [props.data.startDate]);
-    
-    useEffect(() => {
-        setEndDate(props.data.endDate);
-    }, [props.data.endDate]);
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
+        console.log("updating data")
+        console.log(startDate)
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,

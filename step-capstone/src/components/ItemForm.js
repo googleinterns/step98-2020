@@ -30,7 +30,7 @@ export default class ItemForm extends React.Component {
     }
 
     renderDeleteButton() {
-        return (this.props.data === undefined)? null :  <Button onClick={() => this.props.onRemoveItem(this.state.data.id)} size="small">Delete</Button>;
+        return (this.props.data === undefined) ? null : <Button onClick={() => this.props.onRemoveItem(this.state.data)} size="small">Delete</Button>;
     }
 
     // clears data when tab is changed
@@ -45,7 +45,7 @@ export default class ItemForm extends React.Component {
     this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editting.
     This behavior happends during editting, so the user can never submit an invalid time range.
     */
-   handleStartDateChange(newData) {
+    handleStartDateChange(newData) {
         if (this.state.data.endDate <= newData.startDate) {
             var newEndDate = new Date(newData.startDate);
             newEndDate.setTime(newData.startDate.getTime() + this.state.data.endDate.getTime() - this.state.data.startDate.getTime());
@@ -65,17 +65,17 @@ export default class ItemForm extends React.Component {
     }
 
     handleDataChange(newData) {
-
-        if (newData.startDate !== this.state.data.startDate) {
-            this.handleStartDateChange(newData);
-        }
-        else if (newData.endDate !== this.state.data.endDate) {
-            this.handleEndDateChange(newData);
+        if (this.state.data !== undefined) {
+            if (newData.startDate !== this.state.data.startDate) {
+                this.handleStartDateChange(newData);
+            }
+            else if (newData.endDate !== this.state.data.endDate) {
+                this.handleEndDateChange(newData);
+            }
         }
         this.setState({
             data: newData
         })
-        
     }
 
     // sets validation state to indicate whether or not all required inputs are filled out
@@ -127,6 +127,8 @@ export default class ItemForm extends React.Component {
         if (this.state.isNewItem) {
             this.props.onAddItem(this.state.data);
         } else {
+            console.log("SAVING")
+            console.log(this.state.data);
             this.props.onEditItem(this.state.data);
         }
 
