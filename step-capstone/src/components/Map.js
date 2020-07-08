@@ -19,17 +19,9 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
-    const loadGoogleMapScript = document.createElement('script');
-    loadGoogleMapScript.src =
-      'https://maps.googleapis.com/maps/api/js?key=' + process.env.REACT_APP_API_KEY + '&libraries=place';
-
-    window.document.body.appendChild(loadGoogleMapScript);
-
-    loadGoogleMapScript.addEventListener('load', () => {
-      this.googleMap = this.createMap();
+    this.googleMap = this.createMap();
       let bounds = this.drawMap()
       this.googleMap.fitBounds(bounds);
-    });
   }
 
   /*
