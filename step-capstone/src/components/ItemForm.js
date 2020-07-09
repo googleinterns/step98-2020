@@ -32,7 +32,15 @@ export default class ItemForm extends React.Component {
     }
 
     renderDeleteButton() {
-        return (this.props.data === undefined) ? null : <Button onClick={() => this.props.onRemoveItem(this.state.data)} size="small">Delete</Button>;
+        return (this.props.data === undefined)
+            ? null
+            : <Button
+                onClick={() => this.props.onRemoveItem(this.state.data)}
+                color="primary"
+                size="small"
+            >
+                Delete
+            </Button>;
     }
 
     // clears data when tab is changed
@@ -129,8 +137,6 @@ export default class ItemForm extends React.Component {
         if (this.state.isNewItem) {
             this.props.onAddItem(this.state.data);
         } else {
-            console.log("SAVING")
-            console.log(this.state.data);
             this.props.onEditItem(this.state.data);
         }
 
@@ -147,6 +153,7 @@ export default class ItemForm extends React.Component {
                         value={this.state.value}
                         onChange={this.handleToggleTab}
                         variant="fullWidth"
+                        indicatorColor="primary"
                     >
                         <Tab label="Event" />
                         <Tab label="Flight" />
@@ -156,7 +163,7 @@ export default class ItemForm extends React.Component {
             )
         }
         return (
-            <Typography variant="h3" gutterBottom>{this.state.data.type.charAt(0).toUpperCase() + this.state.data.type.slice(1)}</Typography>
+            <Typography variant="h4" gutterBottom>{this.state.data.type.charAt(0).toUpperCase() + this.state.data.type.slice(1)}</Typography>
         );
     }
 
@@ -168,8 +175,8 @@ export default class ItemForm extends React.Component {
                     {this.getForm()}
                 </CardContent>
                 <CardActions>
-                    <Button onClick={this.props.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleSave} size="small">Save</Button>
+                    <Button onClick={this.props.onClose} size="small" color="primary">Cancel</Button>
+                    <Button onClick={this.handleSave} size="small" color="primary">Save</Button>
                     {this.renderDeleteButton()}
                 </CardActions>
             </Card>
