@@ -26,12 +26,15 @@ export default function AddEvent(props) {
     const handleChecked = (e) => {
         setChecked(e.target.checked);
     }
+
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
     }
+
     const handleLocationChange = (location) => {
         setLocation(location);
     }
+
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     }
@@ -40,8 +43,6 @@ export default function AddEvent(props) {
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
-        console.log("updating data")
-        console.log(startDate)
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,
@@ -69,7 +70,6 @@ export default function AddEvent(props) {
                 <TextField
                     error={(title === "")}
                     helperText={(title === "")? "Cannot leave field blank": ""}
-
                     id="title"
                     label={"Add Title"}
                     defaultValue={title}

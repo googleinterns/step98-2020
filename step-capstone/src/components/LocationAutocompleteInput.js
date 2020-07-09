@@ -38,12 +38,12 @@ export default class LocationAutocompleteInput extends React.Component {
             <div>
                 <TextField
                     {...getInputProps({
-                        placeholder: 'Ex. London Bridge',
                         className: 'location-search-input',
                     })}
                     error={this.props.error}
                     helperText={this.props.error ? "Cannot leave field blank." : ""}
                     fullWidth
+                    label="Add Location"
                 />
                 <div className="autocomplete-dropdown-container">
                     {loading && <div>Loading...</div>}
@@ -74,7 +74,7 @@ export default class LocationAutocompleteInput extends React.Component {
                 onChange={this.handleChange}
                 onSelect={this.handleSelect}
                 searchOptions={{
-                    bounds: this.state.bounds
+                    bounds: this.state.bounds,
                 }}
             >
                 {this.renderSuggestions}

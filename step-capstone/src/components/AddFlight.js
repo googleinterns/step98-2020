@@ -11,49 +11,45 @@ import {
  DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
+
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
-    const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
-    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
+    const [departureAirport, setDepartureAirport] = useState(overwriting ? {address: props.data.departureAirport, coordinates: props.data.departureCoordinates} : {address: undefined, coordinates: undefined});
+    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? {address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates} : {address: undefined, coordinates: undefined});
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
     
     const handleChecked = (e) => {
         setChecked(e.target.checked);
     }
-    const handleDepartureAirport = (e) => {
-        setDepartureAirport(e.target.value);
+    const handleDepartureAirport = (location) => {
+        setDepartureAirport(location);
     }
-    const handleArrivalAirport = (e) => {
-        setArrivalAirport(e.target.value);
+    const handleArrivalAirport = (location) => {
+        setArrivalAirport(location);
     }
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     }
     
-    useEffect(() => {
-        setStartDate(props.data.startDate);
-    }, [props.data.startDate]);
-    
-    useEffect(() => {
-        setEndDate(props.data.endDate);
-    }, [props.data.endDate]);
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
-        
         props.onDataChange({
             finalized: checked,
             id: overwriting ? props.data.id : undefined,
             type: "flight",
             startDate: startDate,
             endDate: endDate,
-            departureAirport: departureAirport,
-            arrivalAirport: arrivalAirport,
+            departureAirport: departureAirport.address,
+            arrivalAirport: arrivalAirport.address,
+            departureCoordinates: departureAirport.coordinates,
+            arrivalCoordinates: arrivalAirport.coordinates,
             description: description
         })
         // notifies form if necessary inputs are present
@@ -65,25 +61,16 @@ export default function AddFlight(props) {
     return (
         <Grid container direction="column">
             <Grid item container direction="row" justify="space-between">
-                <TextField
-                    error={(departureAirport === "")}
-                    helperText={(departureAirport === "")? "Cannot leave field blank": ""}
-                    id="departure"
-                    label={"Departure IATA code"}
-                    defaultValue={departureAirport}
-                    onChange={handleDepartureAirport}
+                <LocationAutocompleteInput
+                    onLocationSelected={handleDepartureAirport}
+                    error={departureAirport.address === undefined}
+                    text={departureAirport.address}
                 />
-
-                <TextField
-                    error={(arrivalAirport === "")}
-                    helperText={(arrivalAirport === "")? "Cannot leave field blank": ""}
-
-                    id="arrival"
-                    label={"Arrival IATA code"}
-                    defaultValue={arrivalAirport}
-                    onChange={handleArrivalAirport}
+                <LocationAutocompleteInput
+                    onLocationSelected={handleArrivalAirport}
+                    error={arrivalAirport.address === undefined}
+                    text={arrivalAirport.address}
                 />
-
             </Grid>
             <Grid item>
                 <FormControlLabel
