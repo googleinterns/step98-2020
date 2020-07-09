@@ -116,7 +116,7 @@ export default class Trip extends React.Component {
                         zoom={13}
                         center={{ lat: 51.5, lng: 0.087 }}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== undefined)}
+                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">

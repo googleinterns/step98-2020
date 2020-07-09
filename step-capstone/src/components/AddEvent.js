@@ -20,7 +20,7 @@ export default function AddEvent(props) {
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? {address: props.data.location, coordinates: props.data.coordinates} : {address: undefined, coordinates: undefined});
+    const [location, setLocation] = useState(overwriting ? {address: props.data.location, coordinates: props.data.coordinates} : {address: null, coordinates: null});
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
     
     const handleChecked = (e) => {
@@ -105,7 +105,7 @@ export default function AddEvent(props) {
             <Grid item>
                 <LocationAutocompleteInput
                     onLocationSelected={handleLocationChange}
-                    error={(checked && location.address === undefined)}
+                    error={(checked && location.address === null)}
                     text={location.address}
                 />
             </Grid>
