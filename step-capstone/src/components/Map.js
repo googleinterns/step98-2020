@@ -21,8 +21,7 @@ class MapComponent extends React.Component {
 
   componentDidMount() {
     this.googleMap = this.createMap();
-    let bounds = this.drawMap()
-    this.googleMap.fitBounds(bounds);
+    this.drawMap()
   }
 
   /*
