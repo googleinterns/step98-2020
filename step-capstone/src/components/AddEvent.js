@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {
- TextField,
- Grid,
- Checkbox,
- FormControlLabel,
+    TextField,
+    Grid,
+    Checkbox,
+    FormControlLabel,
+    Box
 } from '@material-ui/core';
 import {
- MuiPickersUtilsProvider,
- DateTimePicker
+    MuiPickersUtilsProvider,
+    DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "./LocationAutocompleteInput"
@@ -20,9 +21,9 @@ export default function AddEvent(props) {
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? {address: props.data.location, coordinates: props.data.coordinates} : {address: null, coordinates: null});
+    const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
-    
+
     const handleChecked = (e) => {
         setChecked(e.target.checked);
     }
@@ -67,15 +68,17 @@ export default function AddEvent(props) {
     return (
         <Grid container direction="column">
             <Grid item>
-                <TextField
-                    error={(title === "")}
-                    helperText={(title === "")? "Cannot leave field blank": ""}
-                    id="title"
-                    label={"Add Title"}
-                    defaultValue={title}
-                    fullWidth
-                    onChange={handleTitleChange}
-                />
+                <Box mt={1}>
+                    <TextField
+                        error={(title === "")}
+                        helperText={(title === "") ? "Cannot leave field blank" : ""}
+                        id="title"
+                        label={"Add Title"}
+                        defaultValue={title}
+                        fullWidth
+                        onChange={handleTitleChange}
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <FormControlLabel
@@ -103,11 +106,14 @@ export default function AddEvent(props) {
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                <LocationAutocompleteInput
-                    onLocationSelected={handleLocationChange}
-                    error={(checked && location.address === null)}
-                    text={location.address}
-                />
+                <Box my={1}>
+                    <LocationAutocompleteInput
+                        onLocationSelected={handleLocationChange}
+                        error={(checked && location.address === null)}
+                        text={location.address}
+                        type="event"
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <TextField
@@ -122,7 +128,7 @@ export default function AddEvent(props) {
         </Grid>
     )
 }
- 
- 
- 
+
+
+
 

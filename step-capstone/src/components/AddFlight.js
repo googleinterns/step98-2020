@@ -60,16 +60,20 @@ export default function AddFlight(props) {
 
     return (
         <Grid container direction="column">
-            <Grid item container direction="row" justify="space-between">
+            <Grid item container direction="column" justify="space-between">
                 <LocationAutocompleteInput
                     onLocationSelected={handleDepartureAirport}
                     error={departureAirport.address === null}
                     text={departureAirport.address}
+                    type="flight"
+                    departure={true}
                 />
                 <LocationAutocompleteInput
                     onLocationSelected={handleArrivalAirport}
                     error={arrivalAirport.address === null}
                     text={arrivalAirport.address}
+                    type="flight"
+                    departure={false}
                 />
             </Grid>
             <Grid item>
