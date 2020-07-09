@@ -106,9 +106,6 @@ export default class Trip extends React.Component {
     }
 
     render() {
-        if (this.props.items === undefined) {
-            // TODO: redirect to Home page
-        }
         return (
             <div className="trip">
                 <Grid id="map-component">
