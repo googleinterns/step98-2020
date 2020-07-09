@@ -28,11 +28,14 @@ function OneHourInterval(props) {
 
     } else if (sameDate(props.displayDate, startDate)) {
       dif = 24 * 60 - startDate.getHours() * 60 - startDate.getMinutes();
-
     } else {
       dif = endDate.getHours() * 60 + endDate.getMinutes();
     }
     return dif * displayHeightOfADiv / minPerDiv - padding;
+  }
+
+  const getHeightFromMin = (min) => {
+    return min * displayHeightOfADiv / minPerDiv - padding;
   }
 
   /*Given a startDate of a TravelObject, return the top pixel*/
@@ -44,16 +47,21 @@ function OneHourInterval(props) {
     return dif / minPerDiv * displayHeightOfADiv;
   }
 
-  var item00 = null;
-  var item30 = null;
+  var item00 = [];
+  var item30 = [];
 
-  if (props.item !== null) {
-    let height = getHeightPercentage(props.item.startDate, props.item.endDate);
-    let top = getTopPixel(props.item.startDate);
-    if (props.div === ":00") {
-      item00 = <TravelObject
-        key={props.item.id}
-        data={props.item}
+  if (props.items !== null) {
+    props.items.forEach((item) => {
+      let height = item.data.type === "hotel"
+        ? getHeightFromMin(30)
+        : getHeightPercentage(item.data.startDate, item.data.endDate);
+      let top = item.data.type === "hotel"
+        ? getTopPixel(item.data.endDate)
+        : getTopPixel(item.data.startDate);
+
+      let travelObject = <TravelObject
+        key={item.data.id}
+        data={item.data}
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
@@ -66,34 +74,27 @@ function OneHourInterval(props) {
           zIndex: props.zIndex.toString()
         }}
       />
-    } else if (props.div === ":30") {
-      item30 = <TravelObject
-        key={props.item.id}
-        data={props.item}
-        onRemoveItem={props.onRemoveItem}
-        onEditItem={props.onEditItem}
-        onAddItem={props.onAddItem}
-        styleConfig={{
-          top: top.toString() + "px",
-          height: height.toString() + "px",
-          width: "228px",
-          overflowY: "scroll",
-          position: "absolute",
-          zIndex: props.zIndex.toString()
-        }}
-      />
-    }
 
+      if (item.div === ":00") {
+        item00.push(travelObject);
+      } else if (item.div === ":30") {
+        item30.push(travelObject);
+      }
+    })
   }
   return (
     <div className="OneHourInterval">
       <tr className="OneHourInterval">
         <td className="headcol">{props.idV + ":00"}</td>
-        <td className="Interval" id={props.idV + ":00"} onClick={() => handleOnClickInterval(props.idV + ":00")}> {item00}</td>
+        <td className="Interval" id={props.idV + ":00"} onClick={() => handleOnClickInterval(props.idV + ":00")}>
+          {item00.length === 0 ? null : item00}
+        </td>
       </tr>
       <tr className="OneHourInterval">
         <td className="headcol"></td>
-        <td className="Interval" id={props.idV + ":30"} onClick={() => handleOnClickInterval(props.idV + ":30")}> {item30} </td>
+        <td className="Interval" id={props.idV + ":30"} onClick={() => handleOnClickInterval(props.idV + ":30")}>
+          {item30.length === 0 ? null : item30}
+        </td>
       </tr>
     </div>
   )
@@ -103,7 +104,6 @@ export default function TimeLine(props) {
   const intervals = [];
   const [displayDate, setDisplayDate] = useState(props.displayDate);
   const date2Items = new Map();
-
 
   /*Given a date and an item, put the item to the list of items belonging to the given date. */
   const addItemToDate = (item, dateKey) => {
@@ -139,22 +139,22 @@ export default function TimeLine(props) {
   }
 
   /* Handling rendering starts HERE */
-
   separateDates();
   sortItemList();
 
   var displayItems = (date2Items.has(displayDate.toDateString())) ? date2Items.get(displayDate.toDateString()) : [];
   var nextItemIndex = 0;
+  console.log("display items length: ", displayItems.length)
   for (var i = 0; i < 24; i++) {
     if (nextItemIndex < displayItems.length) {
       var nextItem = displayItems[nextItemIndex];
       var nextItemStartDate = nextItem.startDate;
-      if (!sameDate(displayDate, nextItemStartDate)) {
+      // End date within current display date 
+      if (!sameDate(displayDate, nextItemStartDate) && (nextItem.type !== "hotel" || nextItem.endDate.getHour === i)) {
         nextItemIndex++;
         intervals.push(<OneHourInterval
-          idV={0}
-          item={nextItem}
-          div={":00"}
+          idV={nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0}
+          items={[{data: nextItem, div: ":00"}]}
           zIndex={nextItemIndex}
           displayDate={displayDate}
           onRemoveItem={props.onRemoveItem}
@@ -163,12 +163,11 @@ export default function TimeLine(props) {
         />);
       }
       else {
-        var nextItemHour = nextItemStartDate.getHours();
-        var item = null;
+        var items = [];
         var div = null;
-
-        if (nextItemHour >= i && nextItemHour < i + 1) {
-          item = nextItem;
+        while (nextItemIndex < displayItems.length && displayItems[nextItemIndex].startDate.getHours() === i) {
+          var item = displayItems[nextItemIndex];
+          nextItemStartDate = item.startDate;
           var nextItemMinutes = nextItemStartDate.getMinutes();
 
           if (nextItemMinutes < 30) {
@@ -178,13 +177,13 @@ export default function TimeLine(props) {
             div = ":30";
           }
 
+          items.push({ data: item, div: div });
+
           nextItemIndex++;
         }
-
         intervals.push(<OneHourInterval
           idV={i.toString()}
-          item={item}
-          div={div}
+          items={items.length === 0 ? null : items}
           displayDate={displayDate}
           zIndex={nextItemIndex}
           onRemoveItem={props.onRemoveItem}
@@ -196,8 +195,7 @@ export default function TimeLine(props) {
     else {
       intervals.push(<OneHourInterval
         idV={i.toString()}
-        item={null}
-        div={null}
+        items={null}
         displayDate={displayDate}
         zIndex={0}
         onRemoveItem={props.onRemoveItem}
