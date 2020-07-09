@@ -19,8 +19,8 @@ export default function AddFlight(props) {
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
-    const [departureAirport, setDepartureAirport] = useState(overwriting ? {address: props.data.departureAirport, coordinates: props.data.departureCoordinates} : {address: undefined, coordinates: undefined});
-    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? {address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates} : {address: undefined, coordinates: undefined});
+    const [departureAirport, setDepartureAirport] = useState(overwriting ? {address: props.data.departureAirport, coordinates: props.data.departureCoordinates} : {address: null, coordinates: null});
+    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? {address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates} : {address: null, coordinates: null});
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
     
     const handleChecked = (e) => {
@@ -63,12 +63,12 @@ export default function AddFlight(props) {
             <Grid item container direction="row" justify="space-between">
                 <LocationAutocompleteInput
                     onLocationSelected={handleDepartureAirport}
-                    error={departureAirport.address === undefined}
+                    error={departureAirport.address === null}
                     text={departureAirport.address}
                 />
                 <LocationAutocompleteInput
                     onLocationSelected={handleArrivalAirport}
-                    error={arrivalAirport.address === undefined}
+                    error={arrivalAirport.address === null}
                     text={arrivalAirport.address}
                 />
             </Grid>

@@ -9,7 +9,7 @@ export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: this.props.text === undefined ? "" : this.props.text,
+            place: this.props.text === null ? "" : this.props.text,
             bounds: new window.google.maps.LatLngBounds()
         };
     }
