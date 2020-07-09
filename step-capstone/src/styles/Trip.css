@@ -26,6 +26,7 @@
     height: 100%;
     pointer-events: auto;
     box-shadow: 1px 1px 7px grey;
+    overflow-y: scroll;
 }
 
 #trip {
