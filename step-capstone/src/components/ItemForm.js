@@ -7,6 +7,8 @@ import {
     Paper,
     Tabs,
     Tab,
+    Typography,
+    Box
 } from '@material-ui/core';
 import AddEvent from './AddEvent';
 import AddHotel from './AddHotel';
@@ -153,7 +155,9 @@ export default class ItemForm extends React.Component {
                 </Paper>
             )
         }
-        return null;
+        return (
+            <Typography variant="h3" gutterBottom>{this.state.data.type}</Typography>
+        );
     }
 
     render() {

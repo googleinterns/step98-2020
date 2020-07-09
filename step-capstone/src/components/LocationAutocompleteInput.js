@@ -43,7 +43,11 @@ export default class LocationAutocompleteInput extends React.Component {
                     error={this.props.error}
                     helperText={this.props.error ? "Cannot leave field blank." : ""}
                     fullWidth
-                    label="Add Location"
+                    label={
+                        this.props.type === "flight"
+                        ? this.props.departure ? "Add departure airport" : "Add arrival airport"
+                        : "Add location"
+                    }
                 />
                 <div className="autocomplete-dropdown-container">
                     {loading && <div>Loading...</div>}
