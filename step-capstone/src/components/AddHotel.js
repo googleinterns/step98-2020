@@ -11,6 +11,7 @@ import {
    DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
  
 export default function AddHotel(props) {
    let overwriting = props.data !== undefined;
@@ -20,7 +21,7 @@ export default function AddHotel(props) {
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? props.data.location : "");
+    const [location, setLocation] = useState(overwriting ? {address: props.data.location, coordinates: props.data.coordinates} : {address: undefined, coordinates: undefined});
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
  
   
@@ -32,21 +33,14 @@ export default function AddHotel(props) {
        setTitle(e.target.value);
    }
  
-   const handleLocationChange = (e) => {
-       setLocation(e.target.value);
-   }
+   const handleLocationChange = (location) => {
+    setLocation(location);
+}
  
    const handleDescriptionChange = (e) => {
        setDescription(e.target.value);
    }
    
-    useEffect(() => {
-        setStartDate(props.data.startDate);
-    }, [props.data.startDate]);
-
-    useEffect(() => {
-        setEndDate(props.data.endDate);
-    }, [props.data.endDate]);
    /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
@@ -59,7 +53,8 @@ export default function AddHotel(props) {
            startDate: startDate,
            endDate: endDate,
            finalized: checked,
-           location: location,
+           location: location.address,
+            coordinates: location.coordinates,
            description: description
        })
  
@@ -113,13 +108,10 @@ export default function AddHotel(props) {
                </MuiPickersUtilsProvider>
            </Grid>
            <Grid item>
-                <TextField
-                    error={(checked && location === "")}
-                    helperText={(checked && location === "")? "Cannot leave field blank": ""}
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
-                    fullWidth
-                    onChange={handleLocationChange}
+                <LocationAutocompleteInput
+                    onLocationSelected={handleLocationChange}
+                    error={(checked && location.address === undefined)}
+                    text={location.address}
                 />
            </Grid>
            <Grid item>
