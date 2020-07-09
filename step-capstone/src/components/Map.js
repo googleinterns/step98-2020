@@ -20,8 +20,8 @@ class MapComponent extends React.Component {
 
   componentDidMount() {
     this.googleMap = this.createMap();
-      let bounds = this.drawMap()
-      this.googleMap.fitBounds(bounds);
+    let bounds = this.drawMap()
+    this.googleMap.fitBounds(bounds);
   }
 
   /*
@@ -30,7 +30,8 @@ class MapComponent extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.clearMap();
-      this.drawMap();
+      let bounds = this.drawMap();
+      this.googleMap.fitBounds(bounds);
     }
   }
 
