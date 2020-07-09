@@ -28,6 +28,7 @@ class Firebase {
         firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
       ],
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       tosUrl: 'index.html',
       privacyPolicyUrl: function() {
         window.location.assign('index.html');
@@ -35,7 +36,10 @@ class Firebase {
     };
   }
 
-  createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
+  createFirebaseWidget = () => {
+    this.ui.start("#firebaseui-auth-container", this.uiConfig);
+    this.ui.disableAutoSignIn();
+  };
   getUserInfo = () => {
     return new Promise((resolve) => {
       this.auth.onAuthStateChanged((user) => {
