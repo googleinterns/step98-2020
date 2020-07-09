@@ -1,4 +1,5 @@
 import React, { createRef } from 'react'
+import { travelObjectStartDateComparator } from "../scripts/HelperFunctions"
 
 /**
  * Props:
@@ -132,7 +133,6 @@ class MapComponent extends React.Component {
 
     for (let i = 0; i < this.props.finalized.length; i++) {
       let item = this.props.finalized[i];
-
       // found flight -> create new path segment
       if (item.type === "flight") {
         if (paths.length !== 0) {
@@ -155,6 +155,10 @@ class MapComponent extends React.Component {
     return paths;
   }
 
+  sortList(list) {
+    return list.sort(travelObjectStartDateComparator)
+  }
+
   /*
    *  Draws path between all finalized travel objects, returns list of path objects
    */
@@ -175,7 +179,7 @@ class MapComponent extends React.Component {
     var bounds = new window.google.maps.LatLngBounds();
 
     let unfinalizedMarkers = this.drawMarkers(this.props.unfinalized, bounds);
-    let finalizedMarkers = this.drawMarkers(this.props.finalized, bounds);
+    let finalizedMarkers = this.drawMarkers(this.sortList(this.props.finalized), bounds);
 
     let pathArr = this.drawPaths();
 
