@@ -22,9 +22,11 @@ class TripList extends React.Component{
     };
     this.handleOpenTrip = this.handleOpenTrip.bind(this);
     this.handleAddTrip = this.handleAddTrip.bind(this);
+    this.handleDeleteTrip = this.handleDeleteTrip.bind(this);
+
   }
 
-  componentDidMount() {
+  loadTrips() {
     let trips = [];
     const reference = "/users/" + this.state.userId + "/trips";
     this.context.getTripList(reference).then(tripList => {
@@ -36,7 +38,11 @@ class TripList extends React.Component{
     .catch(error => {
       console.log("Error Getting Trips")
       console.error(error)
-    });
+    })
+  }
+
+  componentDidMount() {
+    this.loadTrips();
     
   }
 
@@ -50,25 +56,13 @@ class TripList extends React.Component{
     console.log("Adding new trip to database...");
     const reference = "/users/" + this.state.userId + "/trips";
     this.context.addTrip(reference, newTrip);
-    let trips = [];
-    this.context.getTripList(reference).then(tripList => {
-      tripList.forEach(trip => {
-        trips.push(trip)
-      })
-      this.setState({trips : trips})
-    })
-    .catch(error => {
-      console.log("Error Getting Trips")
-      console.error(error)
-    });
+    this.loadTrips();
   }
 
-  handleDeleteTrip() {
-    //TODO
-  }
-
-  hanleEditTrip() {
-    //TODO
+  handleDeleteTrip(tripId) {
+    const reference = "/users/" + this.state.userId + "/trips/" + tripId;
+    console.log(reference);
+    this.context.deleteTrip(reference).then(() => this.loadTrips());
   }
 
   render () {
@@ -76,20 +70,29 @@ class TripList extends React.Component{
     return (
       <div>
         {this.state.selectedTrip ? <Redirect to = {"/trips/"+this.state.selectedTrip}/> :
-          <Grid id="trips" container spacing = {2} style={{position: "absolute", top: "100px", left: "100px"}}> {
-            trips.map((trip) => {
-              return (
-                <Grid item>
-                  <TripItemComponent key={trip.id} data={trip.data()} tripId={trip.id} onOpenTrip={this.handleOpenTrip} />
-                </Grid>
-              );
-            })
-          }
-                <Grid item>
-                  <AddTrip
-                    onAddTrip = {this.handleAddTrip}
-                  />
-                </Grid>
+          <Grid id="trips" 
+            container spacing = {2} 
+            style={{position: "absolute", 
+                    top: "100px", 
+                    left: "100px"}}
+          > 
+            {trips.map((trip) => {
+                return (
+                  <Grid item>
+                    <TripItemComponent 
+                      key = {trip.id} 
+                      data = {trip.data()} 
+                      tripId = {trip.id} 
+                      onOpenTrip ={this.handleOpenTrip}
+                      onDeleteTrip = {this.handleDeleteTrip} />
+                  </Grid>
+                );
+              })
+            }
+                  <Grid item>
+                    <AddTrip
+                      onAddTrip = {this.handleAddTrip}/>
+                  </Grid>
           </Grid>
         }
         
