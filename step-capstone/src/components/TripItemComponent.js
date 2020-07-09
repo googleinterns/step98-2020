@@ -12,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
     root: {
+        height: 400,
         maxWidth: 345,
     },
     media: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
 */
 export default function TripItemComponent(props) {
     const classes = useStyles();
-    let dateRange = props.data.startDate.toString() + " - " + props.data.endDate.toString();
+    let dateRange = props.data.startDate.toDate().toDateString() + " - " + props.data.endDate.toDate().toDateString();
 
     return(
         <Card className={classes.root}>
@@ -39,6 +40,7 @@ export default function TripItemComponent(props) {
             <CardActions>
                 <Button size="small">Share</Button>
                 <Button size="small" onClick={() => props.onOpenTrip(props.tripId)}>Open</Button>
+                <Button size="small" onClick={() => props.onDeleteTrip(props.tripId)}>Delete</Button>
             </CardActions>
         </Card>
     )

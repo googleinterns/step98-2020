@@ -1,6 +1,7 @@
 import React from 'react';
-import { Grid } from '@material-ui/core'
-import TripItemComponent from "./TripItemComponent"
+import { Grid } from '@material-ui/core';
+import TripItemComponent from "./TripItemComponent";
+import AddTrip from './AddTrip';
 import {FirebaseContext} from './Firebase';
 import {
   Switch,
@@ -17,8 +18,10 @@ class TripList extends React.Component{
     this.state = {
       userId : sessionStorage.getItem("userId"),
       selectedTrip : null,
-      trips : []};
+      trips : [],
+    };
     this.handleOpenTrip = this.handleOpenTrip.bind(this);
+    this.handleAddTrip = this.handleAddTrip.bind(this);
   }
 
   componentDidMount() {
@@ -34,11 +37,38 @@ class TripList extends React.Component{
       console.log("Error Getting Trips")
       console.error(error)
     });
+    
   }
+
 
   handleOpenTrip(tripId) {
     this.setState({selectedTrip : tripId})
     sessionStorage.setItem("tripId",tripId);
+  }
+
+  handleAddTrip(newTrip) {
+    console.log("Adding new trip to database...");
+    const reference = "/users/" + this.state.userId + "/trips";
+    this.context.addTrip(reference, newTrip);
+    let trips = [];
+    this.context.getTripList(reference).then(tripList => {
+      tripList.forEach(trip => {
+        trips.push(trip)
+      })
+      this.setState({trips : trips})
+    })
+    .catch(error => {
+      console.log("Error Getting Trips")
+      console.error(error)
+    });
+  }
+
+  handleDeleteTrip() {
+    //TODO
+  }
+
+  hanleEditTrip() {
+    //TODO
   }
 
   render () {
@@ -46,7 +76,7 @@ class TripList extends React.Component{
     return (
       <div>
         {this.state.selectedTrip ? <Redirect to = {"/trips/"+this.state.selectedTrip}/> :
-          <Grid id="trips" container spacing = {2}> {
+          <Grid id="trips" container spacing = {2} style={{position: "absolute", top: "100px", left: "100px"}}> {
             trips.map((trip) => {
               return (
                 <Grid item>
@@ -55,8 +85,14 @@ class TripList extends React.Component{
               );
             })
           }
+                <Grid item>
+                  <AddTrip
+                    onAddTrip = {this.handleAddTrip}
+                  />
+                </Grid>
           </Grid>
         }
+        
       </div>
 
    );

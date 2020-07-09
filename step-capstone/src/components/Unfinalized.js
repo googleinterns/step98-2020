@@ -39,6 +39,7 @@ function Header(props) {
                     </div>
 
                     <TripSettingPopover
+                        button={true}
                         tripSetting={props.tripSetting}
                         onEditTripSetting={props.onEditTripSetting}
                     />

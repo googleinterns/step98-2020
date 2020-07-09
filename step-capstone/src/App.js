@@ -5,12 +5,14 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
 import SignInWidget from './components/Firebase/SignInWidget';
 import SignOutButton from './components/Firebase/SignOutButton';
 import TripList from "./components/TripList"
 import Trip from "./components/Trip"
+import './styles/App.css';
 
 class App extends React.Component {
   static contextType = FirebaseContext;
@@ -56,7 +58,7 @@ class App extends React.Component {
    
     return(
       <div className="App">
-        {this.state.authState ? <SignOutButton/> :''}
+        {this.state.authState ? <SignOutButton className="sign-out"/> :''}
         <Router>
           {this.handleLogin()}
           <Switch>

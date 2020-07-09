@@ -55,7 +55,6 @@ class Firebase {
 
   getTrip(reference){
     const tripRef = this.db.doc(reference);
-    console.log(tripRef)
     return tripRef.get();
   }
 
@@ -85,9 +84,9 @@ class Firebase {
     });
   }
 // TODO: Implement when details of trip editing and settings are implemented
-//   editTrip(reference, data) {
+  editTrip(reference, data) {
     
-//   }
+  }
 
   deleteTravelObject(reference, travelObject) {
     const tripRef = this.db.doc(reference);
