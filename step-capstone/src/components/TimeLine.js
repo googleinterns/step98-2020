@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import TravelObject from './TravelObject';
 import FinalizedHeader from './FinalizedHeader';
 import '../styles/TimeLine.css';
+import { travelObjectStartDateComparator } from "../scripts/HelperFunctions"
 
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
 const sameDate = (timeA, timeB) => {
@@ -129,23 +129,12 @@ export default function TimeLine(props) {
     }
   }
 
-  const travelObjectstartDateComparator = (travelObjectA, travelObjectB) => {
-    if (travelObjectA.startDate === travelObjectB.startDate) {
-      return 0;
-    }
-    else if (travelObjectA.startDate > travelObjectB.startDate) {
-      return 1;
-    }
-    else {
-      return -1;
-    }
-  }
   /*Sort all lists of items in the hashMap: date2Items */
   const sortItemList = () => {
     const iterator = date2Items[Symbol.iterator]();
     for (let date2items of iterator) {
       let items = date2items[1];
-      items.sort(travelObjectstartDateComparator);
+      items.sort(travelObjectStartDateComparator);
     }
   }
 
