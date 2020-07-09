@@ -86,6 +86,7 @@ export default function AddEvent(props) {
                         <Checkbox
                             checked={checked}
                             onChange={handleChecked}
+                            color="primary"
                         />
                     }
                     label="Finalized"

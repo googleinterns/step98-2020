@@ -91,6 +91,7 @@ export default function AddHotel(props) {
                         <Checkbox
                             checked={checked}
                             onChange={handleChecked}
+                            color="primary"
                         />
                     }
                     label="Finalized"
