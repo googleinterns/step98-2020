@@ -55,7 +55,6 @@ class Firebase {
 
   getTrip(reference){
     const tripRef = this.db.doc(reference);
-    console.log(tripRef)
     return tripRef.get();
   }
 
