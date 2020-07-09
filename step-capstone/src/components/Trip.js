@@ -16,9 +16,10 @@ export default class Trip extends React.Component {
             reference: "/users/" + sessionStorage.getItem("userId") + "/trips/" + sessionStorage.getItem("tripId"),
             items: [],
             tripSetting: {
+                title: "",
                 startDate: new Date(),
                 endDate: new Date(),
-                destinations: []
+                destinations: ""
             }
         }
 
@@ -31,8 +32,16 @@ export default class Trip extends React.Component {
         let travelObjectList = [];
         this.context.getTrip(this.state.reference)
             .then(data => {
-                data.data().travelObjects.forEach(travelObject => {
-                    console.log(travelObject)
+                let trip = data.data();
+                
+                this.setState({tripSetting : {
+                    title: trip.title,
+                    startDate: trip.startDate.toDate(),
+                    endDate: trip.startDate.toDate(),
+                    destinations: trip.destinations,
+                }})
+
+                trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
@@ -104,7 +113,7 @@ export default class Trip extends React.Component {
             tripSetting: newSetting
         });
     }
-
+    
     render() {
         if (this.props.items === undefined) {
             // TODO: redirect to Home page

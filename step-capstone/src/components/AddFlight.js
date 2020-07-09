@@ -35,12 +35,17 @@ export default function AddFlight(props) {
     }
     
     useEffect(() => {
-        setStartDate(props.data.startDate);
-    }, [props.data.startDate]);
-    
+        if (props.data !== undefined && props.data.startDate !== startDate) {
+            setStartDate(props.data.startDate);
+        }
+    }, [props.data]);
+
     useEffect(() => {
-        setEndDate(props.data.endDate);
-    }, [props.data.endDate]);
+        if (props.data !== undefined && props.data.endDate !== endDate) {
+            setEndDate(props.data.endDate);
+        }
+    }, [props.data]);
+
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */

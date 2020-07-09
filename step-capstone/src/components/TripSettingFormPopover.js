@@ -63,16 +63,19 @@ export default class TripSettingFormPopover extends React.Component {
     }
 function EditTripSetting(props) {
     // Sets values to previous values if editing, otherwise blank slate
+    const [title, setTitle] = useState(props.tripSetting.title);
     const [destinations, setDestinations] = useState(props.tripSetting.destinations);
     const [startDate, setStartDate] = useState(props.tripSetting.startDate);
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
 
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    }
     const handleDestinationsChange = (event) => {
         setDestinations(event.target.value);
     }
     const handleStartDateChange = (newStartDate) => {
-        
         if (newStartDate > endDate) {
             setEndDate(newStartDate);
         }
@@ -91,62 +94,74 @@ function EditTripSetting(props) {
 
     useEffect(() => {
         props.onDataChange({
+            title: title,
             destinations : destinations,
             startDate : startDate,
             endDate : endDate,
-            description :  description
+            description :  description,
         })
         // notifies form if necessary inputs are present
-        props.onValidation(!(destinations === ""))
+        props.onValidation(!(destinations === "" || (title === "")))
     }, [destinations, startDate, endDate, description])
 
     return (
-        <Grid container direction="column">
-            <Grid item container direction="row" justify="space-between">
-                <TextField
-                    error={destinations === ""}
-                    helperText={(destinations === "")? "Cannot leave field blank, list your destinations, and separate them using comma": null}
-                    id="destinations"
-                    label={"Destinations"}
-                    defaultValue={destinations}
-                    onChange={handleDestinationsChange}
-                />
-            </Grid>
-            <Grid item>
-            </Grid>
-            <Grid item container direction="row" justify="space-between">
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <KeyboardDatePicker
-                        variant="inline"
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        id="startDate"
-                        label="Date Start"
-                        value={startDate}
-                        onChange={handleStartDateChange}
+        <div>
+            <Grid container direction="column">
+                <Grid item container direction="row" justify="space-between">
+                    <TextField
+                        error={title === ""}
+                        helperText={(title === "")? "Cannot leave field blank": null}
+                        id="title"
+                        label={"Title"}
+                        defaultValue={title}
+                        onChange={handleTitleChange}
                     />
-                    <KeyboardDatePicker
-                        variant="inline"
-                        format="MM/dd/yyyy"
-                        margin="normal"
-                        id="endDate"
-                        label="Date End"
-                        value={endDate}
-                        onChange={handleEndDateChange}
+                </Grid>
+
+                <Grid item container direction="row" justify="space-between"></Grid>
+                    <TextField
+                        error={destinations === ""}
+                        helperText={(destinations === "")? "Cannot leave field blank, list your destinations, and separate them using comma": null}
+                        id="destinations"
+                        label={"Destinations"}
+                        defaultValue={destinations}
+                        onChange={handleDestinationsChange}
                     />
-                </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item>
-                <TextField
-                    id="description"
-                    label={"Add Description"}
-                    defaultValue={description}
-                    fullWidth
-                    multiline
-                    onChange={handleDescriptionChange}
-                />
-            </Grid>
-        </Grid>
+                </Grid>
+            
+                <Grid item container direction="row" justify="space-between">
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <KeyboardDatePicker
+                            variant="inline"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="startDate"
+                            label="Date Start"
+                            value={startDate}
+                            onChange={handleStartDateChange}
+                        />
+                        <KeyboardDatePicker
+                            variant="inline"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="endDate"
+                            label="Date End"
+                            value={endDate}
+                            onChange={handleEndDateChange}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item>
+                    <TextField
+                        id="description"
+                        label={"Add Description"}
+                        defaultValue={description}
+                        fullWidth
+                        multiline
+                        onChange={handleDescriptionChange}
+                    />
+                </Grid>
+        </div>
     )
 }
  
