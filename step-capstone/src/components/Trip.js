@@ -32,7 +32,6 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 data.data().travelObjects.forEach(travelObject => {
-                    console.log(travelObject)
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
@@ -46,10 +45,8 @@ export default class Trip extends React.Component {
     }
 
     handleRemoveItem(data) {
-        console.log("deleting!")
         this.context.deleteTravelObject(this.state.reference, data)
             .then(() => {
-                console.log()
                 this.setState({
                     items: this.state.items.filter((item) => item.id !== data.id)
                 });
@@ -82,9 +79,7 @@ export default class Trip extends React.Component {
                 console.log("Error Editing Item");
                 console.log(error);
             });
-        console.log(newItems.length);
         this.setState({ items: newItems });
-        console.log(this.state.items);
     }
 
     handleAddItem(data) {
@@ -106,9 +101,6 @@ export default class Trip extends React.Component {
     }
 
     render() {
-        if (this.props.items === undefined) {
-            // TODO: redirect to Home page
-        }
         return (
             <div className="trip">
                 <Grid id="map-component">
@@ -116,7 +108,7 @@ export default class Trip extends React.Component {
                         zoom={13}
                         center={{ lat: 51.5, lng: 0.087 }}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== undefined)}
+                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">

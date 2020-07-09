@@ -3,13 +3,13 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
 } from 'react-places-autocomplete';
-import { TextField, Typography } from "@material-ui/core"
+import { TextField, Typography, Divider } from "@material-ui/core"
 
 export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: '',
+            place: this.props.text === null ? "" : this.props.text,
             bounds: new window.google.maps.LatLngBounds()
         };
     }
@@ -28,23 +28,29 @@ export default class LocationAutocompleteInput extends React.Component {
         // retrieves latitue and logitude from address selected
         geocodeByAddress(place)
             .then(results => getLatLng(results[0]))
-            .then(latLng => this.props.onChangeLocation({ address: place, coordinates: latLng }))
+            .then(latLng => this.props.onLocationSelected({ address: place, coordinates: latLng }))
             .catch(error => console.error('Error', error));
+        this.setState({ place: place });
     };
 
-    renderSuggestions({ getInputProps, suggestions, getSuggestionItemProps, loading }) {
+    renderSuggestions = ({ getInputProps, suggestions, getSuggestionItemProps, loading}) => {
         return (
             <div>
                 <TextField
                     {...getInputProps({
-                        placeholder: 'Ex. London Bridge',
                         className: 'location-search-input',
                     })}
-                    error={false}
-                    helperText="Please select a location."
+                    error={this.props.error}
+                    helperText={this.props.error ? "Cannot leave field blank." : ""}
+                    fullWidth
+                    label={
+                        this.props.type === "flight"
+                        ? this.props.departure ? "Add departure airport" : "Add arrival airport"
+                        : "Add location"
+                    }
                 />
                 <div className="autocomplete-dropdown-container">
-                    {loading && <div>Loading...</div>}
+                    {loading && <Typography variant="body1" gutterBottom>Loading...</Typography>}
                     {suggestions.map(suggestion => {
                         // highlights suggestion if being hovered over
                         const style = suggestion.active
@@ -56,7 +62,8 @@ export default class LocationAutocompleteInput extends React.Component {
                                     style,
                                 })}
                             >
-                                <Typography variant="body2" gutterBottom>{suggestion.description}</Typography>
+                                <Typography variant="body1" gutterBottom>{suggestion.description}</Typography>
+                                <Divider light />
                             </div>
                         );
                     })}
@@ -72,7 +79,7 @@ export default class LocationAutocompleteInput extends React.Component {
                 onChange={this.handleChange}
                 onSelect={this.handleSelect}
                 searchOptions={{
-                    bounds: this.state.bounds
+                    bounds: this.state.bounds,
                 }}
             >
                 {this.renderSuggestions}
