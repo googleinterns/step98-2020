@@ -30,6 +30,7 @@ export default class LocationAutocompleteInput extends React.Component {
             .then(results => getLatLng(results[0]))
             .then(latLng => this.props.onLocationSelected({ address: place, coordinates: latLng }))
             .catch(error => console.error('Error', error));
+        this.setState({ place: place });
     };
 
     renderSuggestions = ({ getInputProps, suggestions, getSuggestionItemProps, loading}) => {
