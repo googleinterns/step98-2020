@@ -156,7 +156,7 @@ export default class ItemForm extends React.Component {
             )
         }
         return (
-            <Typography variant="h3" gutterBottom>{this.state.data.type}</Typography>
+            <Typography variant="h3" gutterBottom>{this.state.data.type.charAt(0).toUpperCase() + this.state.data.type.slice(1)}</Typography>
         );
     }
 
