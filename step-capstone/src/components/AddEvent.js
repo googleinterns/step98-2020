@@ -108,15 +108,6 @@ export default function AddEvent(props) {
                     error={(checked && location.address === undefined)}
                     text={location.address}
                 />
-                {/* <TextField
-                    error={(checked && location === "")}
-                    helperText={(checked && location === "")? "Cannot leave field blank": ""}
-
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
-                    fullWidth
-                    onChange={handleLocationChange}
-                /> */}
             </Grid>
             <Grid item>
                 <TextField
