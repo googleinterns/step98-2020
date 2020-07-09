@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
 } from 'react-places-autocomplete';
-import { TextField, Typography } from "@material-ui/core"
+import { TextField, Typography, Divider } from "@material-ui/core"
 
 export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
@@ -50,7 +50,7 @@ export default class LocationAutocompleteInput extends React.Component {
                     }
                 />
                 <div className="autocomplete-dropdown-container">
-                    {loading && <div>Loading...</div>}
+                    {loading && <Typography variant="body1" gutterBottom>Loading...</Typography>}
                     {suggestions.map(suggestion => {
                         // highlights suggestion if being hovered over
                         const style = suggestion.active
@@ -62,7 +62,8 @@ export default class LocationAutocompleteInput extends React.Component {
                                     style,
                                 })}
                             >
-                                <Typography variant="body2" gutterBottom>{suggestion.description}</Typography>
+                                <Typography variant="body1" gutterBottom>{suggestion.description}</Typography>
+                                <Divider light />
                             </div>
                         );
                     })}
