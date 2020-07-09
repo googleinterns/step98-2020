@@ -11,6 +11,8 @@ import {
  DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
+
 export default function AddEvent(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
@@ -18,7 +20,7 @@ export default function AddEvent(props) {
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? props.data.location : "");
+    const [location, setLocation] = useState(overwriting ? {address: props.data.location, coordinates: props.data.coordinates} : {address: undefined, coordinates: undefined});
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
     
     const handleChecked = (e) => {
@@ -27,8 +29,8 @@ export default function AddEvent(props) {
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
     }
-    const handleLocationChange = (e) => {
-        setLocation(e.target.value);
+    const handleLocationChange = (location) => {
+        setLocation(location);
     }
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
@@ -47,7 +49,8 @@ export default function AddEvent(props) {
             startDate: startDate,
             endDate: endDate,
             finalized: checked,
-            location: location,
+            location: location.address,
+            coordinates: location.coordinates,
             description: description
         })
         //validating input
@@ -100,7 +103,12 @@ export default function AddEvent(props) {
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                <TextField
+                <LocationAutocompleteInput
+                    onLocationSelected={handleLocationChange}
+                    error={(checked && location.address === undefined)}
+                    text={location.address}
+                />
+                {/* <TextField
                     error={(checked && location === "")}
                     helperText={(checked && location === "")? "Cannot leave field blank": ""}
 
@@ -108,7 +116,7 @@ export default function AddEvent(props) {
                     label={location.length !== 0 ? location : "Add Location"}
                     fullWidth
                     onChange={handleLocationChange}
-                />
+                /> */}
             </Grid>
             <Grid item>
                 <TextField

@@ -9,7 +9,7 @@ export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: '',
+            place: this.props.text === undefined ? "" : this.props.text,
             bounds: new window.google.maps.LatLngBounds()
         };
     }
@@ -28,11 +28,11 @@ export default class LocationAutocompleteInput extends React.Component {
         // retrieves latitue and logitude from address selected
         geocodeByAddress(place)
             .then(results => getLatLng(results[0]))
-            .then(latLng => this.props.onChangeLocation({ address: place, coordinates: latLng }))
+            .then(latLng => this.props.onLocationSelected({ address: place, coordinates: latLng }))
             .catch(error => console.error('Error', error));
     };
 
-    renderSuggestions({ getInputProps, suggestions, getSuggestionItemProps, loading }) {
+    renderSuggestions = ({ getInputProps, suggestions, getSuggestionItemProps, loading}) => {
         return (
             <div>
                 <TextField
@@ -40,8 +40,9 @@ export default class LocationAutocompleteInput extends React.Component {
                         placeholder: 'Ex. London Bridge',
                         className: 'location-search-input',
                     })}
-                    error={false}
-                    helperText="Please select a location."
+                    error={this.props.error}
+                    helperText={this.props.error ? "Cannot leave field blank." : ""}
+                    fullWidth
                 />
                 <div className="autocomplete-dropdown-container">
                     {loading && <div>Loading...</div>}
