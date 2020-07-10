@@ -157,7 +157,7 @@ export default function TimeLine(props) {
         nextItemIndex++;
         intervals.push(<OneHourInterval
           idV={nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0}
-          items={[{data: nextItem, div: ":00"}]}
+          items={[{ data: nextItem, div: ":00" }]}
           zIndex={nextItemIndex}
           displayDate={displayDate}
           onRemoveItem={props.onRemoveItem}
