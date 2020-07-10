@@ -38,7 +38,6 @@ class Firebase {
 
   createFirebaseWidget = () => {
     this.ui.start("#firebaseui-auth-container", this.uiConfig);
-    this.ui.disableAutoSignIn();
   };
   getUserInfo = () => {
     return new Promise((resolve) => {
@@ -74,17 +73,7 @@ class Firebase {
 
   async deleteTrip(reference) {
     const tripRef = this.db.doc(reference);
-    return new Promise((resolve, reject) =>
-     {
-      tripRef.delete().then(() => {
-        console.log("Trip successfully deleted!");
-        resolve();
-      }).catch(function(error) {
-          console.error("Error removing trip: ", error);
-          reject()
-      })
-     }
-    );
+    return await tripRef.delete();
   }
 
   /*This function will allow editting all fields in Trip except for travelObjects */
@@ -92,27 +81,22 @@ class Firebase {
     const tripRef = this.db.doc(reference);
     console.log(tripRef);
     if (oldValue.title !== newValue.title) {
-      console.log("title is changing..");
       await tripRef.update({title: newValue.title});
     }
 
     if (oldValue.startDate !== newValue.startDate) {
-      console.log("startDate is changing..");
       await tripRef.update({startDate: firebase.firestore.Timestamp.fromDate(newValue.startDate)});
     }
     
     if (oldValue.endDate !== newValue.endDate) {
-      console.log("endDate is changing..");
       await tripRef.update({endDate: firebase.firestore.Timestamp.fromDate(newValue.endDate)});
     }
 
     if (oldValue.destinations !== newValue.destinations) {
-      console.log("destinations is changing..");
       await tripRef.update({destinations: newValue.destinations});
     }
 
     if (oldValue.description !== newValue.description) {
-      console.log("description is changing..");
       await tripRef.update({description: newValue.description})
     }
   }
