@@ -29,14 +29,19 @@ class MapComponent extends React.Component {
    * Updates state with any changes in props
    */
   componentDidUpdate(prevProps) {
-    if (this.props.selected !== null) {
-      let selectedMarker = this.state.finalizedMarkers.has(this.props.selected)
-        ? this.state.finalizedMarkers.get(this.props.selected).marker
-        : this.state.unfinalizedMarkers.get(this.props.selected).marker;
+    console.log(this.props.today.events)
+    if (this.props.selected !== null && this.props.selected !== prevProps.selected) {
+      let selectedObject = this.state.finalizedMarkers.has(this.props.selected)
+        ? this.state.finalizedMarkers.get(this.props.selected)
+        : this.state.unfinalizedMarkers.get(this.props.selected);
+      if (selectedObject.type === "flight") {
+
+      }
+      let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
       this.googleMap.setZoom(25);
-      this.googleMap.setCenter(selectedMarker.getPosition());
+      this.googleMap.setCenter(marker.getPosition());
     }
-    if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
+    if (prevProps.today.date !== this.props.today.date || prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
       this.clearMap();
       this.drawMap();
     }
@@ -132,8 +137,8 @@ class MapComponent extends React.Component {
     var paths = [];
     var curPath = [];
 
-    for (let i = 0; i < this.props.finalized.length; i++) {
-      let item = this.props.finalized[i];
+    for (let i = 0; i < this.props.today.events.length; i++) {
+      let item = this.props.today.events[i];
       // found flight -> create new path segment
       if (item.type === "flight") {
         if (paths.length !== 0) {

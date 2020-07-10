@@ -59,7 +59,6 @@ function OneHourInterval(props) {
         ? getTopPixel(item.data.endDate)
         : getTopPixel(item.data.startDate);
 
-      console.log(props)
       let travelObject = <TravelObject
         key={item.data.id}
         data={item.data}
@@ -145,6 +144,8 @@ export default function TimeLine(props) {
   sortItemList();
 
   var displayItems = (date2Items.has(displayDate.toDateString())) ? date2Items.get(displayDate.toDateString()) : [];
+  props.setTodaysEvents(displayItems, displayDate.toDateString());
+
   var nextItemIndex = 0;
 
   for (var i = 0; i < 24; i++) {
