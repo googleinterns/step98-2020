@@ -47,7 +47,7 @@ class App extends React.Component {
     if(this.state.authState){
       //TODO: replace the hardcoded test user with logged in user once all users can create trips
       //sessionStorage.setItem("reference", "/users/"+this.context.auth.currentUser.uid);
-      sessionStorage.setItem("userId", "0fmXVWHePsZoCV6ex1Z2");
+      sessionStorage.setItem("userId", this.context.auth.currentUser.uid);
       return <Redirect to = "/trips/"/>;
     } else {
       return <Redirect to = "/home"/>;
