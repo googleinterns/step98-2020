@@ -16,22 +16,35 @@ export default class Trip extends React.Component {
             reference: "/users/" + sessionStorage.getItem("userId") + "/trips/" + sessionStorage.getItem("tripId"),
             items: [],
             tripSetting: {
+                title: "",
                 startDate: new Date(),
                 endDate: new Date(),
-                destinations: []
+                destinations: "",
+                description: ""
             }
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleEditItem = this.handleEditItem.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
+        this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
     }
 
     componentDidMount() {
         let travelObjectList = [];
         this.context.getTrip(this.state.reference)
             .then(data => {
-                data.data().travelObjects.forEach(travelObject => {
+                let trip = data.data();
+                
+                this.setState({tripSetting : {
+                    title: trip.title,
+                    startDate: trip.startDate.toDate(),
+                    endDate: trip.startDate.toDate(),
+                    destinations: trip.destinations,
+                    description: trip.description
+                }})
+
+                trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
@@ -94,12 +107,13 @@ export default class Trip extends React.Component {
                 console.error(error)
             });
     }
-    handleEditTripSetting(newSetting) {
+    async handleEditTripSetting(newSetting) {
+        await this.context.editTripSetting(this.state.reference, this.state.tripSetting, newSetting);
         this.setState({
             tripSetting: newSetting
         });
     }
-
+    
     render() {
         return (
             <div className="trip">

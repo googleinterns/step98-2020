@@ -1,5 +1,6 @@
 import React from 'react';
 import {FirebaseContext} from '.';
+import Button from '@material-ui/core/Button';
 
 export default class SignOutButton extends React.Component {
     static contextType = FirebaseContext;
@@ -13,7 +14,7 @@ export default class SignOutButton extends React.Component {
 
         return (
             <div>
-                <button id="sign-out" onClick={handleClick}>Sign out</button>
+                <Button variant="contained" onClick={handleClick} style={{position: "fixed", top:"30px", right:"30px"}}>Sign out</Button>
             </div>
         )
     }

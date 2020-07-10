@@ -33,6 +33,16 @@
     height: 100vmin;
     width: 100%;
     overflow-x: hidden;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    padding: 3rem;
+    margin: 0;
+    background: #fafafa;
+    box-sizing: border-box;
+    height: 100vh;
 }
 
 .foreground {

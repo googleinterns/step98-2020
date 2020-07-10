@@ -24,77 +24,70 @@ export default function AddHotel(props) {
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
     const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
-
-
-    const handleChecked = (e) => {
-        setChecked(e.target.checked);
-    }
-
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value);
-    }
-
-    const handleLocationChange = (location) => {
-        setLocation(location);
-    }
-
-    const handleDescriptionChange = (e) => {
-        setDescription(e.target.value);
-    }
-
-    /*
-     * Called once change to hook state is complete. Updates data property in AddForm.
-     */
-    useEffect(() => {
-
-        props.onDataChange({
-            id: overwriting ? props.data.id : undefined,
-            title: title,
-            type: "hotel",
-            startDate: startDate,
-            endDate: endDate,
-            finalized: checked,
-            location: location.address,
-            coordinates: location.coordinates,
-            description: description
-        })
-
-        //validating input
-        if (title === "") {
-            props.onToggleValidation(false);
-        } else if (checked && location === "") {
-            props.onToggleValidation(false);
-        } else {
-            props.onToggleValidation(true);
+  
+   const handleChecked = (e) => {
+       setChecked(e.target.checked);
+   }
+ 
+   const handleTitleChange = (e) => {
+       setTitle(e.target.value);
+   }
+ 
+   const handleLocationChange = (e) => {
+       setLocation(e.target.value);
+   }
+ 
+   const handleDescriptionChange = (e) => {
+       setDescription(e.target.value);
+   }
+   
+   useEffect(() => {
+        if (props.data !== undefined && props.data.startDate !== startDate) {
+            setStartDate(props.data.startDate);
         }
-    }, [startDate, endDate, checked, title, location, description])
 
-
-    return (
-        <Grid container direction="column">
-            <Grid item>
-                <Box mt={1}>
-                    <TextField
-                        error={(title === "")}
-                        helperText={(title === "") ? "Cannot leave field blank" : ""}
-                        id="title"
-                        label={"Add Title"}
-                        defaultValue={title}
-                        fullWidth
-                        onChange={handleTitleChange}
-                    />
-                </Box>
-            </Grid>
-            <Grid item>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checked}
-                            onChange={handleChecked}
-                            color="primary"
-                        />
-                    }
-                    label="Finalized"
+        if (props.data !== undefined && props.data.endDate !== endDate) {
+            setEndDate(props.data.endDate);
+        }
+    }, [props.data]);
+   /*
+    * Called once change to hook state is complete. Updates data property in AddForm.
+    */
+   useEffect(() => {
+ 
+       props.onDataChange({
+           id: overwriting ? props.data.id : undefined,
+           title: title,
+           type: "hotel",
+           startDate: startDate,
+           endDate: endDate,
+           finalized: checked,
+           location: location,
+           description: description
+       })
+ 
+       //validating input
+       if (title === "") {
+           props.onToggleValidation(false);
+       } else if (checked && location === "") {
+           props.onToggleValidation(false);
+       } else {
+           props.onToggleValidation(true);
+       }
+   }, [startDate, endDate, checked, title, location, description])
+ 
+ 
+   return (
+       <Grid container direction="column">
+           <Grid item>
+                <TextField
+                    error={(title === "")}
+                    helperText={(title === "")? "Cannot leave field blank": ""}
+                    id="title"
+                    label={"Add Title"}
+                    defaultValue={title}
+                    fullWidth
+                    onChange={handleTitleChange}
                 />
             </Grid>
             <Grid item container direction="row" justify="space-between">
