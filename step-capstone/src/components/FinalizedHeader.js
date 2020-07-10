@@ -5,7 +5,7 @@ import {
  MuiPickersUtilsProvider,
  KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { Typography } from "@material-ui/core"
+import { Button, Typography } from "@material-ui/core"
  
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
 const sameDate = (timeA, timeB) => {
@@ -75,7 +75,7 @@ export default function FinalizedHeader(props) {
               displayDate = {props.displayDate}
               onChangeDisplayDate = {props.onChangeDisplayDate}
             />
-            <button className="secondary">EST</button>
+            <Button id='timezone' variant='outlined'>EST</Button>
             <PickDisplayDate 
               displayDate = {props.displayDate}
               onChangeDisplayDate = {props.onChangeDisplayDate}
