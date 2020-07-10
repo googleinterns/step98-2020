@@ -131,7 +131,6 @@ export default class Trip extends React.Component {
 
     handleChangeDisplayDate(travelObjects, date) {
         if (this.state.today.date !== date) {
-            console.log("changing date")
             this.setState({
                 today: {
                     events: travelObjects,
