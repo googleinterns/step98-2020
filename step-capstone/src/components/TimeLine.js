@@ -144,7 +144,7 @@ export default function TimeLine(props) {
 
   var displayItems = (date2Items.has(displayDate.toDateString())) ? date2Items.get(displayDate.toDateString()) : [];
   var nextItemIndex = 0;
-  console.log("display items length: ", displayItems.length)
+
   for (var i = 0; i < 24; i++) {
     if (nextItemIndex < displayItems.length) {
       var nextItem = displayItems[nextItemIndex];
