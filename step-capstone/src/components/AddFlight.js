@@ -1,34 +1,37 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {
- TextField,
- Grid,
- Checkbox,
- FormControlLabel
+    TextField,
+    Grid,
+    Checkbox,
+    FormControlLabel,
+    Box
 } from '@material-ui/core';
 import {
- MuiPickersUtilsProvider,
- DateTimePicker
+    MuiPickersUtilsProvider,
+    DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
+
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
     // Sets values to previous values if editing, otherwise blank slate
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
-    const [departureAirport, setDepartureAirport] = useState(overwriting ? props.data.departureAirport : "");
-    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? props.data.arrivalAirport : "")
+    const [departureAirport, setDepartureAirport] = useState(overwriting ? { address: props.data.departureAirport, coordinates: props.data.departureCoordinates } : { address: null, coordinates: null });
+    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? { address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
-    
+
     const handleChecked = (e) => {
         setChecked(e.target.checked);
     }
-    const handleDepartureAirport = (e) => {
-        setDepartureAirport(e.target.value);
+    const handleDepartureAirport = (location) => {
+        setDepartureAirport(location);
     }
-    const handleArrivalAirport = (e) => {
-        setArrivalAirport(e.target.value);
+    const handleArrivalAirport = (location) => {
+        setArrivalAirport(location);
     }
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
@@ -45,49 +48,48 @@ export default function AddFlight(props) {
         
     }, [props.data]);
 
+
     /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
-        
         props.onDataChange({
             finalized: checked,
             id: overwriting ? props.data.id : undefined,
             type: "flight",
             startDate: startDate,
             endDate: endDate,
-            departureAirport: departureAirport,
-            arrivalAirport: arrivalAirport,
+            departureAirport: departureAirport.address,
+            arrivalAirport: arrivalAirport.address,
+            departureCoordinates: departureAirport.coordinates,
+            arrivalCoordinates: arrivalAirport.coordinates,
             description: description
         })
         // notifies form if necessary inputs are present
         props.onToggleValidation(!(departureAirport === "" || arrivalAirport === ""))
     }, [startDate, endDate, checked, departureAirport, arrivalAirport, description])
-    
-
 
     return (
         <Grid container direction="column">
-            <Grid item container direction="row" justify="space-between">
-                <TextField
-                    error={(departureAirport === "")}
-                    helperText={(departureAirport === "")? "Cannot leave field blank": ""}
-                    id="departure"
-                    label={"Departure IATA code"}
-                    defaultValue={departureAirport}
-                    onChange={handleDepartureAirport}
-                />
-
-                <TextField
-                    error={(arrivalAirport === "")}
-                    helperText={(arrivalAirport === "")? "Cannot leave field blank": ""}
-
-                    id="arrival"
-                    label={"Arrival IATA code"}
-                    defaultValue={arrivalAirport}
-                    onChange={handleArrivalAirport}
-                />
-
+            <Grid item container direction="column" justify="space-between">
+                <Box my={1}>
+                    <LocationAutocompleteInput
+                        onLocationSelected={handleDepartureAirport}
+                        error={departureAirport.address === null}
+                        text={departureAirport.address}
+                        type="flight"
+                        departure={true}
+                    />
+                </Box>
+                <Box my={1}>
+                    <LocationAutocompleteInput
+                        onLocationSelected={handleArrivalAirport}
+                        error={arrivalAirport.address === null}
+                        text={arrivalAirport.address}
+                        type="flight"
+                        departure={false}
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <FormControlLabel
@@ -95,6 +97,7 @@ export default function AddFlight(props) {
                         <Checkbox
                             checked={checked}
                             onChange={handleChecked}
+                            color="primary"
                         />
                     }
                     label="Finalized"
@@ -109,19 +112,21 @@ export default function AddFlight(props) {
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                <TextField
-                    id="description"
-                    label={"Add Description"}
-                    defaultValue={description}
-                    fullWidth
-                    multiline
-                    onChange={handleDescriptionChange}
-                />
+                <Box my={1}>
+                    <TextField
+                        id="description"
+                        label={"Add Description"}
+                        defaultValue={description}
+                        fullWidth
+                        multiline
+                        onChange={handleDescriptionChange}
+                    />
+                </Box>
             </Grid>
         </Grid>
     )
 }
- 
- 
- 
+
+
+
 

@@ -8,7 +8,7 @@ import {
 
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
-import SignInWidget from './components/Firebase/SignInWidget';
+import Home from './components/Home'
 import SignOutButton from './components/Firebase/SignOutButton';
 import TripList from "./components/TripList"
 import Trip from "./components/Trip"
@@ -50,20 +50,21 @@ class App extends React.Component {
       sessionStorage.setItem("userId", "0fmXVWHePsZoCV6ex1Z2");
       return <Redirect to = "/trips/"/>;
     } else {
-      return <Redirect to = "/login-page"/>;
+      return <Redirect to = "/home"/>;
     }
   }
 
   render () {
    
     return(
-      <div className="App">
+      <div className="app">
         {this.state.authState ? <SignOutButton className="sign-out"/> :''}
+
         <Router>
           {this.handleLogin()}
           <Switch>
-            <Route exact path="/login-page">
-              <Login />
+            <Route exact path="/home">
+              <Home />
             </Route>
             <Route path = "/trips/:tripId">
               <Trip/>
@@ -78,10 +79,6 @@ class App extends React.Component {
   }  
 }
 
-function Login(){
-  return (
-    <SignInWidget/>
-  );
-}
+
 
 export default App;
