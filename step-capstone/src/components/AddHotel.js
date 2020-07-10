@@ -33,8 +33,8 @@ export default function AddHotel(props) {
        setTitle(e.target.value);
    }
  
-   const handleLocationChange = (e) => {
-       setLocation(e.target.value);
+   const handleLocationChange = (location) => {
+       setLocation(location);
    }
  
    const handleDescriptionChange = (e) => {
@@ -54,7 +54,6 @@ export default function AddHotel(props) {
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
    useEffect(() => {
- 
        props.onDataChange({
            id: overwriting ? props.data.id : undefined,
            title: title,
@@ -62,7 +61,8 @@ export default function AddHotel(props) {
            startDate: startDate,
            endDate: endDate,
            finalized: checked,
-           location: location,
+           location: location.address,
+           coordinates: location.coordinates,
            description: description
        })
  
@@ -88,6 +88,18 @@ export default function AddHotel(props) {
                     defaultValue={title}
                     fullWidth
                     onChange={handleTitleChange}
+                />
+            </Grid>
+            <Grid item>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={checked}
+                            onChange={handleChecked}
+                            color="primary"
+                        />
+                    }
+                    label="Finalized"
                 />
             </Grid>
             <Grid item container direction="row" justify="space-between">
