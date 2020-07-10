@@ -21,7 +21,8 @@ export default class Trip extends React.Component {
                 endDate: new Date(),
                 destinations: "",
                 description: ""
-            }
+            },
+            loaded: false
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -49,7 +50,7 @@ export default class Trip extends React.Component {
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
                 });
-                this.setState({ items: travelObjectList });
+                this.setState({ items: travelObjectList, loaded: true });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -107,6 +108,7 @@ export default class Trip extends React.Component {
                 console.error(error)
             });
     }
+
     async handleEditTripSetting(newSetting) {
         await this.context.editTripSetting(this.state.reference, this.state.tripSetting, newSetting);
         this.setState({
@@ -115,6 +117,9 @@ export default class Trip extends React.Component {
     }
     
     render() {
+        if (!this.state.loaded) {
+            return null;
+        }
         return (
             <div className="trip">
                 <Grid id="map-component">
