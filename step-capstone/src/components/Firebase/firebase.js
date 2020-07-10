@@ -28,6 +28,7 @@ class Firebase {
       signInOptions: [
         firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       tosUrl: 'index.html',
       privacyPolicyUrl: function() {
         window.location.assign('index.html');
@@ -35,9 +36,11 @@ class Firebase {
     };
   }
 
-  createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
+  createFirebaseWidget = () => {
+    this.ui.start("#firebaseui-auth-container", this.uiConfig);
+  };
   getUserInfo = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
@@ -68,6 +71,36 @@ class Firebase {
     return tripListRef.add(trip);
   }
 
+  async deleteTrip(reference) {
+    const tripRef = this.db.doc(reference);
+    return await tripRef.delete();
+  }
+
+  /*This function will allow editting all fields in Trip except for travelObjects */
+  async editTripSetting(reference, oldValue, newValue) {
+    const tripRef = this.db.doc(reference);
+    console.log(tripRef);
+    if (oldValue.title !== newValue.title) {
+      await tripRef.update({title: newValue.title});
+    }
+
+    if (oldValue.startDate !== newValue.startDate) {
+      await tripRef.update({startDate: firebase.firestore.Timestamp.fromDate(newValue.startDate)});
+    }
+    
+    if (oldValue.endDate !== newValue.endDate) {
+      await tripRef.update({endDate: firebase.firestore.Timestamp.fromDate(newValue.endDate)});
+    }
+
+    if (oldValue.destinations !== newValue.destinations) {
+      await tripRef.update({destinations: newValue.destinations});
+    }
+
+    if (oldValue.description !== newValue.description) {
+      await tripRef.update({description: newValue.description})
+    }
+  }
+
   addTravelObject(reference, travelObject) {
     const tripRef = this.db.doc(reference);
     return tripRef.update({travelObjects: firebase.firestore.FieldValue.arrayUnion(travelObject)});
@@ -83,19 +116,10 @@ class Firebase {
      })
     });
   }
-// TODO: Implement when details of trip editing and settings are implemented
-//   editTrip(reference, data) {
-    
-//   }
 
   deleteTravelObject(reference, travelObject) {
     const tripRef = this.db.doc(reference);
     return tripRef.update({travelObjects : firebase.firestore.FieldValue.arrayRemove(travelObject)});
-  }
-
-  deleteTrip(reference) {
-    const tripRef = this.db.doc(reference);
-    return tripRef.delete()
   }
 
 }
