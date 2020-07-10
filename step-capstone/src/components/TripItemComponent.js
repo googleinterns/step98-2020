@@ -23,7 +23,7 @@ const useStyles = makeStyles({
 */
 export default function TripItemComponent(props) {
     const classes = useStyles();
-    let dateRange = props.data.startDate.toString() + " - " + props.data.endDate.toString();
+    let dateRange = props.data.startDate.toDate().toLocaleTimeString() + " - " + props.data.endDate.toDate().toLocaleTimeString();
 
     return(
         <Card className={classes.root}>
