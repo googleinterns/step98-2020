@@ -29,22 +29,36 @@ class MapComponent extends React.Component {
    * Updates state with any changes in props
    */
   componentDidUpdate(prevProps) {
-    console.log(this.props.today.events)
     if (this.props.selected !== null && this.props.selected !== prevProps.selected) {
       let selectedObject = this.state.finalizedMarkers.has(this.props.selected)
         ? this.state.finalizedMarkers.get(this.props.selected)
         : this.state.unfinalizedMarkers.get(this.props.selected);
-      if (selectedObject.type === "flight") {
 
-      }
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
       this.googleMap.setZoom(25);
       this.googleMap.setCenter(marker.getPosition());
     }
-    if (prevProps.today.date !== this.props.today.date || prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
+    if (prevProps.today.date !== this.props.today.date && this.props.today.events.length !== 0) {
+      this.clearMap()
+      this.drawMap();
+      this.googleMap.fitBounds(this.getTodaysBounds());
+    } else if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
       this.clearMap();
       this.drawMap();
     }
+  }
+
+  getTodaysBounds() {
+    var bounds = new window.google.maps.LatLngBounds();
+    this.props.today.events.map((event) => {
+      if (event.type === "flight"){
+        bounds.extend(event.departureCoordinates);
+        bounds.extend(event.arrivalCoordinates);
+      } else {
+        bounds.extend(event.coordinates);
+      }
+    })
+    return bounds;
   }
 
   createMap() {
