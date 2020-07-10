@@ -51,7 +51,7 @@ class MapComponent extends React.Component {
   getTodaysBounds() {
     var bounds = new window.google.maps.LatLngBounds();
     this.props.today.events.map((event) => {
-      if (event.type === "flight"){
+      if (event.type === "flight") {
         bounds.extend(event.departureCoordinates);
         bounds.extend(event.arrivalCoordinates);
       } else {
