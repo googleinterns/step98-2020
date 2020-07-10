@@ -1,28 +1,29 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import {
-   TextField,
-   Grid,
-   Checkbox,
-   FormControlLabel,
+    TextField,
+    Grid,
+    Checkbox,
+    FormControlLabel,
+    Box
 } from '@material-ui/core';
 import {
-   MuiPickersUtilsProvider,
-   DateTimePicker
+    MuiPickersUtilsProvider,
+    DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
- 
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
+
 export default function AddHotel(props) {
-   let overwriting = props.data !== undefined;
- 
-   // Sets values to previous values if editing, otherwise blank slate
+    let overwriting = props.data !== undefined;
+
+    // Sets values to previous values if editing, otherwise blank slate
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? props.data.location : "");
+    const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
- 
   
    const handleChecked = (e) => {
        setChecked(e.target.checked);
@@ -88,55 +89,44 @@ export default function AddHotel(props) {
                     fullWidth
                     onChange={handleTitleChange}
                 />
-           </Grid>
-           <Grid item>
-               <FormControlLabel
-                   control={
-                       <Checkbox
-                           checked={checked}
-                           onChange={handleChecked}
-                       />
-                   }
-                   label="Finalized"
-               />
-           </Grid>
-           <Grid item container direction="row" justify="space-between">
-               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                   <DateTimePicker
-                       label={props.type === "event" ? "Start" : "Check in"}
-                       value={startDate}
-                       onChange={setStartDate} />
-               </MuiPickersUtilsProvider>
-               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                   <DateTimePicker
-                       label={props.type === "event" ? "End" : "Check out"}
-                       value={endDate}
-                       onChange={setEndDate} />
-               </MuiPickersUtilsProvider>
-           </Grid>
-           <Grid item>
+            </Grid>
+            <Grid item container direction="row" justify="space-between">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker
+                        label={props.type === "event" ? "Start" : "Check in"}
+                        value={startDate}
+                        onChange={setStartDate} />
+                </MuiPickersUtilsProvider>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateTimePicker
+                        label={props.type === "event" ? "End" : "Check out"}
+                        value={endDate}
+                        onChange={setEndDate} />
+                </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item>
+                <Box my={1}>
+                    <LocationAutocompleteInput
+                        onLocationSelected={handleLocationChange}
+                        error={(checked && location.address === null)}
+                        text={location.address}
+                        type="hotel"
+                    />
+                </Box>
+            </Grid>
+            <Grid item>
                 <TextField
-                    error={(checked && location === "")}
-                    helperText={(checked && location === "")? "Cannot leave field blank": ""}
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
+                    id="description"
+                    label={"Add Description"}
+                    defaultValue={description}
                     fullWidth
-                    onChange={handleLocationChange}
+                    multiline
+                    onChange={handleDescriptionChange}
                 />
-           </Grid>
-           <Grid item>
-               <TextField
-                   id="description"
-                   label={"Add Description"}
-                   defaultValue={description}
-                   fullWidth
-                   multiline
-                   onChange={handleDescriptionChange}
-               />
-           </Grid>
-       </Grid>
-   )
+            </Grid>
+        </Grid>
+    )
 }
- 
- 
+
+
 

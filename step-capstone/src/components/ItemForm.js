@@ -7,6 +7,8 @@ import {
     Paper,
     Tabs,
     Tab,
+    Typography,
+    Box
 } from '@material-ui/core';
 import AddEvent from './AddEvent';
 import AddHotel from './AddHotel';
@@ -30,7 +32,15 @@ export default class ItemForm extends React.Component {
     }
 
     renderDeleteButton() {
-        return (this.props.data === undefined) ? null : <Button onClick={() => this.props.onRemoveItem(this.state.data)} size="small">Delete</Button>;
+        return (this.props.data === undefined)
+            ? null
+            : <Button
+                onClick={() => this.props.onRemoveItem(this.state.data)}
+                color="primary"
+                size="small"
+            >
+                Delete
+            </Button>;
     }
 
     // clears data when tab is changed
@@ -145,6 +155,7 @@ export default class ItemForm extends React.Component {
                         value={this.state.value}
                         onChange={this.handleToggleTab}
                         variant="fullWidth"
+                        indicatorColor="primary"
                     >
                         <Tab label="Event" />
                         <Tab label="Flight" />
@@ -153,7 +164,9 @@ export default class ItemForm extends React.Component {
                 </Paper>
             )
         }
-        return null;
+        return (
+            <Typography variant="h4" gutterBottom>{this.state.data.type.charAt(0).toUpperCase() + this.state.data.type.slice(1)}</Typography>
+        );
     }
 
     render() {
@@ -164,8 +177,8 @@ export default class ItemForm extends React.Component {
                     {this.getForm()}
                 </CardContent>
                 <CardActions>
-                    <Button onClick={this.props.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleSave} size="small">Save</Button>
+                    <Button onClick={this.props.onClose} size="small" color="primary">Cancel</Button>
+                    <Button onClick={this.handleSave} size="small" color="primary">Save</Button>
                     {this.renderDeleteButton()}
                 </CardActions>
             </Card>

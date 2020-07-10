@@ -21,12 +21,12 @@ class Firebase {
     this.db = firebase.firestore();
     this.auth = firebase.auth();
     this.ui = new firebaseui.auth.AuthUI(this.auth);
+    
     this.uiConfig = {
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       signInSuccessUrl: 'index.html',
       signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       tosUrl: 'index.html',

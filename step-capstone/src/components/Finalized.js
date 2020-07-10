@@ -17,7 +17,6 @@ export default function Finalized(props) {
 
     return (
         <div>
-            {console.log("rerender ", displayDate)}
             <TimeLine
                 list = {props.list}    
                 onRemoveItem={props.onRemoveItem}
