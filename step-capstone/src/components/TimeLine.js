@@ -68,7 +68,7 @@ function OneHourInterval(props) {
         styleConfig={{
           top: top.toString() + "px",
           height: height.toString() + "px",
-          width: "228px",
+          width: "216px",
           overflowY: "scroll",
           position: "absolute",
           zIndex: props.zIndex.toString()

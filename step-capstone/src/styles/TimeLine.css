@@ -103,6 +103,14 @@
   tr, tr td {
     height: 20px;
   }
+  .OneHourInterval .Interval {
+    position: absolute;
+    left: 55px;
+    width: 228px;
+  }
+  .OneHourInterval .headcol {
+    width: 40px;
+  }
   td {
     text-align: center;
   }
@@ -144,7 +152,6 @@
     border-radius: 2px;
     text-align: left;
     font-size: 0.875rem;
-    z-index: 2;
     overflow-x: hidden;
     transition: all 0.2s;
     cursor: pointer;
@@ -152,6 +159,11 @@
   
   .event:hover {
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  .event.double {
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: white;
   }
   
   .event.double.flights {
