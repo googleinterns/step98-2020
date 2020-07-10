@@ -29,7 +29,14 @@ class MapComponent extends React.Component {
    * Updates state with any changes in props
    */
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
+    if (this.props.selected !== null) {
+      let selectedMarker = this.state.finalizedMarkers.has(this.props.selected)
+        ? this.state.finalizedMarkers.get(this.props.selected).marker
+        : this.state.unfinalizedMarkers.get(this.props.selected).marker;
+      this.googleMap.setZoom(25);
+      this.googleMap.setCenter(selectedMarker.getPosition());
+    }
+    if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
       this.clearMap();
       this.drawMap();
     }
@@ -38,7 +45,6 @@ class MapComponent extends React.Component {
   createMap() {
     return new window.google.maps.Map(this.googleMapRef.current, {
       zoom: this.props.zoom,
-      center: this.props.center,
     })
   }
 
@@ -63,8 +69,6 @@ class MapComponent extends React.Component {
     newMarker.addListener('click', () => {
       this.googleMap.setZoom(15);
       this.googleMap.setCenter(newMarker.getPosition());
-
-      // TODO: this.props.onMarkerClicked(id) --> notifies parent that marker clicked
     });
 
     return newMarker;
@@ -112,7 +116,8 @@ class MapComponent extends React.Component {
           marker: {
             departure: this.addMarker(item.departureCoordinates, item.type),
             arrival: this.addMarker(item.arrivalCoordinates, item.type)
-          }, type: item.type
+          },
+          type: item.type
         });
 
         bounds.extend(item.departureCoordinates);

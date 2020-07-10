@@ -22,13 +22,15 @@ export default class Trip extends React.Component {
                 destinations: "",
                 description: ""
             },
-            loaded: false
+            loaded: false,
+            selectedObject: null
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleEditItem = this.handleEditItem.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
+        this.handleSelectedObject = this.handleSelectedObject.bind(this);
     }
 
     componentDidMount() {
@@ -115,6 +117,10 @@ export default class Trip extends React.Component {
             tripSetting: newSetting
         });
     }
+
+    handleSelectedObject(id) {
+        this.setState({ selectedObject: id })
+    }
     
     render() {
         // if data hasn't been loaded yet, don't render the trip
@@ -126,10 +132,10 @@ export default class Trip extends React.Component {
             <div className="trip">
                 <Grid id="map-component">
                     <MapComponent
-                        zoom={13}
-                        center={{ lat: 51.5, lng: 0.087 }}
+                        zoom={15}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        selected={this.state.selectedObject}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
@@ -141,6 +147,7 @@ export default class Trip extends React.Component {
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
+                            onClickObject={this.handleSelectedObject}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -151,6 +158,7 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
+                            onClickObject={this.handleSelectedObject}
                         />
                     </Grid>
                 </Grid>
