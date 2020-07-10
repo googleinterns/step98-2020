@@ -42,10 +42,7 @@ class MapComponent extends React.Component {
     })
   }
 
-  addMarker(coordinates, type, label) {
-    // TODO: firebase will provide coordinates as a GeoPoint --> convert to {lat, lng}
-    // { lat: coordinates.lat(), lng: coordinates.lng() }
-
+  addMarker(coordinates, type) {
     var iconUrl;
     if (type === "flight") {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
@@ -108,13 +105,13 @@ class MapComponent extends React.Component {
     // construct hashmap with key: travelObject id, value: marker object
     return list.reduce((hashMap, item) => {
       if (item.type !== "flight") {
-        hashMap.set(item.id, { marker: this.addMarker(item.coordinates, item.type, item.id), type: item.type });
+        hashMap.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
         bounds.extend(item.coordinates);
       } else {
         hashMap.set(item.id, {
           marker: {
-            departure: this.addMarker(item.departureCoordinates, item.type, item.id),
-            arrival: this.addMarker(item.arrivalCoordinates, item.type, item.id)
+            departure: this.addMarker(item.departureCoordinates, item.type),
+            arrival: this.addMarker(item.arrivalCoordinates, item.type)
           }, type: item.type
         });
 
