@@ -39,7 +39,7 @@ export default class Trip extends React.Component {
                 this.setState({tripSetting : {
                     title: trip.title,
                     startDate: trip.startDate.toDate(),
-                    endDate: trip.startDate.toDate(),
+                    endDate: trip.endDate.toDate(),
                     destinations: trip.destinations,
                     description: trip.description
                 }})
@@ -145,6 +145,7 @@ export default class Trip extends React.Component {
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
                         />
+                    {console.log(this.state.tripSetting)}
                     </Grid>
                 </Grid>
                 <Grid id="add-button-component">

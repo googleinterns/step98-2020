@@ -105,13 +105,13 @@ export default function AddEvent(props) {
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
-                        label={props.type === "event" ? "Start" : "Check in"}
+                        label={"Start"}
                         value={startDate}
                         onChange={setStartDate} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
-                        label={props.type === "event" ? "End" : "Check out"}
+                        label={"End"}
                         value={endDate}
                         onChange={setEndDate} />
                 </MuiPickersUtilsProvider>
