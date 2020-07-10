@@ -117,6 +117,8 @@ export default class Trip extends React.Component {
     }
     
     render() {
+        // if data hasn't been loaded yet, don't render the trip
+        // prevents map from loading empty data
         if (!this.state.loaded) {
             return null;
         }
