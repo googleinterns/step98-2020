@@ -44,14 +44,11 @@ export default function AddHotel(props) {
         if (props.data !== undefined && props.data.startDate !== startDate) {
             setStartDate(props.data.startDate);
         }
-    }, [props.data]);
 
-    useEffect(() => {
         if (props.data !== undefined && props.data.endDate !== endDate) {
             setEndDate(props.data.endDate);
         }
     }, [props.data]);
-
    /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
