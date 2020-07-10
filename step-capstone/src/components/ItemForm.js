@@ -73,6 +73,7 @@ export default class ItemForm extends React.Component {
                 this.handleEndDateChange(newData);
             }
         }
+
         this.setState({
             data: newData
         })
@@ -91,6 +92,7 @@ export default class ItemForm extends React.Component {
         let isNew = this.state.isNewItem;
         if ((!isNew && this.state.data.type === "event") || (isNew && this.state.value === 0)) {
             return (
+                
                 <AddEvent
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
@@ -127,8 +129,6 @@ export default class ItemForm extends React.Component {
         if (this.state.isNewItem) {
             this.props.onAddItem(this.state.data);
         } else {
-            console.log("SAVING")
-            console.log(this.state.data);
             this.props.onEditItem(this.state.data);
         }
 

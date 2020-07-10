@@ -38,9 +38,7 @@ export default function AddEvent(props) {
         if (props.data !== undefined && props.data.startDate !== startDate) {
             setStartDate(props.data.startDate);
         }
-    }, [props.data]);
 
-    useEffect(() => {
         if (props.data !== undefined && props.data.endDate !== endDate) {
             setEndDate(props.data.endDate);
         }
@@ -50,8 +48,6 @@ export default function AddEvent(props) {
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
     useEffect(() => {
-        console.log("updating data")
-        console.log(startDate)
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,
