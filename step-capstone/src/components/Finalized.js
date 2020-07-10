@@ -18,12 +18,13 @@ export default function Finalized(props) {
     return (
         <div>
             <TimeLine
-                list = {props.list}    
+                list={props.list}    
                 onRemoveItem={props.onRemoveItem}
                 onEditItem={props.onEditItem}
                 onAddItem={props.onAddItem}
-                displayDate = {displayDate}
-                onChangeDisplayDate = {handleDisplayDateChange}
+                displayDate={displayDate}
+                onChangeDisplayDate={handleDisplayDateChange}
+                onClickObject={props.onClickObject}
             />    
         </div>
         

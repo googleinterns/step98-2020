@@ -59,12 +59,14 @@ function OneHourInterval(props) {
         ? getTopPixel(item.data.endDate)
         : getTopPixel(item.data.startDate);
 
+      console.log(props)
       let travelObject = <TravelObject
         key={item.data.id}
         data={item.data}
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
         styleConfig={{
           top: top.toString() + "px",
           height: height.toString() + "px",
@@ -160,6 +162,7 @@ export default function TimeLine(props) {
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
       else {
@@ -189,6 +192,7 @@ export default function TimeLine(props) {
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
     }
@@ -201,6 +205,7 @@ export default function TimeLine(props) {
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
       />);
 
     }
