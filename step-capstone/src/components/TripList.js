@@ -46,14 +46,12 @@ class TripList extends React.Component{
     
   }
 
-
   handleOpenTrip(tripId) {
     this.setState({selectedTrip : tripId})
     sessionStorage.setItem("tripId",tripId);
   }
 
   handleAddTrip(newTrip) {
-    console.log("Adding new trip to database...");
     const reference = "/users/" + this.state.userId + "/trips";
     this.context.addTrip(reference, newTrip);
     this.loadTrips();
@@ -61,8 +59,8 @@ class TripList extends React.Component{
 
   handleDeleteTrip(tripId) {
     const reference = "/users/" + this.state.userId + "/trips/" + tripId;
-    console.log(reference);
     this.context.deleteTrip(reference).then(() => this.loadTrips());
+    this.loadTrips();
   }
 
   render () {
@@ -73,8 +71,8 @@ class TripList extends React.Component{
           <Grid id="trips" 
             container spacing = {2} 
             style={{position: "absolute", 
-                    top: "100px", 
-                    left: "100px"}}
+                    top: "10%", 
+                    left: "10%"}}
           > 
             {trips.map((trip) => {
                 return (
@@ -89,10 +87,12 @@ class TripList extends React.Component{
                 );
               })
             }
-                  <Grid item>
-                    <AddTrip
-                      onAddTrip = {this.handleAddTrip}/>
-                  </Grid>
+            
+            <Grid item>
+              <AddTrip
+                onAddTrip = {this.handleAddTrip}/>
+            </Grid>
+            
           </Grid>
         }
         
