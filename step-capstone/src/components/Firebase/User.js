@@ -1,10 +1,8 @@
 export default class User {
-    constructor(email, displayName, trips) {
+    constructor(email, displayName) {
         this.email = email;
         this.displayName = displayName;
-        this.trips = trips;
     }
     getEmail = () => this.email;
     getDisplayName = () => this.displayName;
-    getTrips = () => this.trips;
 }

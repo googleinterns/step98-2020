@@ -5,22 +5,23 @@ import {
     Grid,
     Checkbox,
     FormControlLabel,
+    Box
 } from '@material-ui/core';
 import {
     MuiPickersUtilsProvider,
     DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
+import LocationAutocompleteInput from "./LocationAutocompleteInput"
 
-export default function AddEventHotel(props) {
+export default function AddEvent(props) {
     let overwriting = props.data !== undefined;
-
     // Sets values to previous values if editing, otherwise blank slate
-    const [startDate, handleStartChange] = useState(overwriting ? props.data.startDate : new Date());
-    const [endDate, handleEndChange] = useState(overwriting ? props.data.endDate : new Date());
+    const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
+    const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? props.data.location : "");
+    const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
     const handleChecked = (e) => {
@@ -31,30 +32,39 @@ export default function AddEventHotel(props) {
         setTitle(e.target.value);
     }
 
-    const handleLocationChange = (e) => {
-        setLocation(e.target.value);
+    const handleLocationChange = (location) => {
+        setLocation(location);
     }
 
     const handleDescriptionChange = (e) => {
         setDescription(e.target.value);
     }
 
-    /*
-     * Called once change to hook state is complete. Updates data property in AddForm.
-     */
     useEffect(() => {
-        console.log(title)
+        if (props.data !== undefined && props.data.startDate !== startDate) {
+            setStartDate(props.data.startDate);
+        }
+
+        if (props.data !== undefined && props.data.endDate !== endDate) {
+            setEndDate(props.data.endDate);
+        }
+    }, [props.data]);
+
+    /*
+    * Called once change to hook state is complete. Updates data property in AddForm.
+    */
+    useEffect(() => {
         props.onDataChange({
             id: overwriting ? props.data.id : undefined,
             title: title,
-            type: props.type,
+            type: "event",
             startDate: startDate,
             endDate: endDate,
             finalized: checked,
-            location: location,
+            location: location.address,
+            coordinates: location.coordinates,
             description: description
         })
-
         //validating input
         if (title === "") {
             props.onToggleValidation(false);
@@ -68,15 +78,17 @@ export default function AddEventHotel(props) {
     return (
         <Grid container direction="column">
             <Grid item>
-                <TextField
-                    error={title === ""}
-                    helperText="Cannot leave field blank"
-                    id="title"
-                    label={"Add Title"}
-                    defaultValue={title}
-                    fullWidth
-                    onChange={handleTitleChange}
-                />
+                <Box mt={1}>
+                    <TextField
+                        error={(title === "")}
+                        helperText={(title === "") ? "Cannot leave field blank" : ""}
+                        id="title"
+                        label={"Add Title"}
+                        defaultValue={title}
+                        fullWidth
+                        onChange={handleTitleChange}
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <FormControlLabel
@@ -84,6 +96,7 @@ export default function AddEventHotel(props) {
                         <Checkbox
                             checked={checked}
                             onChange={handleChecked}
+                            color="primary"
                         />
                     }
                     label="Finalized"
@@ -94,24 +107,24 @@ export default function AddEventHotel(props) {
                     <DateTimePicker
                         label={props.type === "event" ? "Start" : "Check in"}
                         value={startDate}
-                        onChange={handleStartChange} />
+                        onChange={setStartDate} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
                         label={props.type === "event" ? "End" : "Check out"}
                         value={endDate}
-                        onChange={handleEndChange} />
+                        onChange={setEndDate} />
                 </MuiPickersUtilsProvider>
             </Grid>
             <Grid item>
-                <TextField
-                    error={checked && location === ""}
-                    helperText="Cannot leave field blank"
-                    id="location"
-                    label={location.length !== 0 ? location : "Add Location"}
-                    fullWidth
-                    onChange={handleLocationChange}
-                />
+                <Box my={1}>
+                    <LocationAutocompleteInput
+                        onLocationSelected={handleLocationChange}
+                        error={(checked && location.address === null)}
+                        text={location.address}
+                        type="event"
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <TextField
@@ -126,3 +139,7 @@ export default function AddEventHotel(props) {
         </Grid>
     )
 }
+
+
+
+
