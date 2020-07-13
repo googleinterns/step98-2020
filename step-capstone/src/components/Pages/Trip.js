@@ -1,11 +1,11 @@
 import React from 'react';
-import Finalized from './Finalized';
-import Unfinalized from './Unfinalized';
-import AddItemButton from './AddItemButton'
+import Finalized from '../Sidebars/Finalized';
+import Unfinalized from '../Sidebars/Unfinalized';
+import AddItemButton from '../TravelObjectForms/AddItemButton'
 import { Grid } from '@material-ui/core'
-import '../styles/Trip.css'
-import { FirebaseContext } from './Firebase';
-import MapComponent from "./Map"
+import '../../styles/Trip.css'
+import { FirebaseContext } from '../Firebase';
+import MapComponent from "../Utilities/Map"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;

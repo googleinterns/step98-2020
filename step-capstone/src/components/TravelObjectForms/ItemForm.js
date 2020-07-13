@@ -10,9 +10,9 @@ import {
     Typography,
     Box
 } from '@material-ui/core';
-import AddEvent from './AddEvent';
-import AddHotel from './AddHotel';
-import AddFlight from './AddFlight';
+import AddEvent from '../TravelObjectForms/AddEvent';
+import AddHotel from '../TravelObjectForms/AddHotel';
+import AddFlight from '../TravelObjectForms/AddFlight';
 
 
 export default class ItemForm extends React.Component {

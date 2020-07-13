@@ -12,11 +12,10 @@ import {
     DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from "@date-io/date-fns";
-import LocationAutocompleteInput from "./LocationAutocompleteInput"
+import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 
-export default function AddHotel(props) {
+export default function AddEvent(props) {
     let overwriting = props.data !== undefined;
-
     // Sets values to previous values if editing, otherwise blank slate
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
@@ -24,24 +23,24 @@ export default function AddHotel(props) {
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
     const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
-  
-   const handleChecked = (e) => {
-       setChecked(e.target.checked);
-   }
- 
-   const handleTitleChange = (e) => {
-       setTitle(e.target.value);
-   }
- 
-   const handleLocationChange = (location) => {
-       setLocation(location);
-   }
- 
-   const handleDescriptionChange = (e) => {
-       setDescription(e.target.value);
-   }
-   
-   useEffect(() => {
+
+    const handleChecked = (e) => {
+        setChecked(e.target.checked);
+    }
+
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const handleLocationChange = (location) => {
+        setLocation(location);
+    }
+
+    const handleDescriptionChange = (e) => {
+        setDescription(e.target.value);
+    }
+
+    useEffect(() => {
         if (props.data !== undefined && props.data.startDate !== startDate) {
             setStartDate(props.data.startDate);
         }
@@ -50,45 +49,46 @@ export default function AddHotel(props) {
             setEndDate(props.data.endDate);
         }
     }, [props.data]);
-   /*
+
+    /*
     * Called once change to hook state is complete. Updates data property in AddForm.
     */
-   useEffect(() => {
-       props.onDataChange({
-           id: overwriting ? props.data.id : undefined,
-           title: title,
-           type: "hotel",
-           startDate: startDate,
-           endDate: endDate,
-           finalized: checked,
-           location: location.address,
-           coordinates: location.coordinates,
-           description: description
-       })
- 
-       //validating input
-       if (title === "") {
-           props.onToggleValidation(false);
-       } else if (checked && location === "") {
-           props.onToggleValidation(false);
-       } else {
-           props.onToggleValidation(true);
-       }
-   }, [startDate, endDate, checked, title, location, description])
- 
- 
-   return (
-       <Grid container direction="column">
-           <Grid item>
-                <TextField
-                    error={(title === "")}
-                    helperText={(title === "")? "Cannot leave field blank": ""}
-                    id="title"
-                    label={"Add Title"}
-                    defaultValue={title}
-                    fullWidth
-                    onChange={handleTitleChange}
-                />
+    useEffect(() => {
+        props.onDataChange({
+            id: overwriting ? props.data.id : undefined,
+            title: title,
+            type: "event",
+            startDate: startDate,
+            endDate: endDate,
+            finalized: checked,
+            location: location.address,
+            coordinates: location.coordinates,
+            description: description
+        })
+        //validating input
+        if (title === "") {
+            props.onToggleValidation(false);
+        } else if (checked && location === "") {
+            props.onToggleValidation(false);
+        } else {
+            props.onToggleValidation(true);
+        }
+    }, [startDate, endDate, checked, title, location, description])
+
+    return (
+        <Grid container direction="column">
+            <Grid item>
+                <Box mt={1}>
+                    <TextField
+                        error={(title === "")}
+                        helperText={(title === "") ? "Cannot leave field blank" : ""}
+                        id="title"
+                        label={"Add Title"}
+                        defaultValue={title}
+                        fullWidth
+                        onChange={handleTitleChange}
+                    />
+                </Box>
             </Grid>
             <Grid item>
                 <FormControlLabel
@@ -105,13 +105,13 @@ export default function AddHotel(props) {
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
-                        label={props.type === "event" ? "Start" : "Check in"}
+                        label={"Start"}
                         value={startDate}
                         onChange={setStartDate} />
                 </MuiPickersUtilsProvider>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DateTimePicker
-                        label={props.type === "event" ? "End" : "Check out"}
+                        label={"End"}
                         value={endDate}
                         onChange={setEndDate} />
                 </MuiPickersUtilsProvider>
@@ -122,7 +122,7 @@ export default function AddHotel(props) {
                         onLocationSelected={handleLocationChange}
                         error={(checked && location.address === null)}
                         text={location.address}
-                        type="hotel"
+                        type="event"
                     />
                 </Box>
             </Grid>
@@ -139,6 +139,7 @@ export default function AddHotel(props) {
         </Grid>
     )
 }
+
 
 
 
