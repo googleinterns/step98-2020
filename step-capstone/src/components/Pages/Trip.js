@@ -6,6 +6,7 @@ import { Grid } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
+import queryPlaces from "../../scripts/PlacesQuery"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -27,7 +28,9 @@ export default class Trip extends React.Component {
             today: {
                 events: [],
                 date: null
-            }
+            },
+            map: null,
+            service: null
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -36,6 +39,7 @@ export default class Trip extends React.Component {
         this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
         this.handleSelectedObject = this.handleSelectedObject.bind(this);
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
+        this.setMap = this.setMap.bind(this);
     }
 
     componentDidMount() {
@@ -139,6 +143,20 @@ export default class Trip extends React.Component {
         }
     }
 
+    getQueries() {
+        if (this.state.map) {
+            let places = queryPlaces({lat: 51.5074, lng: -0.1278}, "10000", this.state.service, ["tourist_attraction", "natural_feature"])
+            places.then(results => console.log(results))
+        }
+    }
+
+    setMap(map) {
+        this.setState({
+            map: map,
+            service: new window.google.maps.places.PlacesService(map)
+        })
+    }
+
     render() {
         // if data hasn't been loaded yet, don't render the trip
         // prevents map from loading empty data
@@ -147,6 +165,7 @@ export default class Trip extends React.Component {
         }
         return (
             <div className="trip">
+                {this.getQueries()}
                 <Grid id="map-component">
                     <MapComponent
                         zoom={15}
@@ -154,6 +173,7 @@ export default class Trip extends React.Component {
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
                         selected={this.state.selectedObject}
                         displayDate={this.state.today}
+                        setMap={this.setMap}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
