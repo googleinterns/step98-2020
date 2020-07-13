@@ -2,8 +2,8 @@ import React from 'react'
 import Flight from './Flight'
 import Event from  './Event'
 import Hotel from './Hotel'
-import FormPopover from './FormPopover'
-import '../styles/TimeLine.css';
+import FormPopover from '../TravelObjectForms/FormPopover'
+import '../../styles/TimeLine.css';
 
 export default function TravelObject(props) {
     let content = null;

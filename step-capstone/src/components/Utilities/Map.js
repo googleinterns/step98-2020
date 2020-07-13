@@ -1,5 +1,5 @@
 import React, { createRef } from 'react'
-import { travelObjectStartDateComparator } from "../scripts/HelperFunctions"
+import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions"
 
 /**
  * Props:

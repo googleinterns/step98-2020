@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import TravelObject from './TravelObject';
-import FinalizedHeader from './FinalizedHeader';
-import '../styles/TimeLine.css';
-import { travelObjectStartDateComparator } from "../scripts/HelperFunctions"
+import TravelObject from '../TravelObjects/TravelObject';
+import FinalizedHeader from '../Sidebars/FinalizedHeader';
+import '../../styles/TimeLine.css';
+import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions"
 
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
 const sameDate = (timeA, timeB) => {

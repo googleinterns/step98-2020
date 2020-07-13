@@ -1,7 +1,7 @@
 import React from 'react';
-import TravelObject from './TravelObject';
+import TravelObject from '../TravelObjects/TravelObject';
 import { Grid, Typography } from '@material-ui/core';
-import TripSettingPopover from "./TripSettingPopover";
+import TripSettingPopover from "../TripForms/TripSettingPopover";
 
 function Header(props) {
 
