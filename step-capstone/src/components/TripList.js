@@ -1,13 +1,9 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import {Grid}  from '@material-ui/core';
 import TripItemComponent from "./TripItemComponent";
 import AddTrip from './AddTrip';
 import {FirebaseContext} from './Firebase';
-import {
-  Switch,
-  Route,
-  Redirect
-} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 
 
 class TripList extends React.Component{
@@ -16,7 +12,7 @@ class TripList extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      userId : sessionStorage.getItem("userId"),
+      reference : "/users/" + sessionStorage.getItem("userId") + "/trips/",
       selectedTrip : null,
       trips : [],
     };
@@ -28,8 +24,7 @@ class TripList extends React.Component{
 
   loadTrips() {
     let trips = [];
-    const reference = "/users/" + this.state.userId + "/trips";
-    this.context.getTripList(reference).then(tripList => {
+    this.context.getTripList(this.state.reference).then(tripList => {
       tripList.forEach(trip => {
         trips.push(trip)
       })
@@ -52,14 +47,12 @@ class TripList extends React.Component{
   }
 
   handleAddTrip(newTrip) {
-    const reference = "/users/" + this.state.userId + "/trips";
-    this.context.addTrip(reference, newTrip);
+    this.context.addTrip(this.state.reference, newTrip);
     this.loadTrips();
   }
 
   handleDeleteTrip(tripId) {
-    const reference = "/users/" + this.state.userId + "/trips/" + tripId;
-    this.context.deleteTrip(reference).then(() => this.loadTrips());
+    this.context.deleteTrip(this.state.reference+tripId).then(() => this.loadTrips());
     this.loadTrips();
   }
 
