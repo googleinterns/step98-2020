@@ -76,6 +76,7 @@ export default class Unfinalized extends React.Component {
                                 onEditItem={this.props.onEditItem}
                                 onAddItem={this.props.onAddItem}
                                 styleConfig={{ position: "relative", top: "1px" }}
+                                onClickObject={this.props.onClickObject}
                             />
                         })
                     }

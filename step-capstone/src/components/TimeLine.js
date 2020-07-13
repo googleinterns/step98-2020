@@ -65,6 +65,7 @@ function OneHourInterval(props) {
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
         styleConfig={{
           top: top.toString() + "px",
           height: height.toString() + "px",
@@ -143,6 +144,8 @@ export default function TimeLine(props) {
   sortItemList();
 
   var displayItems = (date2Items.has(displayDate.toDateString())) ? date2Items.get(displayDate.toDateString()) : [];
+  props.setTodaysEvents(displayItems, displayDate.toDateString());
+
   var nextItemIndex = 0;
 
   for (var i = 0; i < 24; i++) {
@@ -154,12 +157,13 @@ export default function TimeLine(props) {
         nextItemIndex++;
         intervals.push(<OneHourInterval
           idV={nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0}
-          items={[{data: nextItem, div: ":00"}]}
+          items={[{ data: nextItem, div: ":00" }]}
           zIndex={nextItemIndex}
           displayDate={displayDate}
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
       else {
@@ -189,6 +193,7 @@ export default function TimeLine(props) {
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
     }
@@ -201,6 +206,7 @@ export default function TimeLine(props) {
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
       />);
 
     }

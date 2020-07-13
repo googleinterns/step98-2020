@@ -21,6 +21,12 @@ export default class Trip extends React.Component {
                 endDate: new Date(),
                 destinations: "",
                 description: ""
+            },
+            loaded: false,
+            selectedObject: null,
+            today: {
+                events: [],
+                date: null
             }
         }
 
@@ -28,6 +34,8 @@ export default class Trip extends React.Component {
         this.handleEditItem = this.handleEditItem.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
+        this.handleSelectedObject = this.handleSelectedObject.bind(this);
+        this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
     }
 
     componentDidMount() {
@@ -35,21 +43,23 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
-                
-                this.setState({tripSetting : {
-                    title: trip.title,
-                    startDate: trip.startDate.toDate(),
-                    endDate: trip.startDate.toDate(),
-                    destinations: trip.destinations,
-                    description: trip.description
-                }})
+
+                this.setState({
+                    tripSetting: {
+                        title: trip.title,
+                        startDate: trip.startDate.toDate(),
+                        endDate: trip.startDate.toDate(),
+                        destinations: trip.destinations,
+                        description: trip.description
+                    }
+                })
 
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
                 });
-                this.setState({ items: travelObjectList });
+                this.setState({ items: travelObjectList, loaded: true });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -107,22 +117,44 @@ export default class Trip extends React.Component {
                 console.error(error)
             });
     }
+
     async handleEditTripSetting(newSetting) {
         await this.context.editTripSetting(this.state.reference, this.state.tripSetting, newSetting);
         this.setState({
             tripSetting: newSetting
         });
     }
-    
+
+    handleSelectedObject(id) {
+        this.setState({ selectedObject: id })
+    }
+
+    handleChangeDisplayDate(travelObjects, date) {
+        if (this.state.today.date !== date) {
+            this.setState({
+                today: {
+                    events: travelObjects,
+                    date: date
+                }
+            })
+        }
+    }
+
     render() {
+        // if data hasn't been loaded yet, don't render the trip
+        // prevents map from loading empty data
+        if (!this.state.loaded) {
+            return null;
+        }
         return (
             <div className="trip">
                 <Grid id="map-component">
                     <MapComponent
-                        zoom={13}
-                        center={{ lat: 51.5, lng: 0.087 }}
+                        zoom={15}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        selected={this.state.selectedObject}
+                        displayDate={this.state.today}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
@@ -134,6 +166,9 @@ export default class Trip extends React.Component {
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
+                            onClickObject={this.handleSelectedObject}
+                            setTodaysEvents={this.handleChangeDisplayDate}
+
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -144,6 +179,7 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
+                            onClickObject={this.handleSelectedObject}
                         />
                     </Grid>
                 </Grid>
