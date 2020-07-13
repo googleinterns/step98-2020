@@ -29,23 +29,45 @@ class MapComponent extends React.Component {
    * Updates state with any changes in props
    */
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
+    if (this.props.selected !== null && this.props.selected !== prevProps.selected) {
+      let selectedObject = this.state.finalizedMarkers.has(this.props.selected)
+        ? this.state.finalizedMarkers.get(this.props.selected)
+        : this.state.unfinalizedMarkers.get(this.props.selected);
+
+      let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
+      this.googleMap.setZoom(25);
+      this.googleMap.setCenter(marker.getPosition());
+    }
+    if (prevProps.displayDate.date !== this.props.displayDate.date && this.props.displayDate.events.length !== 0) {
+      this.clearMap()
+      this.drawMap();
+      this.googleMap.fitBounds(this.getTodaysBounds());
+    } else if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
       this.clearMap();
       this.drawMap();
     }
   }
 
+  getTodaysBounds() {
+    var bounds = new window.google.maps.LatLngBounds();
+    this.props.displayDate.events.map((event) => {
+      if (event.type === "flight") {
+        bounds.extend(event.departureCoordinates);
+        bounds.extend(event.arrivalCoordinates);
+      } else {
+        bounds.extend(event.coordinates);
+      }
+    })
+    return bounds;
+  }
+
   createMap() {
     return new window.google.maps.Map(this.googleMapRef.current, {
       zoom: this.props.zoom,
-      center: this.props.center,
     })
   }
 
-  addMarker(coordinates, type, label) {
-    // TODO: firebase will provide coordinates as a GeoPoint --> convert to {lat, lng}
-    // { lat: coordinates.lat(), lng: coordinates.lng() }
-
+  addMarker(coordinates, type) {
     var iconUrl;
     if (type === "flight") {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
@@ -66,8 +88,6 @@ class MapComponent extends React.Component {
     newMarker.addListener('click', () => {
       this.googleMap.setZoom(15);
       this.googleMap.setCenter(newMarker.getPosition());
-
-      // TODO: this.props.onMarkerClicked(id) --> notifies parent that marker clicked
     });
 
     return newMarker;
@@ -106,22 +126,23 @@ class MapComponent extends React.Component {
    */
   drawMarkers(list, bounds) {
     // construct hashmap with key: travelObject id, value: marker object
-    return list.reduce((hashMap, item) => {
+    return list.reduce((objectIDToMarker, item) => {
       if (item.type !== "flight") {
-        hashMap.set(item.id, { marker: this.addMarker(item.coordinates, item.type, item.id), type: item.type });
+        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
         bounds.extend(item.coordinates);
       } else {
-        hashMap.set(item.id, {
+        objectIDToMarker.set(item.id, {
           marker: {
-            departure: this.addMarker(item.departureCoordinates, item.type, item.id),
-            arrival: this.addMarker(item.arrivalCoordinates, item.type, item.id)
-          }, type: item.type
+            departure: this.addMarker(item.departureCoordinates, item.type),
+            arrival: this.addMarker(item.arrivalCoordinates, item.type)
+          },
+          type: item.type
         });
 
         bounds.extend(item.departureCoordinates);
         bounds.extend(item.arrivalCoordinates);
       }
-      return hashMap;
+      return objectIDToMarker;
     }, new Map())
   }
 
@@ -130,8 +151,8 @@ class MapComponent extends React.Component {
     var paths = [];
     var curPath = [];
 
-    for (let i = 0; i < this.props.finalized.length; i++) {
-      let item = this.props.finalized[i];
+    for (let i = 0; i < this.props.displayDate.events.length; i++) {
+      let item = this.props.displayDate.events[i];
       // found flight -> create new path segment
       if (item.type === "flight") {
         if (paths.length !== 0) {
