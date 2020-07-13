@@ -36,6 +36,7 @@ class TripList extends React.Component {
     })
       .catch(error => {
         console.log("Error Getting Trips")
+        console.log(error)
         console.error(error)
       })
   }
@@ -77,7 +78,8 @@ class TripList extends React.Component {
           >
             {trips.map((trip) => {
               return (
-                <Grid item>
+                console.log("here"),
+                <Grid item id ="tripItem">
                   <TripItemComponent
                     key={trip.id}
                     data={trip.data()}

@@ -2,7 +2,7 @@
 
 exports[`Flight displays correctly 1`] = `
 <div
-  className="MuiGrid-root MuiGrid-item"
+  className="event double flights"
 >
   <h6
     className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
@@ -15,26 +15,14 @@ exports[`Flight displays correctly 1`] = `
   <h6
     className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
   >
-    Departure: 
-    4:00pm EST
+    10:00 AM - 12:00 PM
   </h6>
-  <h6
-    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
-  >
-    Arrival: 
-    7:00pm PST
-  </h6>
-  <p
-    className="MuiTypography-root MuiTypography-body2 MuiTypography-gutterBottom"
-  >
-    Additional notes
-  </p>
 </div>
 `;
 
 exports[`Hotel displays correctly 1`] = `
 <div
-  className="MuiGrid-root MuiGrid-item"
+  className="event double hotels"
 >
   <h6
     className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
@@ -44,7 +32,7 @@ exports[`Hotel displays correctly 1`] = `
   <h6
     className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
   >
-    Sun Feb 09 1913 00:00:00 GMT-0500 (Eastern Standard Time) - Sun Feb 09 1913 00:00:00 GMT-0500 (Eastern Standard Time)
+    12:00 AM - 12:00 AM
      
   </h6>
   <h6
@@ -52,10 +40,5 @@ exports[`Hotel displays correctly 1`] = `
   >
     London
   </h6>
-  <p
-    className="MuiTypography-root MuiTypography-body2 MuiTypography-gutterBottom"
-  >
-    description
-  </p>
 </div>
 `;

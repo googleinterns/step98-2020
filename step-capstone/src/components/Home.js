@@ -64,28 +64,28 @@ class Home extends React.Component {
               <Grid item>
                 <img id='tickets-icon' src = {tickets} alt = 'travel tickets icon' height='250px' width='250px'  />
                 <br/>
-                <Typography variant='subtitle-1'> Add flights, hotels, restaurants, 
+                <Typography variant='subtitle1'> Add flights, hotels, restaurants, 
                 concerts, sightseeing spots, and anything else you want to see or do. 
                 </Typography>
               </Grid>
               <Grid item >
                 <img id='calendar-icon' src = {calendar} alt = 'calendar icon' height='250px' width='250px'/>
                 <br/>
-                <Typography variant='subtitle-1'> Take the stress out of scheduling by 
+                <Typography variant='subtitle1'> Take the stress out of scheduling by 
                 using our calendar to keep track of where you're going and when. 
                 </Typography>
               </Grid>
               <Grid item >
                 <img id='map-icon' src = {map} alt = 'map icon' height='250px' width='250px' />
                 <br/>
-                <Typography variant='subtitle-1'> Trying to optimize your day? Use our map 
+                <Typography variant='subtitle1'> Trying to optimize your day? Use our map 
                 to plot your perfect route - or let us do it for you. 
                 </Typography>
               </Grid>
               <Grid item >
                 <img id='help-icon' src = {help} alt = 'help icon' height='250px' width='250px' />
                 <br/>
-                <Typography variant='subtitle-1'> Running out of ideas? We can give you 
+                <Typography variant='subtitle1'> Running out of ideas? We can give you 
                 suggestions tailored to your schedule and preferences. 
                 </Typography>
               </Grid>
