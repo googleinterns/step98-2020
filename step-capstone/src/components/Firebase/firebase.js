@@ -79,7 +79,6 @@ class Firebase {
   /*This function will allow editting all fields in Trip except for travelObjects */
   async editTripSetting(reference, oldValue, newValue) {
     const tripRef = this.db.doc(reference);
-    console.log(tripRef);
     if (oldValue.title !== newValue.title) {
       await tripRef.update({title: newValue.title});
     }

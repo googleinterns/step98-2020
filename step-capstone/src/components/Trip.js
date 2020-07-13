@@ -43,7 +43,6 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
-
                 this.setState({
                     tripSetting: {
                         title: trip.title,
