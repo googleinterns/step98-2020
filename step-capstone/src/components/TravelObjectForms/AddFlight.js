@@ -12,7 +12,7 @@ import {
     DateTimePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import LocationAutocompleteInput from "./LocationAutocompleteInput"
+import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 
 export default function AddFlight(props) {
     let overwriting = props.data !== undefined;
