@@ -1,17 +1,18 @@
 import React from 'react';
+import firebase from 'firebase/app'
 //Firebase Mock Setup 
 
 const londonTestTripData = {
   description: "A trip to London",
-  endDate: new Date (2020, 7, 10),
+  endDate: firebase.firestore.Timestamp.fromDate(new Date (2020, 7, 10)),
   location: "London",
-  startDate: new Date (2020, 7, 7),
+  startDate: firebase.firestore.Timestamp.fromDate(new Date (2020, 7, 7)),
   title : "London Trip",
   travelObjects : {
     arrivalAirport: "LON",
-    arrivalDate: new Date(2020, 7, 7, 8),
+    startDate: firebase.firestore.Timestamp.fromDate(new Date(2020, 7, 7, 8)) ,
     departureAirport: "MCO",
-    departureDate: new Date (2020, 7, 7, 15),
+    endDate: firebase.firestore.Timestamp.fromDate(new Date(2020, 7, 7, 15)),
     description: "flight from Orlando to London",
     finalized: false,
     id: 0,
