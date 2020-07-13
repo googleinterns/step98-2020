@@ -38,7 +38,7 @@ class MapComponent extends React.Component {
       this.googleMap.setZoom(25);
       this.googleMap.setCenter(marker.getPosition());
     }
-    if (prevProps.today.date !== this.props.today.date && this.props.today.events.length !== 0) {
+    if (prevProps.displayDate.date !== this.props.displayDate.date && this.props.displayDate.events.length !== 0) {
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
@@ -50,7 +50,7 @@ class MapComponent extends React.Component {
 
   getTodaysBounds() {
     var bounds = new window.google.maps.LatLngBounds();
-    this.props.today.events.map((event) => {
+    this.props.displayDate.events.map((event) => {
       if (event.type === "flight") {
         bounds.extend(event.departureCoordinates);
         bounds.extend(event.arrivalCoordinates);
@@ -126,12 +126,12 @@ class MapComponent extends React.Component {
    */
   drawMarkers(list, bounds) {
     // construct hashmap with key: travelObject id, value: marker object
-    return list.reduce((hashMap, item) => {
+    return list.reduce((objectIDToMarker, item) => {
       if (item.type !== "flight") {
-        hashMap.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
+        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
         bounds.extend(item.coordinates);
       } else {
-        hashMap.set(item.id, {
+        objectIDToMarker.set(item.id, {
           marker: {
             departure: this.addMarker(item.departureCoordinates, item.type),
             arrival: this.addMarker(item.arrivalCoordinates, item.type)
@@ -142,7 +142,7 @@ class MapComponent extends React.Component {
         bounds.extend(item.departureCoordinates);
         bounds.extend(item.arrivalCoordinates);
       }
-      return hashMap;
+      return objectIDToMarker;
     }, new Map())
   }
 
@@ -151,8 +151,8 @@ class MapComponent extends React.Component {
     var paths = [];
     var curPath = [];
 
-    for (let i = 0; i < this.props.today.events.length; i++) {
-      let item = this.props.today.events[i];
+    for (let i = 0; i < this.props.displayDate.events.length; i++) {
+      let item = this.props.displayDate.events[i];
       // found flight -> create new path segment
       if (item.type === "flight") {
         if (paths.length !== 0) {
