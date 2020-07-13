@@ -154,7 +154,7 @@ export default class Trip extends React.Component {
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
                         selected={this.state.selectedObject}
-                        today={this.state.today}
+                        displayDate={this.state.today}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
