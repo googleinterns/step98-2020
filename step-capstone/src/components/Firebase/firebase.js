@@ -21,13 +21,14 @@ class Firebase {
     this.db = firebase.firestore();
     this.auth = firebase.auth();
     this.ui = new firebaseui.auth.AuthUI(this.auth);
+    
     this.uiConfig = {
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       signInSuccessUrl: 'index.html',
       signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       tosUrl: 'index.html',
       privacyPolicyUrl: function() {
         window.location.assign('index.html');
@@ -35,15 +36,15 @@ class Firebase {
     };
   }
 
-  getTrips = (email) => {return {"1" : "tripA"}};
-  createFirebaseWidget = () => {this.ui.start("#firebaseui-auth-container", this.uiConfig)};
+  createFirebaseWidget = () => {
+    this.ui.start("#firebaseui-auth-container", this.uiConfig);
+  };
   getUserInfo = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
           // User is signed in.
-          let trips = this.getTrips(user.email);
-          let userObject = new User(user.email, user.displayName, trips);
+          let userObject = new User(user.email, user.displayName);
           resolve({signInStatus: true, user: userObject});
 
         } else {
@@ -56,18 +57,48 @@ class Firebase {
   }
 
   getTrip(reference){
-    const doc = this.db.doc(reference);
-    return doc.get();
+    const tripRef = this.db.doc(reference);
+    return tripRef.get();
   }
 
   getTripList(reference){
-    const collec = this.db.collection(reference);
-    return collec.get();
+    const tripListRef = this.db.collection(reference);
+    return tripListRef.get();
   }
 
   addTrip(reference, trip) {
     const tripListRef = this.db.collection(reference);
     return tripListRef.add(trip);
+  }
+
+  async deleteTrip(reference) {
+    const tripRef = this.db.doc(reference);
+    return await tripRef.delete();
+  }
+
+  /*This function will allow editting all fields in Trip except for travelObjects */
+  async editTripSetting(reference, oldValue, newValue) {
+    const tripRef = this.db.doc(reference);
+    console.log(tripRef);
+    if (oldValue.title !== newValue.title) {
+      await tripRef.update({title: newValue.title});
+    }
+
+    if (oldValue.startDate !== newValue.startDate) {
+      await tripRef.update({startDate: firebase.firestore.Timestamp.fromDate(newValue.startDate)});
+    }
+    
+    if (oldValue.endDate !== newValue.endDate) {
+      await tripRef.update({endDate: firebase.firestore.Timestamp.fromDate(newValue.endDate)});
+    }
+
+    if (oldValue.destinations !== newValue.destinations) {
+      await tripRef.update({destinations: newValue.destinations});
+    }
+
+    if (oldValue.description !== newValue.description) {
+      await tripRef.update({description: newValue.description})
+    }
   }
 
   addTravelObject(reference, travelObject) {
@@ -86,18 +117,9 @@ class Firebase {
     });
   }
 
-  editTrip(reference, data) {
-    //TODO: Implement when details of trip editing and settings are implemented
-  }
-
   deleteTravelObject(reference, travelObject) {
     const tripRef = this.db.doc(reference);
     return tripRef.update({travelObjects : firebase.firestore.FieldValue.arrayRemove(travelObject)});
-  }
-
-  deleteTrip(reference) {
-    const tripRef = this.db.doc(reference);
-    return tripRef.delete()
   }
 
 }

@@ -1,0 +1,43 @@
+#top-half{
+  height:70%;
+  width:100%;
+  background-image:url('../images/hot-air-ballons-in-the-sky2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat ;
+  position: relative;
+}
+#bottom-half{
+  background-color: white;
+  height:30%;
+  width:100%;
+  text-align: center;
+}
+#home{
+  direction: column;
+  height:100%;
+  width:100%;
+}
+#login-button{
+  top: 80%;
+  left:50% ;
+  position: absolute;
+  transform: translate(-50%, -50%);
+} 
+#login-firebase{
+  position:absolute;
+  bottom:5%;
+  left:50%;
+  transform: translate(-50%, 0);
+} 
+#banner-header{
+  top:50%;
+  left:50%;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+#features{
+  height: 100%;
+  width:100%;
+}

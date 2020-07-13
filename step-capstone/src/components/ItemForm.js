@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
     Card,
     CardActions,
@@ -7,9 +7,12 @@ import {
     Paper,
     Tabs,
     Tab,
+    Typography,
+    Box
 } from '@material-ui/core';
-import AddEventHotel from './AddEventHotel'
-import AddFlight from './AddFlight'
+import AddEvent from './AddEvent';
+import AddHotel from './AddHotel';
+import AddFlight from './AddFlight';
 
 
 export default class ItemForm extends React.Component {
@@ -21,10 +24,23 @@ export default class ItemForm extends React.Component {
             data: props.data,
             isValidated: false
         }
+
         this.handleToggleTab = this.handleToggleTab.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleToggleValidation = this.handleToggleValidation.bind(this);
+    }
+
+    renderDeleteButton() {
+        return (this.props.data === undefined)
+            ? null
+            : <Button
+                onClick={() => this.props.onRemoveItem(this.state.data)}
+                color="primary"
+                size="small"
+            >
+                Delete
+            </Button>;
     }
 
     // clears data when tab is changed
@@ -35,7 +51,39 @@ export default class ItemForm extends React.Component {
         });
     }
 
+    /* Mimic Google Calendar's behavior: when user edits the newStartDate to be bigger than the current endDate,
+    this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editting.
+    This behavior happends during editting, so the user can never submit an invalid time range.
+    */
+    handleStartDateChange(newData) {
+        if (this.state.data.endDate <= newData.startDate) {
+            var newEndDate = new Date(newData.startDate);
+            newEndDate.setTime(newData.startDate.getTime() + this.state.data.endDate.getTime() - this.state.data.startDate.getTime());
+            newData.endDate = newEndDate;
+        }
+    }
+    /* Mimic Google Calendar's behavior: when user edits the newEndDate to be smaller than the current startDate,
+    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editting.
+    This behavior happends during editting, so the user can never submit an invalid time range. 
+    */
+    handleEndDateChange(newData) {
+        if (this.state.data.startDate >= newData.endDate) {
+            var newStartDate = new Date(newData.endDate);
+            newStartDate.setTime(newData.endDate.getTime() - this.state.data.endDate.getTime() + this.state.data.startDate.getTime());
+            newData.startDate = newStartDate;
+        }
+    }
+
     handleDataChange(newData) {
+        if (this.state.data !== undefined) {
+            if (newData.startDate !== this.state.data.startDate) {
+                this.handleStartDateChange(newData);
+            }
+            else if (newData.endDate !== this.state.data.endDate) {
+                this.handleEndDateChange(newData);
+            }
+        }
+
         this.setState({
             data: newData
         })
@@ -54,11 +102,12 @@ export default class ItemForm extends React.Component {
         let isNew = this.state.isNewItem;
         if ((!isNew && this.state.data.type === "event") || (isNew && this.state.value === 0)) {
             return (
-                <AddEventHotel
+                
+                <AddEvent
                     onDataChange={this.handleDataChange}
-                    type="event"
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         } else if ((!isNew && this.state.data.type === "flight") || (isNew && this.state.value === 1)) {
@@ -67,15 +116,16 @@ export default class ItemForm extends React.Component {
                     onDataChange={this.handleDataChange}
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         } else {
             return (
-                <AddEventHotel
+                <AddHotel
                     onDataChange={this.handleDataChange}
-                    type="hotel"
                     data={this.state.data}
                     onToggleValidation={this.handleToggleValidation}
+                    startDate={this.props.startDate}
                 />
             )
         }
@@ -105,16 +155,18 @@ export default class ItemForm extends React.Component {
                         value={this.state.value}
                         onChange={this.handleToggleTab}
                         variant="fullWidth"
+                        indicatorColor="primary"
                     >
                         <Tab label="Event" />
                         <Tab label="Flight" />
                         <Tab label="Hotel" />
                     </Tabs>
                 </Paper>
-
             )
         }
-        return null;
+        return (
+            <Typography variant="h4" gutterBottom>{this.state.data.type.charAt(0).toUpperCase() + this.state.data.type.slice(1)}</Typography>
+        );
     }
 
     render() {
@@ -125,8 +177,9 @@ export default class ItemForm extends React.Component {
                     {this.getForm()}
                 </CardContent>
                 <CardActions>
-                    <Button onClick={this.state.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleSave} size="small">Save</Button>
+                    <Button onClick={this.props.onClose} size="small" color="primary">Cancel</Button>
+                    <Button onClick={this.handleSave} size="small" color="primary">Save</Button>
+                    {this.renderDeleteButton()}
                 </CardActions>
             </Card>
         )
