@@ -1,53 +1,60 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TravelObject from './TravelObject';
-import { Grid, Typography } from '@material-ui/core';
+import { Button, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
 import TripSettingPopover from "./TripSettingPopover";
+import {Redirect} from "react-router-dom";
+import { FirebaseContext } from './Firebase';
+
 
 function Header(props) {
+    const context = useContext(FirebaseContext);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [tripRedirect, setTripRedirect] = React.useState(false);
 
-    function dropDownFunc(e) {
-        e.preventDefault();
-        document.getElementById("myDropdown").classList.toggle("show");
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleTrips = () => {
+      sessionStorage.setItem("tripId","");
+      setTripRedirect(true);
     }
 
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
+    const handleSignOut = (e) => {
+      e.preventDefault();
+      context.auth.signOut().then(() => window.location ="index.html");
     }
 
     return (
         <div>
-            <header className="header">
-                <div className="calendar__title">
-                    <div className="dropdown">
-
-                        <button onClick={dropDownFunc} className="dropbtn">Menu</button>
-                        <div id="myDropdown" className="dropdown-content">
-                            <a href="#">Home</a>
-                            <a href="#">Sign out</a>
-                        </div>
-
-                    </div>
-
-                    <TripSettingPopover
-                        button={true}
-                        tripSetting={props.tripSetting}
-                        onEditTripSetting={props.onEditTripSetting}
-                    />
-
+            <Grid container direction='row' justify='space-around' id='top-buttons'>
+              <div>
+                  {tripRedirect ? <Redirect to = "/trips/"/> : ""}
+                  <Button variant='outlined' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                    Menu
+                  </Button>
+                  <Menu
+                    id="trip-nav"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={handleTrips}>Trips</MenuItem>
+                    <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                  </Menu>                     
                 </div>
-                <div className="gap"></div>
-            </header>
 
+                <TripSettingPopover
+                    button={true}
+                    tripSetting={props.tripSetting}
+                    onEditTripSetting={props.onEditTripSetting}
+                />
+            </Grid>
             <table>
                 <thead className="header-name">
                     <Typography variant="h6" gutterBottom>Ideas</Typography>
