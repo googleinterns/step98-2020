@@ -13,7 +13,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { isValid } from 'date-fns';
-import LocationAutocompleteInput from "./LocationAutocompleteInput"
+import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {

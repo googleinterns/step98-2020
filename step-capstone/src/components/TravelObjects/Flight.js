@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/TimeLine.css';
+import '../../styles/TimeLine.css';
 import {Typography} from '@material-ui/core';
  
 /*

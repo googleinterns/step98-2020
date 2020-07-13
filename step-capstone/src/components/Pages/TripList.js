@@ -1,9 +1,11 @@
 import React from 'react';
-import {Grid}  from '@material-ui/core';
-import TripItemComponent from "./TripItemComponent";
-import AddTrip from './AddTrip';
-import {FirebaseContext} from './Firebase';
-import {Redirect} from "react-router-dom";
+import { Grid } from '@material-ui/core';
+import TripItemComponent from "../Utilities/TripItemComponent";
+import AddTrip from '../TripForms/AddTrip';
+import {FirebaseContext} from '../Firebase';
+import {
+  Redirect
+} from "react-router-dom";
 
 
 class TripList extends React.Component{

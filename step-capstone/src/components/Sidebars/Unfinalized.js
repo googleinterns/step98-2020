@@ -1,10 +1,9 @@
-import React, {useContext} from 'react';
-import TravelObject from './TravelObject';
+import React, { useContext } from 'react';
+import TravelObject from '../TravelObjects/TravelObject';
 import { Button, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
-import TripSettingPopover from "./TripSettingPopover";
+import TripSettingPopover from "../TripForms/TripSettingPopover";
+import { FirebaseContext } from '../Firebase';
 import {Redirect} from "react-router-dom";
-import { FirebaseContext } from './Firebase';
-
 
 function Header(props) {
     const context = useContext(FirebaseContext);

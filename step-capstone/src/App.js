@@ -8,10 +8,10 @@ import {
 
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
-import Home from './components/Home'
+import Home from './components/Pages/Home'
 import SignOutButton from './components/Firebase/SignOutButton';
-import TripList from "./components/TripList"
-import Trip from "./components/Trip"
+import TripList from "./components/Pages/TripList"
+import Trip from "./components/Pages/Trip"
 import './styles/App.css';
 
 class App extends React.Component {
