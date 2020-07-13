@@ -1,7 +1,5 @@
 import React from 'react';
-import Popover from '@material-ui/core/Popover';
-import Backdrop from '@material-ui/core/Backdrop';
-import { makeStyles } from '@material-ui/core/styles';
+import {Backdrop, Button, makeStyles, Popover} from '@material-ui/core';
 import TripSettingFormPopover from './TripSettingFormPopover';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -32,12 +30,7 @@ export default function TripSettingPopover(props) {
 
   return (
     <div>
-      {(props.button)? <button className="secondary" 
-            onClick = {handleClick} 
-            style = {{position:"absolute", 
-                      left: "165px", 
-                      top: "16px"}}
-        >Trip setting</button> : null}
+      {(props.button) ? <Button variant='outlined'onClick={handleClick} >Trip setting</Button> : null}
       {(!props.button)? <AddIcon 
                 style={{position:"relative",
                         fontSize:"100", 
