@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import queryPlacesByType from "../../scripts/PlacesQuery"
+import queryPlaces from "../../scripts/PlacesQuery"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -147,16 +147,10 @@ export default class Trip extends React.Component {
     getQueries() {
         if (this.state.map) {
             let queryResults = [];
-            let tourist_attraction = queryPlacesByType({lat: 51.5074, lng: -0.1278}, "10000", this.state.service, "tourist_attraction");
-            tourist_attraction.then(results => {
-                queryResults = queryResults.concat(results);
-                let natural_feature = queryPlacesByType({lat: 51.5074, lng: -0.1278}, "10000", this.state.service, "natural_feature");
-                natural_feature.then(results => {
-                    queryResults = queryResults.concat(results);
-                    console.log(queryResults);
-
-                })
-            });
+            if (this.state.map) {
+                let places = queryPlaces({lat: 51.5074, lng: -0.1278}, "10000", this.state.service, ["tourist_attraction", "natural_feature"])
+                places.then(results => console.log(results))
+            }
             
         }
     }

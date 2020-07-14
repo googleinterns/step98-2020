@@ -1,4 +1,18 @@
-export default function queryPlacesByType (coordinates, radius, service, type) {
+export default function queryPlaces (coordinates, radius, service, types) {
+    return new Promise(res => {
+        let queries = types.reduce((queries, type) => {
+            queries.push(queryPlacesByType(coordinates, radius, service, type))
+            return queries
+        }, [])
+
+        Promise.all(queries).then(result => {
+            res(result.reduce((allPlaces, queryResult) => {
+                return allPlaces.concat(queryResult)
+            }, []))
+        })
+    });
+}
+function queryPlacesByType (coordinates, radius, service, type) {
     var output = [];
 
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
