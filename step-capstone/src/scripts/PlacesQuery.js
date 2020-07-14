@@ -14,6 +14,7 @@ export default function queryPlaces (coordinates, radius, service, types) {
         })
     });
 }
+let dict = {"results": []}
 
 const queryPlacesByType = (coordinates, radius, service, type) => {
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng)
@@ -22,26 +23,24 @@ const queryPlacesByType = (coordinates, radius, service, type) => {
         radius: radius,
         types: [type]
     };
-
-    var getNextPage = null;
-    var results = new Promise(res => {
+    return new Promise((res) => {
+        var getNextPage = null;
         service.nearbySearch(request, function (results, status, pagination) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-                getNextPage = null;
-                getNextPage = pagination.hasNextPage && function () {
+                dict["results"] = dict["results"].concat(results);
+                console.log("type ", type);
+                if (pagination.hasNextPage && dict["results"].length < 60) {
                     console.log("getting next page")
-                    pagination.nextPage()
+                    pagination.nextPage();
                 }
-                res(results);
+                else {
+                    res(dict["results"]);
+                }
+                
             }
+            })
         })
-    })
+        
     
-    // console.log(results);
-    // while (getNextPage !== null) {
-    //     console.log("in while loop")
-    //     results = results.concat(getNextPage());
-    // }
-
-    return results;
+    
 }
