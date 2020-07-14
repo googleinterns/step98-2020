@@ -1,22 +1,4 @@
-import { min } from "date-fns";
-
-export default function queryPlaces (coordinates, radius, service, types) {
-    return new Promise(res => {
-        let queries = types.reduce((queries, type) => {
-            queries.push(queryPlacesByType(coordinates, radius, service, type))
-            return queries
-        }, [])
-
-        Promise.all(queries).then(result => {
-            res(new Set(result.reduce((allPlaces, queryResult) => {
-                return allPlaces.concat(queryResult)
-            }, [])))
-        })
-    });
-}
-
-
-const queryPlacesByType = (coordinates, radius, service, type) => {
+export default function queryPlacesByType (coordinates, radius, service, type) {
     let dict = {"results": [], "natural_feature": 0, "tourist_attraction": 0}
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng)
     var request = {
@@ -36,7 +18,7 @@ const queryPlacesByType = (coordinates, radius, service, type) => {
                     pagination.nextPage();
                 }
                 else {
-                    res(dict["results"]);
+                    res(new Set(dict["results"]));
                 }
                 
             }
