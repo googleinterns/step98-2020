@@ -8,15 +8,16 @@ export default function queryPlaces (coordinates, radius, service, types) {
         }, [])
 
         Promise.all(queries).then(result => {
-            res(result.reduce((allPlaces, queryResult) => {
+            res(new Set(result.reduce((allPlaces, queryResult) => {
                 return allPlaces.concat(queryResult)
-            }, []))
+            }, [])))
         })
     });
 }
-let dict = {"results": []}
+
 
 const queryPlacesByType = (coordinates, radius, service, type) => {
+    let dict = {"results": [], "natural_feature": 0, "tourist_attraction": 0}
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng)
     var request = {
         location: place,
@@ -28,8 +29,9 @@ const queryPlacesByType = (coordinates, radius, service, type) => {
         service.nearbySearch(request, function (results, status, pagination) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 dict["results"] = dict["results"].concat(results);
+                dict[type] = dict[type] + 1;
                 console.log("type ", type);
-                if (pagination.hasNextPage && dict["results"].length < 60) {
+                if (pagination.hasNextPage && dict[type] < 3) {
                     console.log("getting next page")
                     pagination.nextPage();
                 }
