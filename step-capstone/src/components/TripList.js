@@ -17,6 +17,7 @@ class TripList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      reference: "/users/" + sessionStorage.getItem("userId") + "/trips/",
       selectedTrip: null,
       trips : [],
     };
@@ -67,6 +68,8 @@ class TripList extends React.Component {
     const trips = this.state.trips;
     return (
       <div>
+
+                    
         {this.state.selectedTrip ? <Redirect to={"/trips/" + this.state.selectedTrip} /> :
           <Grid id="trips"
             container spacing={2}
@@ -78,8 +81,8 @@ class TripList extends React.Component {
           >
             {trips.map((trip) => {
               return (
-                console.log("here"),
-                <Grid item id ="tripItem">
+                console.log(trip), console.log(trip.data()),
+                <Grid item id ="tripItem" key={trip.id}>
                   <TripItemComponent
                     key={trip.id}
                     data={trip.data()}
@@ -88,8 +91,8 @@ class TripList extends React.Component {
                     onDeleteTrip={this.handleDeleteTrip} />
                 </Grid>
               );
-            })
-            }
+            })}
+
             <Grid item>
               <AddTrip
                 onAddTrip={this.handleAddTrip} />

@@ -1381,6 +1381,11 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.41.tgz#4e470c25a99fa0b1f629f1c5ef180a318d399fd0"
   integrity sha512-XcdMT5PSZHiuf7LJIhzKIe+RyYa25S3LHRRvLnZc6iFjwXkrSDJ8J/HWO6VT8d2ZTbawp3VcLEjRF/VN8glCrA==
 
+"@googlemaps/jest-mocks@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@googlemaps/jest-mocks/-/jest-mocks-0.0.3.tgz#51e6a0eb406781219ba5bf0e7d5f6abba417f24d"
+  integrity sha512-b9KZ+7j1IUciRA+QdgKm4dPhqDy/IkNJNQIIOZMkri29TfytsRTTT938UgJWR9rywMgFkU4cnJcH4HholDLoSQ==
+
 "@grpc/grpc-js@^1.0.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@grpc/grpc-js/-/grpc-js-1.1.1.tgz#56069fee48ba0667a0577a021504c573a6b613f0"
