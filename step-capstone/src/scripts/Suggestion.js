@@ -9,6 +9,7 @@ const contains = (startTime, endTime, timePoint) => {
     // return whether timeRange from startTime to endTime contains timePoint
     return startTime < timePoint && timePoint < endTime;
 }
+
 const overlaps = (openingTime, closingTime, startTime, endTime) => {
     /**
      * Case 1: 
@@ -29,17 +30,18 @@ const overlaps = (openingTime, closingTime, startTime, endTime) => {
      * 
      */
     if (contains(openingTime, closingTime, startTime) && !contains(openingTime, closingTime, endTime)) {
-        return closingTime - startTime;
+        return millisToMinutes(closingTime - startTime);
     }
     else if (contains(startTime, endTime, openingTime) && !contains(startTime, endTime, closingTime)) {
-        return endTime - openingTime;
+        return millisToMinutes(endTime - openingTime);
     }
     else if (contains(openingTime, closingTime, startTime) && contains(openingTime, closingTime, endTime)) {
-        return endTime - startTime;
+        return millisToMinutes(endTime - startTime);
     }
     else if (contains(startTime, endTime, openingTime) && !contains(startTime, endTime, closingTime)) {
-        return closingTime - openingTime;
-    } else {
+        return millisToMinutes(closingTime - openingTime);
+    } 
+    else {
         return 0;
     }
 }
@@ -48,6 +50,7 @@ const millisToMinutes = (millis) => {
   var minutes = Math.floor(millis / 60000);
   return minutes;
 }
+
 const filterByTimeRange = (results, timeRange) => {
     results.filter((result) => {
         if (result.hasOwnProperty("opening_hours")) {
@@ -63,7 +66,7 @@ const filterByTimeRange = (results, timeRange) => {
             let openingTime = new Date(date + "T" + openHoursMinutes.slice(0, 2) + ":" + openHoursMinutes.splice(2) +":00");
             let closingTime = new Date(date + "T" + closeHoursMinutes.slice(0, 2) + ":" + closeHoursMinutes.splice(2) + ":00");
             
-            return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]);
+            return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
         } 
         return true;
     })
