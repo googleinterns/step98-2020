@@ -52,7 +52,7 @@ const millisToMinutes = (millis) => {
 }
 
 const filterByTimeRange = (results, timeRange) => {
-    results.filter((result) => {
+  return results.filter((result) => {
         if (result.hasOwnProperty("opening_hours")) {
             let day = timeRange[0].getDay();
             
@@ -72,53 +72,54 @@ const filterByTimeRange = (results, timeRange) => {
     })
 }
 
-const query = (coordinates, service) => {
+const query = (coordinates, radius, service, timeRange) => {
     // return results: a map with key : place_id, value: PlaceObject
     let places = queryPlaces(coordinates, radius, service, ["tourist_attraction", "natural_feature"])
     places.then(results => {
+        results = filterByTimeRange(results, timeRange);
         return results;
     })
 }
 
-const countCat = (placeObject, userCat) => {
+export const countCat = (placeObject, userCat) => {
     // Count the number of categories a place fits into
     let cats = 0;
     userCat.forEach(catString => {
-        placeObject.place.types.forEach(type => {
-            if (categories.get(catString).has(type)) {
-                cats += 1;
-                break;
-            }
-        })
+      for(let i = 0; i<placeObject.place.types.length; i++){
+        if (categories.get(catString).has(placeObject.place.types[i])) {
+          cats += 1;
+          break;
+        }
+      }
     
     })
     return cats;
 }
 
-const getScore = (placeCat, userCat, prominence, placePrice, userBudget, rating) => {
+export const getScore = (placeCat, userCat, prominence, placePrice, userBudget, rating) => {
     // return the score for a PlaceObject
     var catScore = 0;
-    if (cat !== 0) {
+    if (placeCat !== 0) {
         catScore = 60 + 40/userCat * placeCat;
     }
 
     var prominenceScore = (prominence.total - prominence.index)**2/(prominence.total)**2 * 100;
     
     var budgetScore = 0;
-    if (placePrice === null) {
+    if (placePrice === undefined) {
         budgetScore = 50;
-    } else if (userBudget < placePrice) {
+    } else if (placePrice > userBudget) {
         budgetScore = 0;
     } else {
         budgetScore = 100;
     }
-
+    rating = (rating === undefined) ? 2.5 : rating;
     var ratingScore = rating* 20;
 
     return catScore * 0.65 + prominenceScore * 0.15 + budgetScore * 0.1 + ratingScore * 0.1;
 }
 
-const rank = (results, config) => {
+export const rank = (results, config) => {
     // return a list of placeObjects with score calculated
     let placeObjects = []
     results.forEach(placeObject => {
@@ -130,19 +131,19 @@ const rank = (results, config) => {
 
         placeObjects.push(placeObject);
     })
-    
+    placeObjects.sort(placeObjectsComparator);
     return placeObjects;
     
 
 }
 const placeObjectsComparator = (placeObjectA, placeObjectB) => {
-    return placeObjectA.score - placeObjectB.score;
+    return placeObjectB.score - placeObjectA.score;
 }
 
-export default function handleSuggestions(service, config) {
-    let results = query(config.coordinates, config.radius, service);
+export function handleSuggestions(service, config) {
+    let results = query(config.coordinates, config.radius, service, config.timeRange);
     let placeObjects = rank(results, config);
-    placeObjects.sort(placeObjectsComparator);
     return placeObjects;
 
 }
+
