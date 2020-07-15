@@ -1,6 +1,6 @@
 import react from 'react'
 import '@testing-library/jest-dom'
-import {countCat, getScore, rank} from '../scripts/Suggestion'
+import {countCat, getScore, rank} from '../scripts/Suggestions'
 import {suggestionTestData} from "../testData/SuggestionTestData"
 
 /*
