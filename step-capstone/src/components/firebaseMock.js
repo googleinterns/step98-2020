@@ -8,7 +8,7 @@ const londonTestTripData = {
   location: "London",
   startDate: firebase.firestore.Timestamp.fromDate(new Date (2020, 7, 7)),
   title : "London Trip",
-  travelObjects : {
+  travelObjects : [ {
     arrivalAirport: "LON",
     startDate: firebase.firestore.Timestamp.fromDate(new Date(2020, 7, 7, 8)) ,
     departureAirport: "MCO",
@@ -17,14 +17,15 @@ const londonTestTripData = {
     finalized: false,
     id: 0,
     type: "flight"
-  }
+  }]
 }
 
 const londonTestTrip = {
-  data : () => {return londonTestTripData}
+  data : () => {return londonTestTripData},
+  id : 0
 }
 
-const testTrips = [londonTestTrip]
+export const testTrips = [londonTestTrip]
 
 class firebaseMock {
   getTripList() {

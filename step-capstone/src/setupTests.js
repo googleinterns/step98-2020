@@ -1,9 +1,5 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
+import {initialize} from '@googlemaps/jest-mocks'
 
 //Session Storage Mock Setup 
 let userId = ""
@@ -32,3 +28,9 @@ const sessionStorageMock = {
 };
 global.sessionStorage = sessionStorageMock;
 
+const animationMock = {
+  DROP : jest.fn()
+}
+
+initialize();
+global.window.google.maps.Animation =animationMock;

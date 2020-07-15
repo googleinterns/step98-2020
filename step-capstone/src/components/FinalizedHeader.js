@@ -24,6 +24,7 @@ function PickDisplayDate(props) {
     }, [displayDate])
 
     return (
+      console.log(displayDate),
         <MuiPickersUtilsProvider utils={DateFnsUtils} id="timeline">
         <KeyboardDatePicker 
             style={{    

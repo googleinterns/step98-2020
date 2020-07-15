@@ -35,7 +35,7 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
-                
+                console.log(trip.startDate.toDate())
                 this.setState({tripSetting : {
                     title: trip.title,
                     startDate: trip.startDate.toDate(),
