@@ -52,13 +52,14 @@ const millisToMinutes = (millis) => {
 }
 
 const filterByTimeRange = (results, timeRange) => {
-  return results.filter((result) => {
-        if (result.hasOwnProperty("opening_hours")) {
+  let filteredResults = new Map();
+  results.forEach((placeObject, place_id) => {
+        if (placeObject.hasOwnProperty("opening_hours")) {
             let day = timeRange[0].getDay();
             
-            let openHoursMinutes = result.opening_hour.period[day].open.time;
-            let closeHoursMinutes = (result.opening_hour.period[day].close !== undefined)? 
-                                    result.opening_hour.period[day].close.time
+            let openHoursMinutes = placeObject.opening_hour.period[day].open.time;
+            let closeHoursMinutes = (placeObject.opening_hour.period[day].close !== undefined)? 
+                                    placeObject.opening_hour.period[day].close.time
                                     : "2359";
             
 
@@ -66,19 +67,28 @@ const filterByTimeRange = (results, timeRange) => {
             let openingTime = new Date(date + "T" + openHoursMinutes.slice(0, 2) + ":" + openHoursMinutes.splice(2) +":00");
             let closingTime = new Date(date + "T" + closeHoursMinutes.slice(0, 2) + ":" + closeHoursMinutes.splice(2) + ":00");
             
-            return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
-        } 
-        return true;
+            if(overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45) {
+              filteredResults.set(place_id, placeObject)
+            } 
+        } else {
+          filteredResults.set(place_id, placeObject);
+        }
+        
     })
+  return filteredResults
+  
 }
 
 const query = (coordinates, radius, service, timeRange) => {
     // return results: a map with key : place_id, value: PlaceObject
-    let places = queryPlaces(coordinates, radius, service, ["tourist_attraction", "natural_feature"])
-    places.then(results => {
-        results = filterByTimeRange(results, timeRange);
-        return results;
+    return new Promise(res => {
+      let places = queryPlaces(coordinates, radius, service, ["tourist_attraction", "natural_feature"])
+      places.then(results => {
+          results = filterByTimeRange(results, timeRange);
+          res(results);
+      })
     })
+
 }
 
 export const countCat = (placeObject, userCat) => {
@@ -140,8 +150,8 @@ const placeObjectsComparator = (placeObjectA, placeObjectB) => {
     return placeObjectB.score - placeObjectA.score;
 }
 
-export function handleSuggestions(service, config) {
-    let results = query(config.coordinates, config.radius, service, config.timeRange);
+export async function handleSuggestions(service, config) {
+    let results = await query(config.coordinates, config.radius, service, config.timeRange);
     let placeObjects = rank(results, config);
     return placeObjects;
 

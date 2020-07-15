@@ -6,9 +6,15 @@ import { Grid } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import handleSuggestions from "../../scripts/Suggestions"
+import {handleSuggestions} from "../../scripts/Suggestions"
 
-
+const config = {
+    userCat : ["familyFriendly","outdoors"],
+        userBudget : 2,
+        radius :"10000",
+        timeRange : [new Date(2020,7,15,2,0), new Date(2020,7,15,20,0)],
+        coordinates : {lat:42.3601, lng:-71.0589} 
+}
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -116,6 +122,7 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data) });
+                this.getSuggestions(config).then(results => {console.log(results)});
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -145,7 +152,7 @@ export default class Trip extends React.Component {
         }
     }
 
-    getSuggestions(config) {
+    async getSuggestions(config) {
         /**
          * param: 
          * config: an object with three fields: 
@@ -157,7 +164,8 @@ export default class Trip extends React.Component {
          * return the suggestions : an array of PlaceObject already sorted based on score
          */
         if (this.state.map) {
-            return handleSuggestions(this.state.service, config);
+            let results = await handleSuggestions(this.state.service, config);
+            return results;
         }
             
     }
@@ -177,7 +185,7 @@ export default class Trip extends React.Component {
         }
         return (
             <div className="trip">
-                {this.getQueries()}
+                
                 <Grid id="map-component">
                     <MapComponent
                         zoom={15}
