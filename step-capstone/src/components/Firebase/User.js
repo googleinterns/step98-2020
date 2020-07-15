@@ -5,4 +5,5 @@ export default class User {
     }
     getEmail = () => this.email;
     getDisplayName = () => this.displayName;
+    
 }
