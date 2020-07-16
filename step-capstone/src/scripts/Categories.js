@@ -63,17 +63,6 @@ const sightseeing = new Set([
   "tourist_attraction",
   "synagogue",
 ])
-const eateries = new Set([
-  "bakery", 
-  "cafe", 
-  "restaurant"
-])
-
-const bakery = new Set(["bakery"])
-
-const cafe = new Set(["cafe"])
-
-const restaurant = new Set(["restaurant"])
 
 const historicalSites = new Set([
   "church",
@@ -84,6 +73,12 @@ const historicalSites = new Set([
   "museum",
   "cemetery"
 ])
+
+const bakery = new Set(["bakery"])
+
+const cafe = new Set(["cafe"])
+
+const restaurant = new Set(["restaurant"])
 
 export const activityCategories = new Map([["shopping", shopping],
 ["beauty", beauty],

@@ -6,6 +6,7 @@ import {
     Button,
     TextField,
     Grid,
+    Typography,
 } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -13,6 +14,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
+import PreferenceForm from "../Utilities/PreferenceForm"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -116,6 +118,9 @@ function EditTripSetting(props) {
     return (
         <div>
             <Grid container direction="column">
+                <Grid>
+                    <Typography variant={"h4"} gutterBottom>New Trip</Typography>
+                </Grid>
                 <Grid item container direction="row" justify="space-between">
                     <TextField
                         error={title === ""}
@@ -167,6 +172,7 @@ function EditTripSetting(props) {
                     onChange={handleDescriptionChange}
                 />
             </Grid>
+            <PreferenceForm />
         </div>
     )
 }
