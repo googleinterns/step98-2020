@@ -9,11 +9,11 @@ import MapComponent from "../Utilities/Map"
 import {handleSuggestions} from "../../scripts/Suggestions"
 
 const config = {
-    userCat : ["familyFriendly","outdoors"],
+    userCat : ["artsAndCulture","familyFriendly"],
         userBudget : 2,
         radius :"10000",
         timeRange : [new Date(2020,7,15,2,0), new Date(2020,7,15,20,0)],
-        coordinates : {lat:42.3601, lng:-71.0589} 
+        coordinates : {lat:36.1699, lng:-115.1398} 
 }
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -122,7 +122,8 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data) });
-                this.getSuggestions(config).then(results => {console.log(results)});
+                this.getSuggestions(config).then(results => {console.log(new Date())
+                  console.log(results)});
             })
             .catch(error => {
                 console.log("Error Adding Item")

@@ -83,6 +83,7 @@ const query = (coordinates, radius, service, timeRange) => {
     // return results: a map with key : place_id, value: PlaceObject
     return new Promise(res => {
       let places = queryPlaces(coordinates, radius, service, ["tourist_attraction", "natural_feature"])
+      
       places.then(results => {
           results = filterByTimeRange(results, timeRange);
           res(results);
@@ -113,7 +114,7 @@ export const getScore = (placeCat, userCat, prominence, placePrice, userBudget, 
         catScore = 60 + 40/userCat * placeCat;
     }
 
-    var prominenceScore = (prominence.total - prominence.index)**2/(prominence.total)**2 * 100;
+    var prominenceScore = (((prominence.total - prominence.index)**2)/((prominence.total)**2)) * 100;
     
     var budgetScore = 0;
     if (placePrice === undefined) {
@@ -123,6 +124,7 @@ export const getScore = (placeCat, userCat, prominence, placePrice, userBudget, 
     } else {
         budgetScore = 100;
     }
+
     rating = (rating === undefined) ? 2.5 : rating;
     var ratingScore = rating* 20;
 
