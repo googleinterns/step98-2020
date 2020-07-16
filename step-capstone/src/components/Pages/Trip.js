@@ -125,7 +125,6 @@ export default class Trip extends React.Component {
             .then(() => {
                 this.setState({ items: this.state.items.concat(data) });
                 this.getFoodSuggestions(config).then(results => {
-                    console.log(new Date())
                     console.log(results)
                 });
             })

@@ -9,7 +9,7 @@ export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: this.props.text === null ? "" : this.props.text,
+            place: this.props.text,
             bounds: new window.google.maps.LatLngBounds()
         };
     }
@@ -30,7 +30,7 @@ export default class LocationAutocompleteInput extends React.Component {
             .then(results => getLatLng(results[0]))
             .then(latLng => this.props.onLocationSelected({ address: address, coordinates: latLng, placeId: placeId}))
             .catch(error => console.error('Error', error));
-        this.setState({ address: address });
+        this.setState({ place: address });
     };
 
     renderSuggestions = ({ getInputProps, suggestions, getSuggestionItemProps, loading}) => {
@@ -52,7 +52,6 @@ export default class LocationAutocompleteInput extends React.Component {
                 <div className="autocomplete-dropdown-container">
                     {loading && <Typography variant="body1" gutterBottom>Loading...</Typography>}
                     {suggestions.map(suggestion => {
-                        console.log(suggestion.placeId)
                         // highlights suggestion if being hovered over
                         const style = suggestion.active
                             ? { backgroundColor: '#fafafa', cursor: 'pointer' }
