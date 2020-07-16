@@ -121,11 +121,11 @@ export const countCategories = (placeObject, userCategories, type) => {
     return categoryCount;
 }
 
-export const getScore = (placeCategories, userCategories, prominence, placePrice, userBudget, rating) => {
+export const getScore = (matchingCategories, preferenceCategories, prominence, placePrice, userBudget, rating) => {
     // return the score for a PlaceObject
     var categoryScore = 0;
-    if (placeCategories !== 0) {
-        categoryScore = 60 + 40 / userCategories * placeCategories;
+    if (matchingCategories !== 0) {
+        categoryScore = 60 + (40 / preferenceCategories) * matchingCategories;
     }
 
     var prominenceScore = (((prominence.total - prominence.index) ** 2) / ((prominence.total) ** 2)) * 100;
