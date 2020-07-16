@@ -9,12 +9,14 @@ import MapComponent from "../Utilities/Map"
 import { handleSuggestions } from "../../scripts/Suggestions"
 
 const config = {
-    userCat: ["bakery"],
-    userBudget: 2,
+    userCategories: ["bakery"],
+    userBudget: 4,
     radius: "10000",
     timeRange: [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)],
-    coordinates: { lat: 36.1699, lng: -115.1398 }
+    coordinates: { lat: 36.1699, lng: -115.1398 },
+    items: new Set([])
 }
+//"ChIJmx1Uvc3FyIARdp6ftqC7Gd8","ChIJDRyBe_nEyIARH77JCHU27r8","ChIJVcuReVnbyIARXwAzHqxeAnk","ChIJ_YX8a9LGyIARrcojBX4AgtU"
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -158,19 +160,19 @@ export default class Trip extends React.Component {
     async getActivitySuggestions(config) {
         /**
          * param: 
-         * config: an object with three fields: 
-         *  1. userCat: a  String array of categories 
+         * config: an object with six fields: 
+         *  1. userCategories: a  String array of categories 
          *  2. userBudget: an integer for budget
          *  3. radius: a string integer radius object 
          *  4. timeRange: free time range [startDate, endDate]
          *  5. coordinates: an object for coordinates
+         *  6. items: set of all place ids of selected places
          * return the suggestions : an array of PlaceObject already sorted based on score
          */
         if (this.state.map) {
             let results = await handleSuggestions(this.state.service, config, "activities");
             return results;
         }
-
     }
 
     async getFoodSuggestions(config) {

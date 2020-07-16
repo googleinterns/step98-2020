@@ -85,7 +85,7 @@ const historicalSites = new Set([
   "cemetery"
 ])
 
-export const activityCategories = new Set([["shopping", shopping],
+export const activityCategories = new Map([["shopping", shopping],
 ["beauty", beauty],
 ["entertainment", entertainment],
 ["familyFriendly", familyFriendly,],
