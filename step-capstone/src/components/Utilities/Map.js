@@ -21,8 +21,11 @@ class MapComponent extends React.Component {
 
   componentDidMount() {
     this.googleMap = this.createMap();
-    let bounds = this.drawMap();
-    this.googleMap.fitBounds(bounds);
+    
+    if (this.props.finalized.length > 0 || this.props.unfinalized > 0) {
+      let bounds = this.drawMap();
+      this.googleMap.fitBounds(bounds);
+    }
 
     this.props.setMap(this.googleMap);
   }
@@ -66,6 +69,7 @@ class MapComponent extends React.Component {
   createMap() {
     return new window.google.maps.Map(this.googleMapRef.current, {
       zoom: this.props.zoom,
+      center: this.props.defaultCenter
     })
   }
 
