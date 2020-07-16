@@ -121,16 +121,20 @@ export const countCategories = (placeObject, userCategories, type) => {
     return categoryCount;
 }
 
+/* Returns a score using our custom metric that uses type matching, prominence, budget, and rating */
 export const getScore = (matchingCategories, preferenceCategories, prominence, placePrice, userBudget, rating) => {
-    // return the score for a PlaceObject
     var categoryScore = 0;
+    // assign score from 60 - 100 depending on how many types match the user's preference
     if (matchingCategories !== 0) {
-        categoryScore = 60 + (40 / preferenceCategories) * matchingCategories;
+        categoryScore = 60 + 40 * (matchingCategories / preferenceCategories);
     }
 
+    // Assign score from 0 - 100 based on google's prominence score (order of returned results), weighing higher prominence scores heavier
     var prominenceScore = (((prominence.total - prominence.index) ** 2) / ((prominence.total) ** 2)) * 100;
 
+    // Budget score from 0 - 100
     var budgetScore = 0;
+    // undefined price --> no specified price --> assign default value to 50
     if (placePrice === undefined) {
         budgetScore = 50;
     } else if (placePrice > userBudget) {
@@ -139,9 +143,16 @@ export const getScore = (matchingCategories, preferenceCategories, prominence, p
         budgetScore = 100;
     }
 
+    // rating score from 0 - 100 (rating given from 0-5)
     rating = (rating === undefined) ? 2.5 : rating;
     var ratingScore = rating * 20;
 
+    /*
+     * catgory matching: 65% of total score
+     * rating: 15% of total score
+     * prominence: 10% of total score
+     * budgetScore: 10% of total score
+     */
     return categoryScore * 0.65 + prominenceScore * 0.1 + budgetScore * 0.1 + ratingScore * 0.15;
 }
 
