@@ -30,7 +30,7 @@ export default function AddTrip (props) {
         title: "",
         startDate: new Date(),
         endDate: new Date(),
-        destinations: "",
+        destination: null,
         description: "",
     }
     const handleEditTrip = (newTrip) => {
@@ -45,7 +45,6 @@ export default function AddTrip (props) {
                 tripSetting={newTrip}
                 onEditTripSetting={handleEditTrip}
             />
-
         </Card>
     )
 }

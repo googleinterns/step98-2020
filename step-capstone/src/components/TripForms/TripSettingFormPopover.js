@@ -12,7 +12,6 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { isValid } from 'date-fns';
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 
 export default class TripSettingFormPopover extends React.Component {
@@ -26,7 +25,7 @@ export default class TripSettingFormPopover extends React.Component {
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-    
+
     handleValidation(isValidated) {
         if (this.state.isValidated !== isValidated) {
             this.setState({ isValidated: isValidated });
@@ -46,7 +45,6 @@ export default class TripSettingFormPopover extends React.Component {
             this.props.onEditTripSetting(this.state.tripSetting);
             this.props.onClose();
         }
-
     }
 
     render() {
@@ -71,7 +69,7 @@ export default class TripSettingFormPopover extends React.Component {
 function EditTripSetting(props) {
     // Sets values to previous values if editing, otherwise blank slate
     const [title, setTitle] = useState(props.tripSetting.title);
-    const [destinations, setDestinations] = useState(props.tripSetting.destinations);
+    const [destination, setDestination] = useState(props.tripSetting.destination);
     const [startDate, setStartDate] = useState(props.tripSetting.startDate);
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
@@ -80,8 +78,8 @@ function EditTripSetting(props) {
         setTitle(event.target.value);
     }
 
-    const handleDestinationsChange = (location) => {
-        setDestinations(location.address);
+    const handleDestinationChange = (location) => {
+        setDestination(location);
     }
 
     const handleStartDateChange = (newStartDate) => {
@@ -106,14 +104,14 @@ function EditTripSetting(props) {
     useEffect(() => {
         props.onDataChange({
             title: title,
-            destinations: destinations,
+            destination: destination,
             startDate: startDate,
             endDate: endDate,
             description: description,
         })
         // notifies form if necessary inputs are present
-        props.onValidation(!(destinations === "" || (title === "")))
-    }, [destinations, startDate, endDate, description])
+        props.onValidation(!(!destination || (title === "")))
+    }, [destination, startDate, endDate, description])
 
     return (
         <div>
@@ -128,17 +126,15 @@ function EditTripSetting(props) {
                         onChange={handleTitleChange}
                     />
                 </Grid>
-
                 <Grid item container direction="row" justify="space-between"></Grid>
                 <LocationAutocompleteInput
-                    onLocationSelected={handleDestinationsChange}
-                    error={destinations === ""}
-                    helperText={(destinations === "") ? "Cannot leave field blank, list your destinations, and separate them using comma" : null}
-                    text={destinations}
+                    onLocationSelected={handleDestinationChange}
+                    error={!destination}
+                    helperText={!destination ? "Cannot leave field blank, list your destinations, and separate them using comma" : null}
+                    text={destination ? destination.address : ""}
                     type="other"
                 />
             </Grid>
-
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
