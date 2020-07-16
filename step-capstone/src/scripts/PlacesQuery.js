@@ -29,7 +29,7 @@ export default function queryPlaces (coordinates, radius, service, types) {
 
 function queryPlacesByType (coordinates, radius, service, type) {
     var output = [];
-
+    var pages = { "tourist_attraction": 2, "natural_feature": 2, "bakery": 2, "restaurant": 2, "cafe": 3 };
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
     var request = {
         location: place,
@@ -43,7 +43,8 @@ function queryPlacesByType (coordinates, radius, service, type) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 output = output.concat(results);
                 console.log(new Date())
-                if (pagination.hasNextPage) {
+                pages[type] = pages[type] - 1;
+                if (pagination.hasNextPage && pages[type] > 0) {
                     pagination.nextPage();
                 }
                 else {

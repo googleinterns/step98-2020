@@ -79,43 +79,53 @@ const filterByTimeRange = (results, timeRange) => {
 
 }
 
-const query = (coordinates, radius, service, timeRange, type) => {
+const query = (service, config, type) => {
     // return results: a map with key : place_id, value: PlaceObject
     return new Promise(res => {
-        let types = type === "food" ? ["bakery", "restaurant", "cafe"] : ["tourist_attraction", "natural_feature"]
-        let places = queryPlaces(coordinates, radius, service, types)
+        let types = type === "food" ? config.userCategories : ["tourist_attraction", "natural_feature"]
+        let places = queryPlaces(config.coordinates, config.radius, service, types)
 
         places.then(results => {
+            results = filterAlreadySelected(results, config.items);
             if (types[0] === "tourist_attraction") {
-                results = filterByTimeRange(results, timeRange);
+                results = filterByTimeRange(results, config.timeRange);
             }
             res(results);
         })
     })
-
 }
 
-export const countCat = (placeObject, userCat, type) => {
+const filterAlreadySelected = (results, items) => {
+    let filtered = new Map();
+    results.forEach((placeObject, place_id) => {
+        if (!items.has(place_id)) {
+            filtered.set(place_id, placeObject)
+        }
+    })
+    return filtered;
+}
+
+export const countCategories = (placeObject, userCategories, type) => {
     // Count the number of categories a place fits into
     let categories = type === "food" ? foodCategories : activityCategories;
-    let cats = 0;
-    userCat.forEach(catString => {
+    let categoryCount = 0;
+    userCategories.forEach(catString => {
         for (let i = 0; i < placeObject.place.types.length; i++) {
             if (categories.get(catString).has(placeObject.place.types[i])) {
-                cats += 1;
+                categoryCount += 1;
                 break;
             }
         }
 
     })
-    return cats;
+    return categoryCount;
 }
 
-export const getScore = (placeCat, userCat, prominence, placePrice, userBudget, rating) => {
+export const getScore = (placeCategories, userCategories, prominence, placePrice, userBudget, rating) => {
     // return the score for a PlaceObject
-    var catScore = 0;
-    if (placeCat !== 0) {
-        catScore = 60 + 40 / userCat * placeCat;
+    var categoryScore = 0;
+    if (placeCategories !== 0) {
+        categoryScore = 60 + 40 / userCategories * placeCategories;
     }
 
     var prominenceScore = (((prominence.total - prominence.index) ** 2) / ((prominence.total) ** 2)) * 100;
@@ -132,16 +142,16 @@ export const getScore = (placeCat, userCat, prominence, placePrice, userBudget, 
     rating = (rating === undefined) ? 2.5 : rating;
     var ratingScore = rating * 20;
 
-    return catScore * 0.65 + prominenceScore * 0.1 + budgetScore * 0.1 + ratingScore * 0.15;
+    return categoryScore * 0.65 + prominenceScore * 0.1 + budgetScore * 0.1 + ratingScore * 0.15;
 }
 
 export const rank = (results, config, type) => {
     // return a list of placeObjects with score calculated
     let placeObjects = []
     results.forEach(placeObject => {
-        let placeCat = countCat(placeObject, config.userCat, type);
+        let placeCategories = countCategories(placeObject, config.userCategories, type);
 
-        let score = getScore(placeCat, config.userCat.length, placeObject.prominence,
+        let score = getScore(placeCategories, config.userCategories.length, placeObject.prominence,
             placeObject.place.price_level, config.userBudget, placeObject.place.rating);
         placeObject.score = score;
 
@@ -157,7 +167,7 @@ const placeObjectsComparator = (placeObjectA, placeObjectB) => {
 }
 
 export async function handleSuggestions(service, config, type) {
-    let results = await query(config.coordinates, config.radius, service, config.timeRange, type);
+    let results = await query(service, config, type);
     let placeObjects = rank(results, config, type);
     return placeObjects;
 
