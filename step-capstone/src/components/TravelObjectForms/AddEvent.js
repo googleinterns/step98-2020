@@ -21,7 +21,7 @@ export default function AddEvent(props) {
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
     const [title, setTitle] = useState(overwriting ? props.data.title : "");
-    const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates } : { address: null, coordinates: null });
+    const [location, setLocation] = useState(overwriting ? { address: props.data.location, coordinates: props.data.coordinates, placeId: props.data.placeId } : null);
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
     const handleChecked = (e) => {
@@ -61,9 +61,10 @@ export default function AddEvent(props) {
             startDate: startDate,
             endDate: endDate,
             finalized: checked,
-            location: location.address,
-            coordinates: location.coordinates,
-            description: description
+            location: location ? location.address : null,
+            coordinates: location ? location.coordinates : null,
+            description: description,
+            placeId: location ? location.placeId : null
         })
         //validating input
         if (title === "") {
@@ -120,8 +121,8 @@ export default function AddEvent(props) {
                 <Box my={1}>
                     <LocationAutocompleteInput
                         onLocationSelected={handleLocationChange}
-                        error={(checked && location.address === null)}
-                        text={location.address}
+                        error={(checked && !location)}
+                        text={location ? location.address : ""}
                         type="event"
                     />
                 </Box>
