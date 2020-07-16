@@ -24,15 +24,8 @@ export default class Trip extends React.Component {
 
         this.state = {
             reference: "/users/" + sessionStorage.getItem("userId") + "/trips/" + sessionStorage.getItem("tripId"),
-            items: [],
-            tripSetting: {
-                title: "",
-                startDate: new Date(),
-                endDate: new Date(),
-                destinations: "",
-                description: ""
-            },
-            loaded: false,
+            items: null,
+            tripSetting: null,
             selectedObject: null,
             today: {
                 events: [],
@@ -62,7 +55,7 @@ export default class Trip extends React.Component {
                         title: trip.title,
                         startDate: trip.startDate.toDate(),
                         endDate: trip.startDate.toDate(),
-                        destinations: trip.destinations,
+                        destination: trip.destination,
                         description: trip.description
                     }
                 })
@@ -72,7 +65,7 @@ export default class Trip extends React.Component {
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
                 });
-                this.setState({ items: travelObjectList, loaded: true });
+                this.setState({ items: travelObjectList});
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -192,15 +185,15 @@ export default class Trip extends React.Component {
     render() {
         // if data hasn't been loaded yet, don't render the trip
         // prevents map from loading empty data
-        if (!this.state.loaded) {
+        if (!this.state.items || !this.state.tripSetting) {
             return null;
         }
         return (
             <div className="trip">
-
                 <Grid id="map-component">
                     <MapComponent
                         zoom={15}
+                        defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
                         selected={this.state.selectedObject}
