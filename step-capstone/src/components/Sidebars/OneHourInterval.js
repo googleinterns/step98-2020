@@ -11,12 +11,8 @@ export default function OneHourInterval(props) {
   const minPerDiv = 30.0;
 
   const handleOnClickInterval = (idV, event) => {
-    console.log("User has just clicked in ", idV);
     let data = props.onClickInterval(idV);
-    console.log(data);
     if (data.curSlot !== null) {
-      console.log("in");
-      console.log(event.currentTarget);
       setAnchorEl(event.currentTarget);
       setSlots(data);
     }
@@ -35,7 +31,6 @@ export default function OneHourInterval(props) {
       dif = 24 * 60 - startDate.getHours() * 60 - startDate.getMinutes();
     } else {
       dif = endDate.getHours() * 60 + endDate.getMinutes();
-      console.log((dif * displayHeightOfADiv) / minPerDiv - padding);
     }
     return (dif * displayHeightOfADiv) / minPerDiv - padding;
   };
