@@ -15,15 +15,6 @@ import "../../styles/SuggestionPopup.css"
 import PreferenceForm from "./PreferenceForm"
 import { handleSuggestions } from "../../scripts/Suggestions"
 
-const config = {
-    userCategories: ["sightseeing"],
-    userBudget: 4,
-    radius: "10000",
-    timeRange: [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)],
-    coordinates: { lat: 36.1699, lng: -115.1398 },
-    items: new Set([])
-}
-
 export default class SuggestionPopup extends React.Component {
     constructor(props) {
         super(props);
@@ -51,7 +42,6 @@ export default class SuggestionPopup extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.show && this.props.show) {
-            console.log("Updating")
             this.getSuggestions();
         }
     }
@@ -67,7 +57,6 @@ export default class SuggestionPopup extends React.Component {
         this.setState({ suggestionsLoaded: false });
         this.getActivitySuggestions(this.getConfig("activities")).then(activities => {
             this.getFoodSuggestions(this.getConfig("food")).then(foods => {
-                console.log("Finished loading")
                 if (this.state.radius) {
                     var updatedPref = this.state.userPref;
                     updatedPref.radius = this.state.radius;
@@ -120,7 +109,6 @@ export default class SuggestionPopup extends React.Component {
 
     renderSuggestions() {
         if (!this.state.suggestionsLoaded) {
-            console.log("loading...");
             return (
                 <Grid container justify="center" align-items="center">
                     <Box mt={10}>
