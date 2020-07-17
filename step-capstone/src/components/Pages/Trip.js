@@ -82,7 +82,9 @@ export default class Trip extends React.Component {
         this.context.deleteTravelObject(this.state.reference, data)
             .then(() => {
                 var placeIdCopy = new Set(this.state.placeIds);
-                placeIdCopy = placeIdCopy.delete(data.placeId);
+                if (data.type !== "flight") {
+                    placeIdCopy = placeIdCopy.delete(data.placeId);
+                }
                 this.setState({
                     items: this.state.items.filter((item) => item.id !== data.id),
                     placeIds: placeIdCopy
@@ -100,8 +102,10 @@ export default class Trip extends React.Component {
         let newPlaceIds = new Set(this.state.placeIds);
         this.state.items.forEach((item) => {
             if (item.id === data.id) {
-                newPlaceIds.delete(item.placeId);
-                newPlaceIds.add(data.placeId);
+                if (data.type !== "flight") {
+                    newPlaceIds.delete(item.placeId);
+                    newPlaceIds.add(data.placeId);
+                }
                 itemToChange = item;
                 newItems.push(data);
             } else {
@@ -125,7 +129,9 @@ export default class Trip extends React.Component {
     handleAddItem(data) {
         // Add to database here
         var newPlaceIds = new Set(this.state.placeIds);
-        newPlaceIds.add(data.placeId);
+        if (data.type !== "flight") {
+            newPlaceIds.add(data.placeId);
+        }
 
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
