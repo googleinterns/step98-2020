@@ -6,7 +6,7 @@ import { Grid } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import handleSuggestions from "../../scripts/Suggestions"
+import Config from '../../scripts/Config';
 
 
 export default class Trip extends React.Component {
@@ -32,7 +32,7 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-            queryResults: null
+            config: new Config(null, null, null, null, null)
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -42,6 +42,7 @@ export default class Trip extends React.Component {
         this.handleSelectedObject = this.handleSelectedObject.bind(this);
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
         this.setMap = this.setMap.bind(this);
+        this.handleSuggestionRequest = this.handleSuggestionRequest.bind(this);
     }
 
     componentDidMount() {
@@ -135,7 +136,9 @@ export default class Trip extends React.Component {
     }
 
     handleChangeDisplayDate(travelObjects, date) {
+        console.log("travelObjects in Trips ", travelObjects);
         if (this.state.today.date !== date) {
+
             this.setState({
                 today: {
                     events: travelObjects,
@@ -145,21 +148,9 @@ export default class Trip extends React.Component {
         }
     }
 
-    getSuggestions(config) {
-        /**
-         * param: 
-         * config: an object with three fields: 
-         *  1. userCat: a  String array of categories 
-         *  2. userBudget: an integer for budget
-         *  3. radius: a string integer radius object 
-         *  4. timeRange: free time range [startDate, endDate]
-         *  5. coordinates: an object for coordinates
-         * return the suggestions : an array of PlaceObject already sorted based on score
-         */
-        if (this.state.map) {
-            return handleSuggestions(this.state.service, config);
-        }
-            
+
+    handleSuggestionRequest(newConfig) {
+
     }
 
     setMap(map) {
@@ -177,7 +168,6 @@ export default class Trip extends React.Component {
         }
         return (
             <div className="trip">
-                {this.getQueries()}
                 <Grid id="map-component">
                     <MapComponent
                         zoom={15}
