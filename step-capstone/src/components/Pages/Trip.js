@@ -197,7 +197,7 @@ export default class Trip extends React.Component {
                         userPref={this.state.tripSetting.userPref}
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)]}
+                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
                         radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
                         onClose={this.toggleSuggestionBar}
                     />
