@@ -20,7 +20,6 @@ export default function OneHourInterval(props) {
       setAnchorEl(event.currentTarget);
       setSlots(data);
     }
-    
   };
 
   /*Given startDate and endDate of a TravelObject, return the height of display (unit: pixel) */
@@ -109,10 +108,7 @@ export default function OneHourInterval(props) {
           {item00.length === 0 ? null : item00}
         </td>
       </tr>
-      <PreferencePopover 
-        anchorEl={anchorEl}
-        slots={slots}
-      />
+      <PreferencePopover anchorEl={anchorEl} slots={slots} />
       <tr className="OneHourInterval">
         <td className="headcol"></td>
         <td
