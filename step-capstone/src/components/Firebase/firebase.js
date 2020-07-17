@@ -98,6 +98,10 @@ class Firebase {
     if (oldValue.description !== newValue.description) {
       await tripRef.update({description: newValue.description})
     }
+
+    if (oldValue.userPref !== newValue.userPref) {
+      await tripRef.update({userPref: newValue.userPref})
+    }
   }
 
   addTravelObject(reference, travelObject) {

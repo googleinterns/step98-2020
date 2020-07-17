@@ -39,7 +39,7 @@ export default class PreferenceForm extends React.Component {
     handleRadiusChange = (event, newValue) => {
         this.setState({ radius: newValue })
     }
-ß
+    ß
     handleActivityPreferenceCheck = (event) => {
         this.togglePreferenceHelper("activityPreferences", event.target.name)
     }
@@ -50,9 +50,9 @@ export default class PreferenceForm extends React.Component {
 
     togglePreferenceHelper = (listName, pref) => {
         if (!this.state[listName].includes(pref)) {
-            this.setState({ [listName]: this.state[listName].concat([pref])})
+            this.setState({ [listName]: this.state[listName].concat([pref]) })
         } else {
-           this.setState({ [listName]: this.state[listName].filter(activity => activity !== pref)}) 
+            this.setState({ [listName]: this.state[listName].filter(activity => activity !== pref) })
         }
     }
 
@@ -105,15 +105,36 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="shopping" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("shopping")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="shopping"
+                                                        />
+                                                    }
                                                     label="Shopping"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="beauty" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("beauty")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="beauty"
+                                                        />
+                                                    }
                                                     label="Self-care / Beauty"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="entertainment" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("entertainment")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="entertainment"
+                                                        />
+                                                    }
                                                     label="Entertainment"
                                                 />
                                             </FormGroup>
@@ -121,15 +142,36 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="familyFriendly" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("familyFriendly")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="familyFriendly"
+                                                        />
+                                                    }
                                                     label="Family Friendly"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="nightlife" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("nightlife")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="nightlife"
+                                                        />
+                                                    }
                                                     label="Nightlife"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="outdoors" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("outdoors")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="outdoors"
+                                                        />
+                                                    }
                                                     label="Outdoors / active"
                                                 />
                                             </FormGroup>
@@ -137,11 +179,25 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="artsAndCulture" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("artsAndCulture")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="artsAndCulture"
+                                                        />
+                                                    }
                                                     label="Arts and Culture"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="sightseeing" />}
+                                                    control={
+                                                        <Checkbox
+                                                            checked={this.state.activityPreferences.includes("sightseeing")}
+                                                            color="primary"
+                                                            onChange={this.handleActivityPreferenceCheck}
+                                                            name="sightseeing"
+                                                        />
+                                                    }
                                                     label="Sightseeing"
                                                 />
                                             </FormGroup>
@@ -154,24 +210,45 @@ export default class PreferenceForm extends React.Component {
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">Food Preferences</FormLabel>
                                 <Grid container direction="row">
-                                        <Grid item>
-                                            <FormControlLabel
-                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="bakery" />}
-                                                label="Bakery"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FormControlLabel
-                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="cafe" />}
-                                                label="Cafe"
-                                            />
-                                        </Grid>
-                                        <Grid item>
-                                            <FormControlLabel
-                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="restaurant" />}
-                                                label="Restaurant"
-                                            />
-                                        </Grid>
+                                    <Grid item>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={this.state.foodPreferences.includes("bakery")}
+                                                    color="primary"
+                                                    onChange={this.handleFoodPreferenceCheck}
+                                                    name="bakery"
+                                                />
+                                            }
+                                            label="Bakery"
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={this.state.foodPreferences.includes("cafe")}
+                                                    color="primary"
+                                                    onChange={this.handleFoodPreferenceCheck}
+                                                    name="cafe"
+                                                />
+                                            }
+                                            label="Cafe"
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={this.state.foodPreferences.includes("restaurant")}
+                                                    color="primary"
+                                                    onChange={this.handleFoodPreferenceCheck}
+                                                    name="restaurant"
+                                                />
+                                            }
+                                            label="Restaurant"
+                                        />
+                                    </Grid>
                                 </Grid>
                             </FormControl>
                         </Grid>
