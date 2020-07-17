@@ -199,6 +199,7 @@ export default class Trip extends React.Component {
                         items={this.state.placeIds}
                         timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)]}
                         radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
+                        onClose={this.toggleSuggestionBar}
                     />
                 </Grid>
             )

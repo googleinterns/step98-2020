@@ -1,10 +1,19 @@
 import React from "react";
-import { Slide, Paper, Tabs, Tab, Grid, Box, Button } from "@material-ui/core"
+import {
+    Slide,
+    Paper,
+    Tabs,
+    Tab,
+    Grid,
+    Box,
+    Button,
+    CircularProgress,
+    IconButton
+} from "@material-ui/core"
+import CloseIcon from '@material-ui/icons/Close';
 import "../../styles/SuggestionPopup.css"
 import PreferenceForm from "./PreferenceForm"
 import { handleSuggestions } from "../../scripts/Suggestions"
-import { render } from "react-dom";
-import { roundToNearestMinutesWithOptions } from "date-fns/fp";
 
 const config = {
     userCategories: ["sightseeing"],
@@ -34,15 +43,15 @@ export default class SuggestionPopup extends React.Component {
         this.handleToggleTab = this.handleToggleTab.bind(this);
         this.renderSuggestions = this.renderSuggestions.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
-        this.getSuggestions = this.getSuggestions.bind(this);
     }
 
     componentDidMount() {
-        this.getSuggestions();
+        // this.getSuggestions();
     }
 
     componentDidUpdate(prevProps) {
         if (!prevProps.show && this.props.show) {
+            console.log("Updating")
             this.getSuggestions();
         }
     }
@@ -58,6 +67,7 @@ export default class SuggestionPopup extends React.Component {
         this.setState({ suggestionsLoaded: false });
         this.getActivitySuggestions(this.getConfig("activities")).then(activities => {
             this.getFoodSuggestions(this.getConfig("food")).then(foods => {
+                console.log("Finished loading")
                 if (this.state.radius) {
                     var updatedPref = this.state.userPref;
                     updatedPref.radius = this.state.radius;
@@ -111,12 +121,19 @@ export default class SuggestionPopup extends React.Component {
     renderSuggestions() {
         if (!this.state.suggestionsLoaded) {
             console.log("loading...");
+            return (
+                <Grid container justify="center" align-items="center">
+                    <Box mt={10}>
+                        <CircularProgress color="secondary" />
+                    </Box>
+                </Grid>
+            )
         }
         // TODO: Suggestion component
         if (this.state.tabPos === 0) {
-            console.log(this.state.activitySuggestions)
+            console.log("Activities: ", this.state.activitySuggestions)
         } else {
-            console.log(this.state.foodSuggestions)
+            console.log("Food: ", this.state.foodSuggestions)
         }
     }
 
@@ -154,8 +171,8 @@ export default class SuggestionPopup extends React.Component {
                                 </Box>
                             </Box>
                         </Grid>
-                        <Grid item>
-                            <Box width={700}>
+                        <Grid item xs>
+                            <Box width={"100%"} height={"100%"}>
                                 <Tabs
                                     variant="fullWidth"
                                     indicatorColor="secondary"
@@ -165,7 +182,17 @@ export default class SuggestionPopup extends React.Component {
                                     <Tab label="Activities" />
                                     <Tab label="Food" />
                                 </Tabs>
+                                {this.renderSuggestions()}
                             </Box>
+                        </Grid>
+                        <Grid item>
+                            <IconButton
+                                color="secondary"
+                                aria-label="close"
+                                onClick={this.props.onClose}
+                            >
+                                <CloseIcon />
+                            </IconButton>
                         </Grid>
                     </Grid>
                 </Paper>
