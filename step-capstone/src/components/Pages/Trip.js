@@ -66,7 +66,7 @@ export default class Trip extends React.Component {
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
                 });
-                this.setState({ items: travelObjectList});
+                this.setState({ items: travelObjectList });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
