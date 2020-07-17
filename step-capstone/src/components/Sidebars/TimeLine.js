@@ -14,10 +14,6 @@ export default class TimeLine extends React.Component {
       this.date2Items = new Map();
       this.displayItems = [];
       this.emptySlots = [];
-      this.state = {
-          displayDate: this.props.displayDate,
-          list: this.props.list
-      }
       this.handleOnClickInterval = this.handleOnClickInterval.bind(this);
   }
 
@@ -53,22 +49,22 @@ export default class TimeLine extends React.Component {
   
   handleOnClickInterval(idV) {
       idV = (idV.length < 5)? "0" + idV : idV;
-      handleClickedTimePoint(idV, this.state.displayDate, this.emptySlots, this.displayItems);
+      handleClickedTimePoint(idV, this.props.displayDate, this.emptySlots, this.displayItems);
   }
 
   /* Handling rendering starts HERE */
   getIntervals() {
     let intervals = [];
-    if (this.state.displayDate !== undefined) {
+    if (this.props.displayDate !== undefined) {
       this.date2Items = new Map();
       this.displayItems = [];
       this.emptySlots = [];
       this.separateDates();
-      this.displayItems = (this.date2Items.has(this.state.displayDate.toDateString())) ? this.date2Items.get(this.state.displayDate.toDateString()) : [];
-      this.props.setTodaysEvents(this.displayItems, this.state.displayDate.toDateString());
+      this.displayItems = (this.date2Items.has(this.props.displayDate.toDateString())) ? this.date2Items.get(this.props.displayDate.toDateString()) : [];
+      this.props.setTodaysEvents(this.displayItems, this.props.displayDate.toDateString());
       
       this.sortItemList();
-      this.emptySlots = getEmptySlots(this.displayItems, this.state.displayDate);
+      this.emptySlots = getEmptySlots(this.displayItems, this.props.displayDate);
     
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
@@ -76,13 +72,13 @@ export default class TimeLine extends React.Component {
           var nextItem = this.displayItems[nextItemIndex];
           var nextItemStartDate = nextItem.startDate;
           // End date within current display date 
-          if (!sameDate(this.state.displayDate, nextItemStartDate) && (nextItem.type !== "hotel" || nextItem.endDate.getHour === i)) {
+          if (!sameDate(this.props.displayDate, nextItemStartDate) && (nextItem.type !== "hotel" || nextItem.endDate.getHour === i)) {
             nextItemIndex++;
             intervals.push(<OneHourInterval
               idV={nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0}
               items={[{ data: nextItem, div: ":00" }]}
               zIndex={nextItemIndex}
-              displayDate={this.state.displayDate}
+              displayDate={this.props.displayDate}
               onRemoveItem={this.props.onRemoveItem}
               onEditItem={this.props.onEditItem}
               onAddItem={this.props.onAddItem}
@@ -114,7 +110,7 @@ export default class TimeLine extends React.Component {
               idV={i.toString()}
               items={items.length === 0 ? null : items}
               zIndex={nextItemIndex}
-              displayDate={this.state.displayDate}
+              displayDate={this.props.displayDate}
               onRemoveItem={this.props.onRemoveItem}
               onEditItem={this.props.onEditItem}
               onAddItem={this.props.onAddItem}
@@ -128,7 +124,7 @@ export default class TimeLine extends React.Component {
             idV={i.toString()}
             items={null}
             zIndex={0}
-            displayDate={this.state.displayDate}
+            displayDate={this.props.displayDate}
             onRemoveItem={this.props.onRemoveItem}
             onEditItem={this.props.onEditItem}
             onAddItem={this.props.onAddItem}
@@ -142,17 +138,6 @@ export default class TimeLine extends React.Component {
     }
     return intervals; 
   };
-
-  // componentDidUpdate() {
-  //   if (this.props.displayDate !== this.state.displayDate) {
-  //       this.setState({displayDate: this.props.displayDate})
-  //   }
-  //   console.log("updating ", this.props.list);
-
-  //   if (this.props.list !== this.state.list) {
-  //     this.setState({list: this.props.list})
-  //   }
-  // }
   
   render() {
       return (
