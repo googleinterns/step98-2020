@@ -34,7 +34,8 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-            queryResults: null
+            queryResults: null,
+            palceIds: new Set()
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -48,6 +49,7 @@ export default class Trip extends React.Component {
 
     componentDidMount() {
         let travelObjectList = [];
+        let placeIds = new Set();
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
@@ -66,8 +68,9 @@ export default class Trip extends React.Component {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
+                    placeIds.add(travelObject.palceId);
                 });
-                this.setState({ items: travelObjectList });
+                this.setState({ items: travelObjectList, placeIds: placeIds });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -78,8 +81,11 @@ export default class Trip extends React.Component {
     handleRemoveItem(data) {
         this.context.deleteTravelObject(this.state.reference, data)
             .then(() => {
+                var placeIdCopy = new Set(this.state.placeIds);
+                placeIdCopy = placeIdCopy.delete(data.placeId);
                 this.setState({
-                    items: this.state.items.filter((item) => item.id !== data.id)
+                    items: this.state.items.filter((item) => item.id !== data.id),
+                    placeIds: placeIdCopy
                 });
             })
             .catch(error => {
@@ -91,8 +97,11 @@ export default class Trip extends React.Component {
     handleEditItem(data) {
         let newItems = [];
         let itemToChange;
+        let newPlaceIds = new Set(this.state.placeIds);
         this.state.items.forEach((item) => {
             if (item.id === data.id) {
+                newPlaceIds.delete(item.placeId);
+                newPlaceIds.add(data.placeId);
                 itemToChange = item;
                 newItems.push(data);
             } else {
@@ -103,7 +112,7 @@ export default class Trip extends React.Component {
             .then(() => {
                 this.setState({
                     items: newItems,
-                    loaded: true
+                    placeIds: newPlaceIds
                 });
             })
             .catch((error) => {
@@ -115,10 +124,13 @@ export default class Trip extends React.Component {
 
     handleAddItem(data) {
         // Add to database here
+        var newPlaceIds = new Set(this.state.placeIds);
+        newPlaceIds.add(data.placeId);
+
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
-                this.setState({ items: this.state.items.concat(data) });
+                this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
                 this.getFoodSuggestions(config).then(results => {
                     console.log(results)
                 });
