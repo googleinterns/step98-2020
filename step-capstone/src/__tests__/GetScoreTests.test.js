@@ -8,7 +8,7 @@ import {getScore} from '../scripts/Suggestion'
 
 const ZERO_PROMINENCE = { total: 1, index: 1 }
 
-test("Handles category score correctly", () => {
+test("Some Matches: Two matching categories, four total categores", () => {
   let score = getScore(2, 4, ZERO_PROMINENCE, 5, 1, 0);
   expect(score).toEqual(52);
 })
@@ -63,10 +63,10 @@ test("Handles null Budget correctly", () => {
   expect(score - 65).toEqual(5);
 })
 
-// test("Too expensive", () => {
-//   let score = getScore()
-//   expect(score - 65).toEqual(0);
-// })
+test("Too expensive", () => {
+  let score = getScore(1, 1,ZERO_PROMINENCE, 4, 3, 0)
+  expect(score - 65).toEqual(0);
+})
 
 test("Correctly calculates overall score", () => {
   let score = getScore(3, 4, { index: 60, total: 120}, 2, 3, 4.4);

@@ -5,7 +5,7 @@ import {countCat} from '../scripts/Suggestion'
  * countCat testing
 */
 //one item matches preferences
-test("Counts type with one preference match correctly", () => {
+test("Place with a type matching a single user preference", () => {
   const userCat = ["familyFriendly", "outdoors"]
   const place = { 
     place_id: 0, 
@@ -16,7 +16,7 @@ test("Counts type with one preference match correctly", () => {
   expect(countCat(place, userCat)).toEqual(1)
 })
 
-test("Counts type with multiple preference matches correctly", () => {
+test("Place with a type matching mutliple user preferences", () => {
   const userCat = ["familyFriendly", "outdoors"]
   const place = { 
     place_id: 1, 
