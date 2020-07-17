@@ -1,9 +1,12 @@
 import queryPlaces from './PlacesQuery';
 import categories from './Categories';
 
-const getDateString = (dateObject)  => {
-    return dateObject.getFullYear() + "-" + dateObject.getMonth() + "-" + dateObject.getDate();
-}
+const getDisplayDateString = (displayDate) => {
+    let year = displayDate.getFullYear().toString();
+    let month = (displayDate.getMonth() <10)? "0" + displayDate.getMonth() : displayDate.getMonth();
+    let date = (displayDate.getDate() < 10)? "0" + displayDate.getDate()   : displayDate.getDate();;
+    return year + "-" + month + "-" + date;
+  };
 
 const contains = (startTime, endTime, timePoint) => {
     // return whether timeRange from startTime to endTime contains timePoint
