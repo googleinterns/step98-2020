@@ -19,7 +19,7 @@ export default class ItemForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isNewItem: props.data === undefined,
+            isNewItem: props.isNewItem,
             value: 0,
             data: props.data,
             isValidated: false
@@ -148,6 +148,7 @@ export default class ItemForm extends React.Component {
     // renders tab if user presses add button to create a new item
     // otherwise only the form should show for editing
     renderTab() {
+      console.log(this.state.isNewItem);
         if (this.state.isNewItem) {
             return (
                 <Paper>
