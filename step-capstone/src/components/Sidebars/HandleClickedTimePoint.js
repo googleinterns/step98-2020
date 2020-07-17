@@ -9,11 +9,9 @@ const getDisplayDateString = (displayDate) => {
 
 // Receives displayItems list, returns a list of empty intervals
 export const getEmptySlots = (displayItems, displayDate) => {
-  console.log(displayItems);
   let emptySlots = [];
   const displayDateString = getDisplayDateString(displayDate);
   if (displayItems.length == 0) {
-    console.log(displayDateString);
     emptySlots.push({ 
         startDate: new Date(displayDateString + "00:00:00"),
         endDate: new Date(displayDateString + "23:59:59"),
@@ -27,7 +25,6 @@ export const getEmptySlots = (displayItems, displayDate) => {
   }
 
   for (var i = 1; i <= displayItems.length - 1; i++) {
-    console.log("into the loop")
     let prev = displayItems[i - 1];
     let cur = displayItems[i];
 
@@ -38,13 +35,11 @@ export const getEmptySlots = (displayItems, displayDate) => {
     startDate: displayItems[displayItems.length - 1].endDate,
     endDate: new Date(displayDateString + "23:59:59"),
   });
-  console.log(emptySlots);
   return emptySlots;
 };
 
 //Receives a list of intervals and returns the interval that the timePoint is in, returns null if there is none.
 const binarySearch = (intervals, timePoint) => {
-  console.log(timePoint);
   if (intervals.length == 0) {
     return null;
   }
@@ -72,7 +67,6 @@ const binarySearch = (intervals, timePoint) => {
 /*Return the empty timeRange that users click into by performing binary search on emptySlots array*/
 export const handleClickedTimePoint = (idV, displayDate, emptySlots, displayItems) => {
   let clickedTime = new Date(getDisplayDateString(displayDate) + idV + ":00");
-  console.log(getDisplayDateString(displayDate) + idV + ":00");
   let curSlot = binarySearch(emptySlots, clickedTime);
   let prevSlot = binarySearch(displayItems, curSlot.startDate);
   let nextSlot = binarySearch(displayItems, curSlot.endDate);
