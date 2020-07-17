@@ -49,8 +49,9 @@ export default class TimeLine extends React.Component {
   
   handleOnClickInterval(idV) {
       idV = (idV.length < 5)? "0" + idV : idV;
-      handleClickedTimePoint(idV, this.props.displayDate, this.emptySlots, this.displayItems);
-  }
+      return handleClickedTimePoint(idV, this.props.displayDate, this.emptySlots, this.displayItems);
+
+    }
 
   /* Handling rendering starts HERE */
   getIntervals() {
