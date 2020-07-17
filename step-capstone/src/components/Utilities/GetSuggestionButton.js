@@ -6,7 +6,7 @@ import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
 export default function GetSuggestionButton(props) {
 
     const handleClick = (event) => {
-        console.log("Getting suggestions")
+        props.onClick();
     }
 
     return (
