@@ -175,6 +175,7 @@ export default class Trip extends React.Component {
         })
     }
 
+    // Triggered when a time slot is selected in timeline
     handleSelectTimeslot(timeRange, coordinates, radius) {
         this.setState({
             selectedTimeslot: {
@@ -185,6 +186,7 @@ export default class Trip extends React.Component {
         })
     }
 
+    // only allows rendering of suggestion bar once map is set
     renderSuggestionBar() {
         if (this.state.map) {
             return (
