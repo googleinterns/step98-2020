@@ -16,13 +16,19 @@ import {
 } from "@material-ui/core"
 
 export default class PreferenceForm extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            budget: 2,
-            radius: 10,
-            activityPreferences: [],
-            foodPreferences: []
+            budget: this.props.pref.budget,
+            radius: this.props.pref.radius,
+            activityPreferences: this.props.pref.activityPreferences,
+            foodPreferences: this.props.pref.foodPreferences
+        }
+    }
+
+    componentDidUpdate(prevState) {
+        if (prevState !== this.state) {
+            this.props.onChange(this.state);
         }
     }
 
@@ -30,10 +36,10 @@ export default class PreferenceForm extends React.Component {
         this.setState({ budget: event.target.value });
     }
 
-    handleRadiusChange = (event) => {
-        this.setState({ radius: event.target.value })
+    handleRadiusChange = (event, newValue) => {
+        this.setState({ radius: newValue })
     }
-
+ß
     handleActivityPreferenceCheck = (event) => {
         this.togglePreferenceHelper("activityPreferences", event.target.name)
     }
@@ -48,7 +54,6 @@ export default class PreferenceForm extends React.Component {
         } else {
            this.setState({ [listName]: this.state[listName].filter(activity => activity !== pref)}) 
         }
-        console.log(this.state);
     }
 
     render() {
@@ -83,8 +88,8 @@ export default class PreferenceForm extends React.Component {
                             <Box mb={1}>
                                 <Typography gutterBottom>Radius (in kilometers)</Typography>
                                 <Slider
-                                    defaultValue={this.state.radius}
-                                    getAriaValueText={this.radiusText}
+                                    value={this.state.radius}
+                                    onChange={this.handleRadiusChange}
                                     step={.5}
                                     valueLabelDisplay="auto"
                                     min={.5}
@@ -100,15 +105,15 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="shopping" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="shopping" />}
                                                     label="Shopping"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="beauty" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="beauty" />}
                                                     label="Self-care / Beauty"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="entertainment" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="entertainment" />}
                                                     label="Entertainment"
                                                 />
                                             </FormGroup>
@@ -116,15 +121,15 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="familyFriendly" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="familyFriendly" />}
                                                     label="Family Friendly"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="nightlife" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="nightlife" />}
                                                     label="Nightlife"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="outdoors" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="outdoors" />}
                                                     label="Outdoors / active"
                                                 />
                                             </FormGroup>
@@ -132,11 +137,11 @@ export default class PreferenceForm extends React.Component {
                                         <Grid item direction="column">
                                             <FormGroup>
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="artsAndCulture" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="artsAndCulture" />}
                                                     label="Arts and Culture"
                                                 />
                                                 <FormControlLabel
-                                                    control={<Checkbox onChange={this.handleActivityPreferenceCheck} name="sightseeing" />}
+                                                    control={<Checkbox color="primary" onChange={this.handleActivityPreferenceCheck} name="sightseeing" />}
                                                     label="Sightseeing"
                                                 />
                                             </FormGroup>
@@ -151,19 +156,19 @@ export default class PreferenceForm extends React.Component {
                                 <Grid container direction="row">
                                         <Grid item>
                                             <FormControlLabel
-                                                control={<Checkbox onChange={this.handleFoodPreferenceCheck} name="bakery" />}
+                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="bakery" />}
                                                 label="Bakery"
                                             />
                                         </Grid>
                                         <Grid item>
                                             <FormControlLabel
-                                                control={<Checkbox onChange={this.handleFoodPreferenceCheck} name="cafe" />}
+                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="cafe" />}
                                                 label="Cafe"
                                             />
                                         </Grid>
                                         <Grid item>
                                             <FormControlLabel
-                                                control={<Checkbox onChange={this.handleFoodPreferenceCheck} name="restaurant" />}
+                                                control={<Checkbox color="primary" onChange={this.handleFoodPreferenceCheck} name="restaurant" />}
                                                 label="Restaurant"
                                             />
                                         </Grid>
