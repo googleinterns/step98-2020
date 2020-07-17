@@ -53,7 +53,7 @@
     pointer-events: none;
 }
 
-#add-button-component {
+#button-group {
     z-index: 5;
     position: fixed;
     bottom: 0;

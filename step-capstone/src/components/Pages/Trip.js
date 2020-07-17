@@ -2,11 +2,12 @@ import React from 'react';
 import Finalized from '../Sidebars/Finalized';
 import Unfinalized from '../Sidebars/Unfinalized';
 import AddItemButton from '../TravelObjectForms/AddItemButton'
-import { Grid } from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import { handleSuggestions } from "../../scripts/Suggestions"
+import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 
 const config = {
     userCategories: ["bakery"],
@@ -228,11 +229,16 @@ export default class Trip extends React.Component {
                         />
                     </Grid>
                 </Grid>
-                <Grid id="add-button-component">
-                    <AddItemButton
-                        startDate={this.state.tripSetting.startDate}
-                        onAddItem={this.handleAddItem}
-                    />
+                <Grid id="button-group">
+                    <Box mb={3}>
+                        <GetSuggestionButton />
+                    </Box>
+                    <Box>
+                        <AddItemButton
+                            startDate={this.state.tripSetting.startDate}
+                            onAddItem={this.handleAddItem}
+                        />
+                    </Box>
                 </Grid>
             </div>
         );
