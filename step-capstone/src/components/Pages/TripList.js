@@ -49,7 +49,6 @@ class TripList extends React.Component{
   }
 
   handleAddTrip(newTrip) {
-    console.log(newTrip)
     this.context.addTrip(this.state.reference, newTrip);
     this.loadTrips();
   }
