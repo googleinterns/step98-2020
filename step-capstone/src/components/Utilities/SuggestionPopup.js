@@ -136,7 +136,7 @@ export default class SuggestionPopup extends React.Component {
     render() {
         return (
             <Slide direction="up" in={this.props.show} mountOnEnter mountonexit="true">
-                <Paper elevation={3} id="suggestion-component">
+                <Paper elevation={10} id="suggestion-component">
                     <Grid container direction="row">
                         <Grid item>
                             <Box
