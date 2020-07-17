@@ -149,7 +149,7 @@ export default class Trip extends React.Component {
 
 
     handleSuggestionRequest(newConfig) {
-
+        //TODO: implement when merge code with Emmie's preference form
     }
 
     setMap(map) {
@@ -188,6 +188,7 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             onClickObject={this.handleSelectedObject}
                             setTodaysEvents={this.handleChangeDisplayDate}
+                            
 
                         />
                     </Grid>
