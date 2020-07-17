@@ -6,7 +6,6 @@ import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import { handleSuggestions } from "../../scripts/Suggestions"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 import SuggestionPopup from "../Utilities/SuggestionPopup"
 
@@ -66,7 +65,6 @@ export default class Trip extends React.Component {
                     travelObjectList.push(travelObject)
                     placeIds.add(travelObject.placeId);
                 });
-                console.log(placeIds)
                 this.setState({ items: travelObjectList, placeIds: placeIds });
             })
             .catch(error => {
