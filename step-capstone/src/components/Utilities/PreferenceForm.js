@@ -102,7 +102,7 @@ export default class PreferenceForm extends React.Component {
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend">Activity Preferences</FormLabel>
                                     <Grid container direction="row">
-                                        <Grid item direction="column">
+                                        <Grid item>
                                             <FormGroup>
                                                 <FormControlLabel
                                                     control={
@@ -139,7 +139,7 @@ export default class PreferenceForm extends React.Component {
                                                 />
                                             </FormGroup>
                                         </Grid>
-                                        <Grid item direction="column">
+                                        <Grid item>
                                             <FormGroup>
                                                 <FormControlLabel
                                                     control={
@@ -176,7 +176,7 @@ export default class PreferenceForm extends React.Component {
                                                 />
                                             </FormGroup>
                                         </Grid>
-                                        <Grid item direction="column">
+                                        <Grid item >
                                             <FormGroup>
                                                 <FormControlLabel
                                                     control={

@@ -2,7 +2,7 @@ import React from 'react';
 import Finalized from '../Sidebars/Finalized';
 import Unfinalized from '../Sidebars/Unfinalized';
 import AddItemButton from '../TravelObjectForms/AddItemButton'
-import { Grid, Box} from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
@@ -10,15 +10,7 @@ import { handleSuggestions } from "../../scripts/Suggestions"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 import SuggestionPopup from "../Utilities/SuggestionPopup"
 
-const config = {
-    userCategories: ["bakery"],
-    userBudget: 4,
-    radius: "10000",
-    timeRange: [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)],
-    coordinates: { lat: 36.1699, lng: -115.1398 },
-    items: new Set([])
-}
-//"ChIJmx1Uvc3FyIARdp6ftqC7Gd8","ChIJDRyBe_nEyIARH77JCHU27r8","ChIJVcuReVnbyIARXwAzHqxeAnk","ChIJ_YX8a9LGyIARrcojBX4AgtU"
+
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -37,7 +29,8 @@ export default class Trip extends React.Component {
             service: null,
             queryResults: null,
             palceIds: new Set(),
-            showSuggestions: false
+            showSuggestions: false,
+            selectedTimeslot: null
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -71,8 +64,9 @@ export default class Trip extends React.Component {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
-                    placeIds.add(travelObject.palceId);
+                    placeIds.add(travelObject.placeId);
                 });
+                console.log(placeIds)
                 this.setState({ items: travelObjectList, placeIds: placeIds });
             })
             .catch(error => {
@@ -140,9 +134,6 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
-                this.getFoodSuggestions(config).then(results => {
-                    console.log(results)
-                });
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -173,33 +164,10 @@ export default class Trip extends React.Component {
     }
 
     toggleSuggestionBar() {
+        if (this.state.showSuggestions) {
+            this.setState({ showSuggestions: !this.state.showSuggestions, handleSelectTimeslot: null })
+        }
         this.setState({ showSuggestions: !this.state.showSuggestions })
-    }
-
-    async getActivitySuggestions(config) {
-        /**
-         * param: 
-         * config: an object with six fields: 
-         *  1. userCategories: a  String array of categories 
-         *  2. userBudget: an integer for budget
-         *  3. radius: a string integer radius object 
-         *  4. timeRange: free time range [startDate, endDate]
-         *  5. coordinates: an object for coordinates
-         *  6. items: set of all place ids of selected places
-         * return the suggestions : an array of PlaceObject already sorted based on score
-         */
-        if (this.state.map) {
-            let results = await handleSuggestions(this.state.service, config, "activities");
-            return results;
-        }
-    }
-
-    async getFoodSuggestions(config) {
-        if (this.state.map) {
-
-            let results = await handleSuggestions(this.state.service, config, "food");
-            return results;
-        }
     }
 
     setMap(map) {
@@ -207,6 +175,35 @@ export default class Trip extends React.Component {
             map: map,
             service: new window.google.maps.places.PlacesService(map)
         })
+    }
+
+    handleSelectTimeslot(timeRange, coordinates, radius) {
+        this.setState({
+            selectedTimeslot: {
+                timeRange: timeRange,
+                coordinates: coordinates,
+                radius: radius
+            }
+        })
+    }
+
+    renderSuggestionBar() {
+        if (this.state.map) {
+            return (
+                <Grid item>
+                    <SuggestionPopup
+                        show={this.state.showSuggestions}
+                        service={this.state.service}
+                        userPref={this.state.tripSetting.userPref}
+                        coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                        items={this.state.placeIds}
+                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)]}
+                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
+                    />
+                </Grid>
+            )
+        }
+        return null;
     }
 
     render() {
@@ -254,11 +251,7 @@ export default class Trip extends React.Component {
                         />
                     </Grid>
                 </Grid>
-                <Grid item>
-                    <SuggestionPopup
-                        show={this.state.showSuggestions}
-                    />
-                </Grid>
+                {this.renderSuggestionBar()}
                 <Grid id="button-group">
                     <Box mb={3}>
                         <GetSuggestionButton
