@@ -75,6 +75,7 @@ function EditTripSetting(props) {
     const [startDate, setStartDate] = useState(props.tripSetting.startDate);
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
+    const [userPref, setUserPref] = useState(props.tripSetting.userPref);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
@@ -103,6 +104,10 @@ function EditTripSetting(props) {
         setDescription(event.target.value);
     }
 
+    const handleUserPrefChange = (pref) => {
+        setUserPref(pref);
+    }
+
     useEffect(() => {
         props.onDataChange({
             title: title,
@@ -110,10 +115,11 @@ function EditTripSetting(props) {
             startDate: startDate,
             endDate: endDate,
             description: description,
+            userPref: userPref
         })
         // notifies form if necessary inputs are present
         props.onValidation(!(!destination || (title === "")))
-    }, [destination, startDate, endDate, description])
+    }, [destination, startDate, endDate, description, userPref])
 
     return (
         <div>
@@ -172,7 +178,7 @@ function EditTripSetting(props) {
                     onChange={handleDescriptionChange}
                 />
             </Grid>
-            <PreferenceForm />
+            <PreferenceForm pref={userPref} onChange={handleUserPrefChange}/>
         </div>
     )
 }
