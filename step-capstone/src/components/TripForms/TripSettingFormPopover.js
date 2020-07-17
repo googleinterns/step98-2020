@@ -7,6 +7,7 @@ import {
     TextField,
     Grid,
     Typography,
+    Box
 } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -51,18 +52,20 @@ export default class TripSettingFormPopover extends React.Component {
 
     render() {
         return (
-            <Card id="add-form-container" style={{ height: "350px" }}>
-                <CardContent>
-                    <EditTripSetting
-                        tripSetting={this.props.tripSetting}
-                        onValidation={this.handleValidation}
-                        onDataChange={this.handleDataChange}
-                    />
-                </CardContent>
-                <CardActions>
-                    <Button onClick={this.props.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleSave} size="small">Save</Button>
-                </CardActions>
+            <Card>
+                <Box width={600}>
+                    <CardContent>
+                        <EditTripSetting
+                            tripSetting={this.props.tripSetting}
+                            onValidation={this.handleValidation}
+                            onDataChange={this.handleDataChange}
+                        />
+                    </CardContent>
+                    <CardActions>
+                        <Button onClick={this.props.onClose} size="small">Cancel</Button>
+                        <Button onClick={this.handleSave} size="small">Save</Button>
+                    </CardActions>
+                </Box>
             </Card>
         )
     }
@@ -122,7 +125,7 @@ function EditTripSetting(props) {
     }, [destination, startDate, endDate, description, userPref])
 
     return (
-        <div>
+        <div >
             <Grid container direction="column">
                 <Grid>
                     <Typography variant={"h4"} gutterBottom>New Trip</Typography>
