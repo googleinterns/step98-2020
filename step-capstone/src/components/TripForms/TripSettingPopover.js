@@ -1,7 +1,8 @@
 import React from 'react';
-import { Backdrop, Button, makeStyles, Popover } from '@material-ui/core';
+import { Backdrop, Button, makeStyles, Popover, Modal } from '@material-ui/core';
 import TripSettingFormPopover from './TripSettingFormPopover';
 import AddIcon from '@material-ui/icons/Add';
+import "../../styles/TripSetting.css"
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -42,27 +43,28 @@ export default function TripSettingPopover(props) {
       /> : null}
 
       <Backdrop className={classes.backdrop} open={openBackDrop}></Backdrop>
-      <Popover
+      <Modal
         open={open}
-        anchorEl={anchorEl}
+        // anchorEl={anchorEl}
         onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={{ top: 200, left: 450 }}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
+        // anchorReference="anchorPosition"
+        // anchorPosition={{ top: 200, left: 450 }}
+        // anchorOrigin={{
+        //   vertical: 'bottom',
+        //   horizontal: 'left',
+        // }}
+        // transformOrigin={{
+        //   vertical: 'top',
+        //   horizontal: 'left',
+        // }}
+        style={{alignItems: "center", justifyContent: "center", display: "flex"}}
       >
         <TripSettingFormPopover
           onClose={handleClose}
           tripSetting={props.tripSetting}
           onEditTripSetting={props.onEditTripSetting}
         />
-      </Popover>
+      </Modal>
     </div>
   );
 }
