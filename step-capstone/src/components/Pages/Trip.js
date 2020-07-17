@@ -136,7 +136,6 @@ export default class Trip extends React.Component {
     }
 
     handleChangeDisplayDate(travelObjects, date) {
-        console.log("travelObjects in Trips ", travelObjects);
         if (this.state.today.date !== date) {
 
             this.setState({
