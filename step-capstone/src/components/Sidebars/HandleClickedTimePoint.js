@@ -73,11 +73,9 @@ const binarySearch = (intervals, timePoint) => {
 export const handleClickedTimePoint = (idV, displayDate, emptySlots, displayItems) => {
   let clickedTime = new Date(getDisplayDateString(displayDate) + idV + ":00");
   console.log(getDisplayDateString(displayDate) + idV + ":00");
-  let clickedEmptySlot = binarySearch(emptySlots, clickedTime);
-  let prevSlot = binarySearch(displayItems, clickedEmptySlot.startDate);
-  let nextSlot = binarySearch(displayItems, clickedEmptySlot.endDate);
+  let curSlot = binarySearch(emptySlots, clickedTime);
+  let prevSlot = binarySearch(displayItems, curSlot.startDate);
+  let nextSlot = binarySearch(displayItems, curSlot.endDate);
   
-  console.log(clickedEmptySlot);
-  console.log(prevSlot);
-  console.log(nextSlot);
+  return {curSlot: curSlot, prevSlot: prevSlot, nextSlot: nextSlot};
 };
