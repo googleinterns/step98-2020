@@ -129,7 +129,7 @@ function EditTripSetting(props) {
         <div >
             <Grid container direction="column">
                 <Grid>
-                    <Typography variant={"h4"} gutterBottom>New Trip</Typography>
+                    <Typography variant={"h4"} gutterBottom>Trip Settings</Typography>
                 </Grid>
                 <Grid item container direction="row" justify="space-between">
                     <TextField
