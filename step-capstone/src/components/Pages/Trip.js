@@ -56,7 +56,8 @@ export default class Trip extends React.Component {
                         startDate: trip.startDate.toDate(),
                         endDate: trip.startDate.toDate(),
                         destination: trip.destination,
-                        description: trip.description
+                        description: trip.description,
+                        userPref: trip.userPref
                     }
                 })
 
