@@ -178,7 +178,7 @@ function EditTripSetting(props) {
                     onChange={handleDescriptionChange}
                 />
             </Grid>
-            <PreferenceForm pref={userPref} onChange={handleUserPrefChange}/>
+            <PreferenceForm pref={userPref} onChange={handleUserPrefChange} />
         </div>
     )
 }
