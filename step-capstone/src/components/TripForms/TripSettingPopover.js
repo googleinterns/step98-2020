@@ -45,18 +45,7 @@ export default function TripSettingPopover(props) {
       <Backdrop className={classes.backdrop} open={openBackDrop}></Backdrop>
       <Modal
         open={open}
-        // anchorEl={anchorEl}
         onClose={handleClose}
-        // anchorReference="anchorPosition"
-        // anchorPosition={{ top: 200, left: 450 }}
-        // anchorOrigin={{
-        //   vertical: 'bottom',
-        //   horizontal: 'left',
-        // }}
-        // transformOrigin={{
-        //   vertical: 'top',
-        //   horizontal: 'left',
-        // }}
         style={{alignItems: "center", justifyContent: "center", display: "flex"}}
       >
         <TripSettingFormPopover
