@@ -2,12 +2,13 @@ import React from 'react';
 import Finalized from '../Sidebars/Finalized';
 import Unfinalized from '../Sidebars/Unfinalized';
 import AddItemButton from '../TravelObjectForms/AddItemButton'
-import { Grid, Box } from '@material-ui/core'
+import { Grid, Box} from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import { handleSuggestions } from "../../scripts/Suggestions"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
+import SuggestionPopup from "../Utilities/SuggestionPopup"
 
 const config = {
     userCategories: ["bakery"],
@@ -35,7 +36,8 @@ export default class Trip extends React.Component {
             map: null,
             service: null,
             queryResults: null,
-            palceIds: new Set()
+            palceIds: new Set(),
+            showSuggestions: false
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -45,6 +47,7 @@ export default class Trip extends React.Component {
         this.handleSelectedObject = this.handleSelectedObject.bind(this);
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
         this.setMap = this.setMap.bind(this);
+        this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
     }
 
     componentDidMount() {
@@ -169,6 +172,10 @@ export default class Trip extends React.Component {
         }
     }
 
+    toggleSuggestionBar() {
+        this.setState({ showSuggestions: !this.state.showSuggestions })
+    }
+
     async getActivitySuggestions(config) {
         /**
          * param: 
@@ -247,9 +254,16 @@ export default class Trip extends React.Component {
                         />
                     </Grid>
                 </Grid>
+                <Grid item>
+                    <SuggestionPopup
+                        show={this.state.showSuggestions}
+                    />
+                </Grid>
                 <Grid id="button-group">
                     <Box mb={3}>
-                        <GetSuggestionButton />
+                        <GetSuggestionButton
+                            onClick={this.toggleSuggestionBar}
+                        />
                     </Box>
                     <Box>
                         <AddItemButton
