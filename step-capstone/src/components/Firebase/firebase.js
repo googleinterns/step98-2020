@@ -93,6 +93,7 @@ class Firebase {
 
     if (oldValue.destinations !== newValue.destinations) {
       await tripRef.update({ destinations: newValue.destinations });
+      await tripRef.update({ photoUrl: newValue.photoUrl})
     }
 
     if (oldValue.description !== newValue.description) {
