@@ -6,14 +6,16 @@ import {
     Button,
     TextField,
     Grid,
+    Typography,
+    Box
 } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { isValid } from 'date-fns';
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
+import PreferenceForm from "../Utilities/PreferenceForm"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -26,7 +28,7 @@ export default class TripSettingFormPopover extends React.Component {
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-    
+
     handleValidation(isValidated) {
         if (this.state.isValidated !== isValidated) {
             this.setState({ isValidated: isValidated });
@@ -46,23 +48,24 @@ export default class TripSettingFormPopover extends React.Component {
             this.props.onEditTripSetting(this.state.tripSetting);
             this.props.onClose();
         }
-
     }
 
     render() {
         return (
-            <Card id="add-form-container" style={{ height: "350px" }}>
-                <CardContent>
-                    <EditTripSetting
-                        tripSetting={this.props.tripSetting}
-                        onValidation={this.handleValidation}
-                        onDataChange={this.handleDataChange}
-                    />
-                </CardContent>
-                <CardActions>
-                    <Button onClick={this.props.onClose} size="small">Cancel</Button>
-                    <Button onClick={this.handleSave} size="small">Save</Button>
-                </CardActions>
+            <Card>
+                <Box width={600}>
+                    <CardContent>
+                        <EditTripSetting
+                            tripSetting={this.props.tripSetting}
+                            onValidation={this.handleValidation}
+                            onDataChange={this.handleDataChange}
+                        />
+                    </CardContent>
+                    <CardActions>
+                        <Button onClick={this.props.onClose} size="small">Cancel</Button>
+                        <Button onClick={this.handleSave} size="small">Save</Button>
+                    </CardActions>
+                </Box>
             </Card>
         )
     }
@@ -71,17 +74,18 @@ export default class TripSettingFormPopover extends React.Component {
 function EditTripSetting(props) {
     // Sets values to previous values if editing, otherwise blank slate
     const [title, setTitle] = useState(props.tripSetting.title);
-    const [destinations, setDestinations] = useState(props.tripSetting.destinations);
+    const [destination, setDestination] = useState(props.tripSetting.destination);
     const [startDate, setStartDate] = useState(props.tripSetting.startDate);
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
+    const [userPref, setUserPref] = useState(props.tripSetting.userPref);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
     }
 
-    const handleDestinationsChange = (location) => {
-        setDestinations(location.address);
+    const handleDestinationChange = (location) => {
+        setDestination(location);
     }
 
     const handleStartDateChange = (newStartDate) => {
@@ -103,21 +107,29 @@ function EditTripSetting(props) {
         setDescription(event.target.value);
     }
 
+    const handleUserPrefChange = (pref) => {
+        setUserPref(pref);
+    }
+
     useEffect(() => {
         props.onDataChange({
             title: title,
-            destinations: destinations,
+            destination: destination,
             startDate: startDate,
             endDate: endDate,
             description: description,
+            userPref: userPref
         })
         // notifies form if necessary inputs are present
-        props.onValidation(!(destinations === "" || (title === "")))
-    }, [destinations, startDate, endDate, description])
+        props.onValidation(!(!destination || (title === "")))
+    }, [destination, startDate, endDate, description, userPref])
 
     return (
-        <div>
+        <div >
             <Grid container direction="column">
+                <Grid>
+                    <Typography variant={"h4"} gutterBottom>New Trip</Typography>
+                </Grid>
                 <Grid item container direction="row" justify="space-between">
                     <TextField
                         error={title === ""}
@@ -128,17 +140,15 @@ function EditTripSetting(props) {
                         onChange={handleTitleChange}
                     />
                 </Grid>
-
                 <Grid item container direction="row" justify="space-between"></Grid>
                 <LocationAutocompleteInput
-                    onLocationSelected={handleDestinationsChange}
-                    error={destinations === ""}
-                    helperText={(destinations === "") ? "Cannot leave field blank, list your destinations, and separate them using comma" : null}
-                    text={destinations}
+                    onLocationSelected={handleDestinationChange}
+                    error={!destination}
+                    helperText={!destination ? "Cannot leave field blank. Please enter a destination." : null}
+                    text={destination ? destination.address : ""}
                     type="other"
                 />
             </Grid>
-
             <Grid item container direction="row" justify="space-between">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDatePicker
@@ -171,6 +181,7 @@ function EditTripSetting(props) {
                     onChange={handleDescriptionChange}
                 />
             </Grid>
+            <PreferenceForm pref={userPref} onChange={handleUserPrefChange} />
         </div>
     )
 }

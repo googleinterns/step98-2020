@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Button,
     Card,
@@ -24,28 +24,33 @@ const useStyles = makeStyles({
 })
 
 
-export default function AddTrip (props) {
+export default function AddTrip(props) {
     const classes = useStyles();
     const newTrip = {
         title: "",
         startDate: new Date(),
         endDate: new Date(),
-        destinations: "",
+        destination: null,
         description: "",
+        userPref: {
+            budget: 2,
+            radius: 10,
+            activityPreferences: [],
+            foodPreferences: []
+        }
     }
     const handleEditTrip = (newTrip) => {
         newTrip.travelObjects = [];
         props.onAddTrip(newTrip);
     }
 
-    return(
+    return (
         <Card className={classes.root}>
             <TripSettingPopover
-                button={false} 
+                button={false}
                 tripSetting={newTrip}
                 onEditTripSetting={handleEditTrip}
             />
-
         </Card>
     )
 }
