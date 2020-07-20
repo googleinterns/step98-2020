@@ -3,7 +3,6 @@ import '@testing-library/jest-dom'
 import {rank} from '../scripts/Suggestion'
 import {suggestionTestData} from "../testData/SuggestionTestData"
 
-
 /*
  * Overall Ranking Testing
 */
@@ -92,7 +91,6 @@ test("Matching Type outranks Budget and rating", () => {
 
   expect(rankedResults).areEqualSuggestions(expectedRankedResults)
 })
-
 
 // TODO: make sure to filter out things we don’t want like lodging
 // test("Filter Invalid Types", () => {
