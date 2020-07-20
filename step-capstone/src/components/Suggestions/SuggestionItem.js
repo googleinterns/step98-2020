@@ -19,8 +19,6 @@ export default function SuggestionItem(props) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-
-
   }
 
   const handleClose = () => {
@@ -77,7 +75,7 @@ export default function SuggestionItem(props) {
             Price: {printDollarSigns(props.suggestion.place.price_level)} 
           </Typography>
           <Typography className="suggestion-body" variant="subtitle2" inline gutterBottom align="right">
-            Rating: {(props.suggestion.place.rating === undefined) ? "" : props.suggestion.place.rating}
+            Rating: {(props.suggestion.place.rating === undefined) ? "" : props.suggestion.place.rating +"/5"}
           </Typography>
         </Grid>
       </CardContent>
