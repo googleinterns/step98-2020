@@ -35,7 +35,7 @@ export default class SuggestionPopup extends React.Component {
         this.renderSuggestions = this.renderSuggestions.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
     }
-    
+
     componentDidUpdate(prevProps) {
         if (!prevProps.show && this.props.show) {
             this.getSuggestions();
@@ -113,7 +113,7 @@ export default class SuggestionPopup extends React.Component {
                 </Grid>
             )
         }
-        // TODO: Suggestion component
+        // TODO: Pass data into Zachs suggestion component.
         if (this.state.tabPos === 0) {
             console.log("Activities: ", this.state.activitySuggestions)
         } else {
