@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import {FirebaseContext } from '../components/Firebase';
 import firebaseMock from '../components/firebaseMock'
 
-test('Trip displays correctly', () => {
+test('Trip displays correctly', async () => {
   sessionStorage.setItem("userId", "testUser");
   sessionStorage.setItem("tripId", "testTrip");
   
@@ -14,7 +14,7 @@ test('Trip displays correctly', () => {
     </FirebaseContext.Provider>
     
   );
-
+  await new Promise(res => setTimeout(() => { res() }, 0.5))
   let test = tripComponent.toJSON();
   expect(test).toMatchSnapshot();
 });

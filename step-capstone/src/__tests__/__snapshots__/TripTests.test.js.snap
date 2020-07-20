@@ -50,8 +50,8 @@ exports[`Trip displays correctly 1`] = `
                   }
                 >
                   <label
-                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
-                    data-shrink={false}
+                    className="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+                    data-shrink={true}
                     htmlFor="displayDate"
                     id="displayDate-label"
                   >
@@ -73,7 +73,7 @@ exports[`Trip displays correctly 1`] = `
                       onFocus={[Function]}
                       required={false}
                       type="text"
-                      value="07/14/2020"
+                      value="08/07/2020"
                     />
                     <div
                       className="MuiInputAdornment-root MuiInputAdornment-positionEnd"
@@ -976,7 +976,38 @@ exports[`Trip displays correctly 1`] = `
               "width": "300px",
             }
           }
-        />
+        >
+          <div>
+            <div
+              onClick={[Function]}
+            >
+              <div
+                className="event double flights"
+                style={
+                  Object {
+                    "position": "relative",
+                    "top": "1px",
+                  }
+                }
+              >
+                <h6
+                  className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
+                >
+                  Flight from 
+                  MCO
+                   to 
+                  LON
+                </h6>
+                <h6
+                  className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+                >
+                  8/7/2020, 8:00:00 AM - 8/7/2020, 3:00:00 PM
+                </h6>
+              </div>
+            </div>
+            <div />
+          </div>
+        </div>
       </div>
     </div>
   </div>
