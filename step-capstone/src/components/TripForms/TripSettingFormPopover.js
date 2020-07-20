@@ -51,7 +51,6 @@ export default class TripSettingFormPopover extends React.Component {
     }
 
     render() {
-        {console.log("props of tripsettingfrom ", this.props)}
         return (
             <Card>
                 <Box width={600}>
@@ -92,7 +91,6 @@ function EditTripSetting(props) {
         setDestination(location);
         props.onFetchPhoto(location.placeId).then((url) => {
             setPhotoUrl(url);
-            console.log(url);
         })
     }
 

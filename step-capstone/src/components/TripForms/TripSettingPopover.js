@@ -27,7 +27,6 @@ export default function TripSettingPopover(props) {
   };
 
   const open = Boolean(anchorEl);
-  console.log("props in tripsetting popover ", props)
   return (
     <div>
       {(props.button) ? <Button variant='outlined' onClick={handleClick} >Trip setting</Button> : null}
