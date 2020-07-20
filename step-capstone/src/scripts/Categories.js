@@ -63,6 +63,7 @@ const sightseeing = new Set([
   "tourist_attraction",
   "synagogue",
 ])
+
 const eateries = new Set([
   "bakery", 
   "cafe", 
