@@ -20,8 +20,8 @@ export default function AddFlight(props) {
     const [startDate, setStartDate] = useState(overwriting ? props.data.startDate : props.startDate);
     const [endDate, setEndDate] = useState(overwriting ? props.data.endDate : props.startDate);
     const [checked, setChecked] = useState(overwriting ? props.data.finalized : false);
-    const [departureAirport, setDepartureAirport] = useState(overwriting ? { address: props.data.departureAirport, coordinates: props.data.departureCoordinates } : { address: null, coordinates: null });
-    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? { address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates } : { address: null, coordinates: null });
+    const [departureAirport, setDepartureAirport] = useState(overwriting ? { address: props.data.departureAirport, coordinates: props.data.departureCoordinates, placeId: props.data.departurePlaceId } : null);
+    const [arrivalAirport, setArrivalAirport] = useState(overwriting ? { address: props.data.arrivalAirport, coordinates: props.data.arrivalCoordinates, placeId: props.data.arrivalPlaceId } : null);
     const [description, setDescription] = useState(overwriting ? props.data.description : "");
 
     const handleChecked = (e) => {
@@ -59,10 +59,12 @@ export default function AddFlight(props) {
             type: "flight",
             startDate: startDate,
             endDate: endDate,
-            departureAirport: departureAirport.address,
-            arrivalAirport: arrivalAirport.address,
-            departureCoordinates: departureAirport.coordinates,
-            arrivalCoordinates: arrivalAirport.coordinates,
+            departureAirport: departureAirport ? departureAirport.address : null,
+            arrivalAirport: arrivalAirport ? arrivalAirport.address : null,
+            departureCoordinates: departureAirport ? departureAirport.coordinates : null,
+            arrivalCoordinates: arrivalAirport ? arrivalAirport.coordinates : null,
+            departurePlaceId: departureAirport ? departureAirport.placeId : null,
+            arrivalPlaceId: arrivalAirport ? arrivalAirport.placeId : null,
             description: description
         })
         // notifies form if necessary inputs are present
@@ -75,8 +77,8 @@ export default function AddFlight(props) {
                 <Box my={1}>
                     <LocationAutocompleteInput
                         onLocationSelected={handleDepartureAirport}
-                        error={departureAirport.address === null}
-                        text={departureAirport.address}
+                        error={departureAirport}
+                        text={departureAirport ? departureAirport.address : ""}
                         type="flight"
                         departure={true}
                     />
@@ -84,8 +86,8 @@ export default function AddFlight(props) {
                 <Box my={1}>
                     <LocationAutocompleteInput
                         onLocationSelected={handleArrivalAirport}
-                        error={arrivalAirport.address === null}
-                        text={arrivalAirport.address}
+                        error={arrivalAirport}
+                        text={arrivalAirport ? arrivalAirport.address : ""}
                         type="flight"
                         departure={false}
                     />
