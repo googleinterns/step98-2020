@@ -8,10 +8,10 @@ import {
 
 import './styles/App.css';
 import {FirebaseContext} from './components/Firebase';
-import Home from './components/Home'
+import Home from './components/Pages/Home'
 import SignOutButton from './components/Firebase/SignOutButton';
-import TripList from "./components/TripList"
-import Trip from "./components/Trip"
+import TripList from "./components/Pages/TripList"
+import Trip from "./components/Pages/Trip"
 import './styles/App.css';
 
 class App extends React.Component {
@@ -45,8 +45,6 @@ class App extends React.Component {
 
   handleLogin(){
     if(this.state.authState){
-      //TODO: replace the hardcoded test user with logged in user once all users can create trips
-      //sessionStorage.setItem("reference", "/users/"+this.context.auth.currentUser.uid);
       sessionStorage.setItem("userId", this.context.auth.currentUser.uid);
       return <Redirect to = "/trips/"/>;
     } else {

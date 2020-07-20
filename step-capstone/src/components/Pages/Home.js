@@ -1,12 +1,12 @@
 import React from 'react';
 import {Button, createMuiTheme, Grid, responsiveFontSizes, Typography, ThemeProvider, withStyles } from '@material-ui/core'
-import SignInWidget from './Firebase/SignInWidget'
-import '../styles/Home.css'
-import logo from '../images/logo.png'
-import tickets from '../images/travel-tickets-colour-thumbnail.png'
-import calendar from '../images/calendar-colour-thumbnail.png'
-import help from '../images/drawkit-support-woman-colour-thumbnail.png'
-import map from '../images/map-colour-thumbnail.png'
+import SignInWidget from '../Firebase/SignInWidget'
+import '../../styles/Home.css'
+import logo from '../../images/logo.png'
+import tickets from '../../images/travel-tickets-colour-thumbnail.png'
+import calendar from '../../images/calendar-colour-thumbnail.png'
+import help from '../../images/drawkit-support-woman-colour-thumbnail.png'
+import map from '../../images/map-colour-thumbnail.png'
 
 const LoginButton = withStyles({
   root: {
@@ -37,11 +37,7 @@ class Home extends React.Component {
 
 
   render() {
-    let theme = createMuiTheme();
-    theme = responsiveFontSizes(theme);
-
     return (
-      <ThemeProvider theme={theme}>
         <Grid container id='home'>
           <Grid item id='top-half'>
             <Typography id='banner-header' variant='h2'> Less planning. More exploring. </Typography> 
@@ -92,7 +88,6 @@ class Home extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-      </ThemeProvider>
     )
   }
 }

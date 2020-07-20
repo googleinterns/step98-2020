@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import TravelObject from './TravelObject';
-import FinalizedHeader from './FinalizedHeader';
-import '../styles/TimeLine.css';
-import { travelObjectStartDateComparator } from "../scripts/HelperFunctions"
+import TravelObject from '../TravelObjects/TravelObject';
+import FinalizedHeader from '../Sidebars/FinalizedHeader';
+import '../../styles/TimeLine.css';
+import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions"
 
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
 const sameDate = (timeA, timeB) => {
@@ -11,8 +11,8 @@ const sameDate = (timeA, timeB) => {
 
 function OneHourInterval(props) {
 
-  const displayHeightOfADiv = 48.0;
-  const padding = 16.0;
+  const displayHeightOfADiv = 45.0;
+  const padding = 22.0;
   const minPerDiv = 30.0;
 
   const handleOnClickInterval = (idV) => {
@@ -25,11 +25,11 @@ function OneHourInterval(props) {
     let dif = 0;
     if (sameDate(startDate, endDate)) {
       dif = endDate.getHours() * 60 + endDate.getMinutes() - startDate.getHours() * 60 - startDate.getMinutes();
-
-    } else if (sameDate(props.displayDate, startDate)) {
+    } else if (!sameDate(props.displayDate, endDate)) {
       dif = 24 * 60 - startDate.getHours() * 60 - startDate.getMinutes();
     } else {
       dif = endDate.getHours() * 60 + endDate.getMinutes();
+      console.log(dif * displayHeightOfADiv / minPerDiv - padding);
     }
     return dif * displayHeightOfADiv / minPerDiv - padding;
   }
@@ -65,10 +65,11 @@ function OneHourInterval(props) {
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
         styleConfig={{
           top: top.toString() + "px",
           height: height.toString() + "px",
-          width: "228px",
+          width: "216px",
           overflowY: "scroll",
           position: "absolute",
           zIndex: props.zIndex.toString()
@@ -143,6 +144,8 @@ export default function TimeLine(props) {
   sortItemList();
 
   var displayItems = (date2Items.has(displayDate.toDateString())) ? date2Items.get(displayDate.toDateString()) : [];
+  props.setTodaysEvents(displayItems, displayDate.toDateString());
+
   var nextItemIndex = 0;
 
   for (var i = 0; i < 24; i++) {
@@ -154,12 +157,13 @@ export default function TimeLine(props) {
         nextItemIndex++;
         intervals.push(<OneHourInterval
           idV={nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0}
-          items={[{data: nextItem, div: ":00"}]}
+          items={[{ data: nextItem, div: ":00" }]}
           zIndex={nextItemIndex}
           displayDate={displayDate}
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
       else {
@@ -189,6 +193,7 @@ export default function TimeLine(props) {
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
           onAddItem={props.onAddItem}
+          onClickObject={props.onClickObject}
         />);
       }
     }
@@ -201,6 +206,7 @@ export default function TimeLine(props) {
         onRemoveItem={props.onRemoveItem}
         onEditItem={props.onEditItem}
         onAddItem={props.onAddItem}
+        onClickObject={props.onClickObject}
       />);
 
     }
