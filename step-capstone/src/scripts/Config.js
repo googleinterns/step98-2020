@@ -10,7 +10,7 @@
  */
 export default class Config {
     constructor(userCat, userBudget, radius, timeRange, coordinates) {
-        this.userCat = userCat;
+        this.userCategories = userCat;
         this.userBudget = userBudget;
         this.radius = radius;
         this.timeRange = timeRange;

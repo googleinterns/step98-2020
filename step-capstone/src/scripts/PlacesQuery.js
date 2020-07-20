@@ -15,11 +15,12 @@ export default function queryPlaces (coordinates, radius, service, types) {
         
         Promise.all(queries).then(results => {
             res(results.reduce((queryResults, nextResults) => {
-                for(var index = 0; index < nextResults.length; index++) {
-                    var result = nextResults[index];
-                    var placeObject = new PlaceObject(result, {index: index, total: results.length})
-                    queryResults.set(result.place_id, placeObject);  
-                }
+                let index=0;
+                nextResults.forEach((result) => {
+                  var placeObject = new PlaceObject(result, {index: index, total: nextResults.size})
+                  index++;
+                  queryResults.set(result.place_id, placeObject);  
+                });  
                 return queryResults;
             }, new Map()))
         })
@@ -28,19 +29,22 @@ export default function queryPlaces (coordinates, radius, service, types) {
 
 function queryPlacesByType (coordinates, radius, service, type) {
     var output = [];
-
+    var pages = { "tourist_attraction": 2, "natural_feature": 2, "bakery": 2, "restaurant": 2, "cafe": 3 };
     var place = new window.google.maps.LatLng(coordinates.lat, coordinates.lng);
     var request = {
         location: place,
         radius: radius,
         types: [type]
     };
-    
+    console.log("request", request);
     return new Promise((res) => {
+      console.log(new Date())
         service.nearbySearch(request, function (results, status, pagination) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 output = output.concat(results);
-                if (pagination.hasNextPage) {
+                console.log(new Date())
+                pages[type] = pages[type] - 1;
+                if (pagination.hasNextPage && pages[type] > 0) {
                     pagination.nextPage();
                 }
                 else {
