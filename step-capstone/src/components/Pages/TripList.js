@@ -35,9 +35,6 @@ class TripList extends React.Component{
       this.service.getDetails(
         request, (results, status) => {
           if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            // results.forEach((img) => {
-            //   console.log(img.photos.getUrl())
-            // })
             let url = results.photos[0].getUrl();
             res(url); 
           }
