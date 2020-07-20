@@ -35,11 +35,7 @@ export default class SuggestionPopup extends React.Component {
         this.renderSuggestions = this.renderSuggestions.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
     }
-
-    componentDidMount() {
-        // this.getSuggestions();
-    }
-
+    
     componentDidUpdate(prevProps) {
         if (!prevProps.show && this.props.show) {
             this.getSuggestions();
