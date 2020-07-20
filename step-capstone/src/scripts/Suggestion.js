@@ -1,13 +1,6 @@
 import queryPlaces from './PlacesQuery';
 import categories from './Categories';
 
-const getDisplayDateString = (displayDate) => {
-    let year = displayDate.getFullYear().toString();
-    let month = (displayDate.getMonth() <10)? "0" + displayDate.getMonth() : displayDate.getMonth();
-    let date = (displayDate.getDate() < 10)? "0" + displayDate.getDate()   : displayDate.getDate();;
-    return year + "-" + month + "-" + date;
-  };
-
 const contains = (startTime, endTime, timePoint) => {
     // return whether timeRange from startTime to endTime contains timePoint
     return startTime < timePoint && timePoint < endTime;
@@ -65,9 +58,9 @@ const filterByTimeRange = (results, timeRange) => {
                                     : "2359";
             
 
-            let date = getDateString(timeRange[0]);
-            let openingTime = new Date(date + "T" + openHoursMinutes.slice(0, 2) + ":" + openHoursMinutes.splice(2) +":00");
-            let closingTime = new Date(date + "T" + closeHoursMinutes.slice(0, 2) + ":" + closeHoursMinutes.splice(2) + ":00");
+            let date = timeRange[0];
+            let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.splice(2), 0);
+            let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.splice(2), 0);
             
             return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
         } 
