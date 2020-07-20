@@ -62,7 +62,6 @@ class TripList extends React.Component{
     this.loadTrips();
     this.map = new window.google.maps.Map(window.document.getElementById("map"));
     this.service = new window.google.maps.places.PlacesService(this.map);
-    this.fetchPhoto();
   }
 
   handleOpenTrip(tripId) {
@@ -85,7 +84,6 @@ class TripList extends React.Component{
     return (
       <div>
         <div id="map"></div>
-        <div id="img"></div>
         {this.state.selectedTrip ? <Redirect to = {"/trips/"+this.state.selectedTrip}/> :
           <Grid id="trips" 
             container spacing = {2} 
