@@ -10,7 +10,8 @@ export default class SuggestionBar extends React.Component {
 
     this.state = {
       suggestions: props.suggestions,
-      startIndex: 0
+      startIndex: 0,
+      numOfSuggestionsToDisplay: 3
     }
 
     this.loadPrevious = this.loadPrevious.bind(this);
@@ -30,12 +31,25 @@ export default class SuggestionBar extends React.Component {
 
 
   render() {
+    let suggestionItems = [];
+    for (let i = 0; i < this.state.numOfSuggestionsToDisplay; i++) {
+      suggestionItems.push(
+        <Grid item className="suggestion-item-holder">
+          <SuggestionItem
+            suggestion={this.state.suggestions[this.state.startIndex + i]}
+            context={this.props.context}
+            onAddItem={this.props.onAddItem}
+          />
+        </Grid>
+      );
+    }
+    
     return (
       <div id="suggestion-bar">
         <Grid id="suggestion-grid" container direction="row" wrap="nowrap" justify="center" >
           <Grid item>
             <IconButton
-              className="arrow-buttons" 
+              className="arrow-buttons"
               onClick={this.loadPrevious}
               disabled={(this.state.startIndex === 0) ? true : false}
             >
@@ -44,36 +58,16 @@ export default class SuggestionBar extends React.Component {
           </Grid>
 
           <Grid item container id="displayed-suggestions" direction="row" wrap="nowrap" justify="space-around">
-            <Grid item className="suggestion-item-holder">
-              <SuggestionItem 
-                suggestion={this.state.suggestions[this.state.startIndex]} 
-                context={this.props.context}
-                onAddItem={this.props.onAddItem}
-              />
-            </Grid>
-            <Grid item className="suggestion-item-holder">
-              <SuggestionItem 
-                suggestion={this.state.suggestions[this.state.startIndex + 1]}
-                context={this.props.context}
-                onAddItem={this.props.onAddItem}
-              />
-            </Grid>
-            <Grid item className="suggestion-item-holder">
-              <SuggestionItem 
-                suggestion={this.state.suggestions[this.state.startIndex + 2]} 
-                context={this.props.context}
-                onAddItem={this.props.onAddItem}
-              />
-            </Grid>
+            {suggestionItems}
           </Grid>
 
           <Grid item>
             <IconButton
-              className="arrow-buttons" 
+              className="arrow-buttons"
               onClick={this.loadNext}
               disabled={(this.state.startIndex === this.state.suggestions.length) ? true : false}
             >
-              <ArrowRight/>
+              <ArrowRight />
             </IconButton>
           </Grid>
         </Grid>
