@@ -25,9 +25,7 @@ const useStyles = makeStyles({
 export default function TripItemComponent(props) {
     const classes = useStyles();
     let dateRange = props.data.startDate.toDate().toDateString() + " - " + props.data.endDate.toDate().toDateString();
-    console.log("here")
     return(
-      console.log(props.data.title, props.data.startDate.toDate(), props.data.description, props.tripId),
           <Card className={classes.root}>
               <CardHeader title={props.data.title} subheader={dateRange}/>
               <CardMedia
