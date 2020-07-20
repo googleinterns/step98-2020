@@ -5,7 +5,6 @@ import {
     Box,
     FormControl,
     FormControlLabel,
-    FormHelperText,
     MenuItem,
     InputLabel,
     Select,
@@ -80,7 +79,6 @@ export default class PreferenceForm extends React.Component {
                                         <MenuItem value={3}>$$$</MenuItem>
                                         <MenuItem value={4}>$$$$</MenuItem>
                                     </Select>
-                                    <FormHelperText>We won't give you anything above this price!</FormHelperText>
                                 </FormControl>
                             </Box>
                         </Grid>

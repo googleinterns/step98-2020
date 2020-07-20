@@ -144,7 +144,7 @@ function EditTripSetting(props) {
                 <LocationAutocompleteInput
                     onLocationSelected={handleDestinationChange}
                     error={!destination}
-                    helperText={!destination ? "Cannot leave field blank, list your destinations, and separate them using comma" : null}
+                    helperText={!destination ? "Cannot leave field blank. Please enter a destination." : null}
                     text={destination ? destination.address : ""}
                     type="other"
                 />
