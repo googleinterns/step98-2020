@@ -1,6 +1,5 @@
 import react from 'react'
 import '@testing-library/jest-dom'
-
 import {rank} from '../scripts/Suggestion'
 import {suggestionTestData} from "../testData/SuggestionTestData"
 
