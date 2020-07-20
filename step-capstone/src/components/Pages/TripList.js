@@ -34,7 +34,6 @@ class TripList extends React.Component {
     })
       .catch(error => {
         console.log("Error Getting Trips")
-        console.log(error)
         console.error(error)
       })
   }
