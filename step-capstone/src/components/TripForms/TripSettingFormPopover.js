@@ -16,6 +16,7 @@ import {
 } from '@material-ui/pickers';
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
+import "../../styles/TripSetting.css"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -52,8 +53,8 @@ export default class TripSettingFormPopover extends React.Component {
 
     render() {
         return (
-            <Card>
-                <Box width={600}>
+            <Card id="setting-container">
+                <Box>
                     <CardContent>
                         <EditTripSetting
                             tripSetting={this.props.tripSetting}
@@ -128,7 +129,7 @@ function EditTripSetting(props) {
         <div >
             <Grid container direction="column">
                 <Grid>
-                    <Typography variant={"h4"} gutterBottom>New Trip</Typography>
+                    <Typography variant={"h4"} gutterBottom>Trip Settings</Typography>
                 </Grid>
                 <Grid item container direction="row" justify="space-between">
                     <TextField

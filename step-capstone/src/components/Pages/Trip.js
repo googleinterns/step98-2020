@@ -2,21 +2,14 @@ import React from 'react';
 import Finalized from '../Sidebars/Finalized';
 import Unfinalized from '../Sidebars/Unfinalized';
 import AddItemButton from '../TravelObjectForms/AddItemButton'
-import { Grid } from '@material-ui/core'
+import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import { handleSuggestions } from "../../scripts/Suggestions"
+import GetSuggestionButton from '../Utilities/GetSuggestionButton';
+import SuggestionPopup from "../Utilities/SuggestionPopup"
 
-const config = {
-    userCategories: ["bakery"],
-    userBudget: 4,
-    radius: "10000",
-    timeRange: [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)],
-    coordinates: { lat: 36.1699, lng: -115.1398 },
-    items: new Set([])
-}
-//"ChIJmx1Uvc3FyIARdp6ftqC7Gd8","ChIJDRyBe_nEyIARH77JCHU27r8","ChIJVcuReVnbyIARXwAzHqxeAnk","ChIJ_YX8a9LGyIARrcojBX4AgtU"
+
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -33,7 +26,10 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-            queryResults: null
+            queryResults: null,
+            palceIds: new Set(),
+            showSuggestions: false,
+            selectedTimeslot: null
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -43,10 +39,12 @@ export default class Trip extends React.Component {
         this.handleSelectedObject = this.handleSelectedObject.bind(this);
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
         this.setMap = this.setMap.bind(this);
+        this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
     }
 
     componentDidMount() {
         let travelObjectList = [];
+        let placeIds = new Set();
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
@@ -65,8 +63,9 @@ export default class Trip extends React.Component {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
+                    placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList });
+                this.setState({ items: travelObjectList, placeIds: placeIds });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -77,8 +76,13 @@ export default class Trip extends React.Component {
     handleRemoveItem(data) {
         this.context.deleteTravelObject(this.state.reference, data)
             .then(() => {
+                var placeIdCopy = new Set(this.state.placeIds);
+                if (data.type !== "flight") {
+                    placeIdCopy = placeIdCopy.delete(data.placeId);
+                }
                 this.setState({
-                    items: this.state.items.filter((item) => item.id !== data.id)
+                    items: this.state.items.filter((item) => item.id !== data.id),
+                    placeIds: placeIdCopy
                 });
             })
             .catch(error => {
@@ -90,8 +94,13 @@ export default class Trip extends React.Component {
     handleEditItem(data) {
         let newItems = [];
         let itemToChange;
+        let newPlaceIds = new Set(this.state.placeIds);
         this.state.items.forEach((item) => {
             if (item.id === data.id) {
+                if (data.type !== "flight") {
+                    newPlaceIds.delete(item.placeId);
+                    newPlaceIds.add(data.placeId);
+                }
                 itemToChange = item;
                 newItems.push(data);
             } else {
@@ -102,7 +111,7 @@ export default class Trip extends React.Component {
             .then(() => {
                 this.setState({
                     items: newItems,
-                    loaded: true
+                    placeIds: newPlaceIds
                 });
             })
             .catch((error) => {
@@ -114,13 +123,15 @@ export default class Trip extends React.Component {
 
     handleAddItem(data) {
         // Add to database here
+        var newPlaceIds = new Set(this.state.placeIds);
+        if (data.type !== "flight") {
+            newPlaceIds.add(data.placeId);
+        }
+
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
-                this.setState({ items: this.state.items.concat(data) });
-                this.getFoodSuggestions(config).then(results => {
-                    console.log(results)
-                });
+                this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -150,30 +161,11 @@ export default class Trip extends React.Component {
         }
     }
 
-    async getActivitySuggestions(config) {
-        /**
-         * param: 
-         * config: an object with six fields: 
-         *  1. userCategories: a  String array of categories 
-         *  2. userBudget: an integer for budget
-         *  3. radius: a string integer radius object 
-         *  4. timeRange: free time range [startDate, endDate]
-         *  5. coordinates: an object for coordinates
-         *  6. items: set of all place ids of selected places
-         * return the suggestions : an array of PlaceObject already sorted based on score
-         */
-        if (this.state.map) {
-            let results = await handleSuggestions(this.state.service, config, "activities");
-            return results;
+    toggleSuggestionBar() {
+        if (this.state.showSuggestions) {
+            this.setState({ showSuggestions: !this.state.showSuggestions, handleSelectTimeslot: null })
         }
-    }
-
-    async getFoodSuggestions(config) {
-        if (this.state.map) {
-
-            let results = await handleSuggestions(this.state.service, config, "food");
-            return results;
-        }
+        this.setState({ showSuggestions: !this.state.showSuggestions })
     }
 
     setMap(map) {
@@ -181,6 +173,38 @@ export default class Trip extends React.Component {
             map: map,
             service: new window.google.maps.places.PlacesService(map)
         })
+    }
+
+    // Triggered when a time slot is selected in timeline
+    handleSelectTimeslot(timeRange, coordinates, radius) {
+        this.setState({
+            selectedTimeslot: {
+                timeRange: timeRange,
+                coordinates: coordinates,
+                radius: radius
+            }
+        })
+    }
+
+    // only allows rendering of suggestion bar once map is set
+    renderSuggestionBar() {
+        if (this.state.map) {
+            return (
+                <Grid item>
+                    <SuggestionPopup
+                        show={this.state.showSuggestions}
+                        service={this.state.service}
+                        userPref={this.state.tripSetting.userPref}
+                        coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                        items={this.state.placeIds}
+                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
+                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
+                        onClose={this.toggleSuggestionBar}
+                    />
+                </Grid>
+            )
+        }
+        return null;
     }
 
     render() {
@@ -228,11 +252,19 @@ export default class Trip extends React.Component {
                         />
                     </Grid>
                 </Grid>
-                <Grid id="add-button-component">
-                    <AddItemButton
-                        startDate={this.state.tripSetting.startDate}
-                        onAddItem={this.handleAddItem}
-                    />
+                {this.renderSuggestionBar()}
+                <Grid id="button-group">
+                    <Box mb={3}>
+                        <GetSuggestionButton
+                            onClick={this.toggleSuggestionBar}
+                        />
+                    </Box>
+                    <Box>
+                        <AddItemButton
+                            startDate={this.state.tripSetting.startDate}
+                            onAddItem={this.handleAddItem}
+                        />
+                    </Box>
                 </Grid>
             </div>
         );

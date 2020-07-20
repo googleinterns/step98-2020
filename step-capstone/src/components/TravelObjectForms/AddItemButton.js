@@ -18,7 +18,7 @@ export default function AddItemButton(props) {
     const open = Boolean(anchorEl);
     return (
         <div>
-            <Fab aria-label="add" onClick={handleClick}>
+            <Fab color="primary" aria-label="add" onClick={handleClick}>
                 <AddIcon />
             </Fab>
             <FormPopover
@@ -40,5 +40,4 @@ export default function AddItemButton(props) {
             />
         </div>
     )
-
 }
