@@ -4,7 +4,6 @@ import FinalizedHeader from "../Sidebars/FinalizedHeader";
 import "../../styles/TimeLine.css";
 import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
 import { handleClickedTimePoint } from "./HandleClickedTimePoint";
-import { getEmptySlots } from "./HandleClickedTimePoint";
 import { sameDate } from "../../scripts/HelperFunctions";
 import OneHourInterval from "./OneHourInterval";
 
@@ -13,7 +12,6 @@ export default class TimeLine extends React.Component {
     super(props);
     this.date2Items = new Map();
     this.displayItems = [];
-    this.emptySlots = [];
     this.handleOnClickInterval = this.handleOnClickInterval.bind(this);
   }
 
@@ -51,7 +49,6 @@ export default class TimeLine extends React.Component {
     return handleClickedTimePoint(
       idV,
       this.props.displayDate,
-      this.emptySlots,
       this.displayItems
     );
   }
@@ -62,7 +59,6 @@ export default class TimeLine extends React.Component {
     if (this.props.displayDate !== undefined) {
       this.date2Items = new Map();
       this.displayItems = [];
-      this.emptySlots = [];
       this.separateDates();
       this.displayItems = this.date2Items.has(
         this.props.displayDate.toDateString()
@@ -75,10 +71,6 @@ export default class TimeLine extends React.Component {
       );
 
       this.sortItemList();
-      this.emptySlots = getEmptySlots(
-        this.displayItems,
-        this.props.displayDate
-      );
 
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {

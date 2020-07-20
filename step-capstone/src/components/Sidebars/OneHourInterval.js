@@ -4,7 +4,6 @@ import { sameDate } from "../../scripts/HelperFunctions";
 import PreferencePopover from "./PreferencePopover";
 
 export default function OneHourInterval(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const [slots, setSlots] = useState(null);
   const displayHeightOfADiv = 45.0;
   const padding = 22.0;
@@ -12,8 +11,7 @@ export default function OneHourInterval(props) {
 
   const handleOnClickInterval = (idV, event) => {
     let data = props.onClickInterval(idV);
-    if (data.curSlot !== null) {
-      setAnchorEl(event.currentTarget);
+    if (data.freeTimeSlot !== undefined) {
       setSlots(data);
     }
   };
@@ -103,7 +101,6 @@ export default function OneHourInterval(props) {
           {item00.length === 0 ? null : item00}
         </td>
       </tr>
-      <PreferencePopover anchorEl={anchorEl} slots={slots} />
       <tr className="OneHourInterval">
         <td className="headcol"></td>
         <td

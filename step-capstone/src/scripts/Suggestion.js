@@ -59,8 +59,8 @@ const filterByTimeRange = (results, timeRange) => {
             
 
             let date = timeRange[0];
-            let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.splice(2), 0);
-            let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.splice(2), 0);
+            let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.slice(2), 0);
+            let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.slice(2), 0);
             
             return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
         } 
