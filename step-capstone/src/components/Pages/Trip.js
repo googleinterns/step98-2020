@@ -1,12 +1,22 @@
 import React from 'react';
-import Finalized from './Finalized';
-import Unfinalized from './Unfinalized';
-import AddItemButton from './AddItemButton'
+import Finalized from '../Sidebars/Finalized';
+import Unfinalized from '../Sidebars/Unfinalized';
+import AddItemButton from '../TravelObjectForms/AddItemButton'
 import { Grid } from '@material-ui/core'
-import '../styles/Trip.css'
-import { FirebaseContext } from './Firebase';
-import MapComponent from "./Map"
+import '../../styles/Trip.css'
+import { FirebaseContext } from '../Firebase';
+import MapComponent from "../Utilities/Map"
+import { handleSuggestions } from "../../scripts/Suggestions"
 
+const config = {
+    userCategories: ["bakery"],
+    userBudget: 4,
+    radius: "10000",
+    timeRange: [new Date(2020, 7, 15, 2, 0), new Date(2020, 7, 15, 20, 0)],
+    coordinates: { lat: 36.1699, lng: -115.1398 },
+    items: new Set([])
+}
+//"ChIJmx1Uvc3FyIARdp6ftqC7Gd8","ChIJDRyBe_nEyIARH77JCHU27r8","ChIJVcuReVnbyIARXwAzHqxeAnk","ChIJ_YX8a9LGyIARrcojBX4AgtU"
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -21,13 +31,25 @@ export default class Trip extends React.Component {
                 endDate: new Date(),
                 destinations: "",
                 description: ""
-            }
+            },
+            loaded: false,
+            selectedObject: null,
+            today: {
+                events: [],
+                date: null
+            },
+            map: null,
+            service: null,
+            queryResults: null
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
         this.handleEditItem = this.handleEditItem.bind(this);
         this.handleAddItem = this.handleAddItem.bind(this);
         this.handleEditTripSetting = this.handleEditTripSetting.bind(this);
+        this.handleSelectedObject = this.handleSelectedObject.bind(this);
+        this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
+        this.setMap = this.setMap.bind(this);
     }
 
     componentDidMount() {
@@ -35,20 +57,22 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
-                this.setState({tripSetting : {
-                    title: trip.title,
-                    startDate: trip.startDate.toDate(),
-                    endDate: trip.startDate.toDate(),
-                    destinations: trip.destinations,
-                    description: trip.description
-                }})
+                this.setState({
+                    tripSetting: {
+                        title: trip.title,
+                        startDate: trip.startDate.toDate(),
+                        endDate: trip.startDate.toDate(),
+                        destinations: trip.destinations,
+                        description: trip.description
+                    }
+                })
 
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
                 });
-                this.setState({ items: travelObjectList });
+                this.setState({ items: travelObjectList, loaded: true });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -100,28 +124,89 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data) });
+                this.getFoodSuggestions(config).then(results => {
+                    console.log(new Date())
+                    console.log(results)
+                });
             })
             .catch(error => {
                 console.log("Error Adding Item")
                 console.error(error)
             });
     }
+
     async handleEditTripSetting(newSetting) {
         await this.context.editTripSetting(this.state.reference, this.state.tripSetting, newSetting);
         this.setState({
             tripSetting: newSetting
         });
     }
-    
+
+    handleSelectedObject(id) {
+        this.setState({ selectedObject: id })
+    }
+
+    handleChangeDisplayDate(travelObjects, date) {
+        if (this.state.today.date !== date) {
+            this.setState({
+                today: {
+                    events: travelObjects,
+                    date: date
+                }
+            })
+        }
+    }
+
+    async getActivitySuggestions(config) {
+        /**
+         * param: 
+         * config: an object with six fields: 
+         *  1. userCategories: a  String array of categories 
+         *  2. userBudget: an integer for budget
+         *  3. radius: a string integer radius object 
+         *  4. timeRange: free time range [startDate, endDate]
+         *  5. coordinates: an object for coordinates
+         *  6. items: set of all place ids of selected places
+         * return the suggestions : an array of PlaceObject already sorted based on score
+         */
+        if (this.state.map) {
+            let results = await handleSuggestions(this.state.service, config, "activities");
+            return results;
+        }
+    }
+
+    async getFoodSuggestions(config) {
+        if (this.state.map) {
+
+            let results = await handleSuggestions(this.state.service, config, "food");
+            return results;
+        }
+    }
+
+    setMap(map) {
+        this.setState({
+            map: map,
+            service: new window.google.maps.places.PlacesService(map)
+        })
+    }
+
     render() {
+        // if data hasn't been loaded yet, don't render the trip
+        // prevents map from loading empty data
+        if (!this.state.loaded) {
+            return null;
+        }
         return (
             <div className="trip">
+
                 <Grid id="map-component">
                     <MapComponent
-                        zoom={13}
-                        center={{ lat: 51.5, lng: 0.087 }}
+                        zoom={15}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        selected={this.state.selectedObject}
+                        displayDate={this.state.today}
+                        setMap={this.setMap}
                     />
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
@@ -133,6 +218,9 @@ export default class Trip extends React.Component {
                             onRemoveItem={this.handleRemoveItem}
                             onEditItem={this.handleEditItem}
                             onAddItem={this.handleAddItem}
+                            onClickObject={this.handleSelectedObject}
+                            setTodaysEvents={this.handleChangeDisplayDate}
+
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -143,6 +231,7 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
+                            onClickObject={this.handleSelectedObject}
                         />
                     </Grid>
                 </Grid>
