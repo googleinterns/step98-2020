@@ -10,6 +10,7 @@ export default function OneHourInterval(props) {
   const minPerDiv = 30.0;
 
   const handleOnClickInterval = (idV, event) => {
+    console.log("Click in ", idV);
     let data = props.onClickInterval(idV);
     if (data.freeTimeSlot !== undefined) {
       setSlots(data);

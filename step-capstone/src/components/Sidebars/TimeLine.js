@@ -3,7 +3,7 @@ import TravelObject from "../TravelObjects/TravelObject";
 import FinalizedHeader from "../Sidebars/FinalizedHeader";
 import "../../styles/TimeLine.css";
 import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
-import { handleClickedTimePoint } from "./HandleClickedTimePoint";
+import { getEmptySlots, handleClickedTimePoint } from "./HandleClickedTimePoint";
 import { sameDate } from "../../scripts/HelperFunctions";
 import OneHourInterval from "./OneHourInterval";
 
@@ -11,7 +11,25 @@ export default class TimeLine extends React.Component {
   constructor(props) {
     super(props);
     this.date2Items = new Map();
+    this.emptySlots = [];
     this.displayItems = [];
+    this.displayItemsExcludeHotel = [];
+    this.startOfDisplayDate = new Date(
+      this.props.displayDate.getFullYear(),
+      this.props.displayDate.getMonth(),
+      this.props.displayDate.getDate(),
+      0,
+      0,
+      0
+    );
+    this.endOfDisplayDate = new Date(
+      this.props.displayDate.getFullYear(),
+      this.props.displayDate.getMonth(),
+      this.props.displayDate.getDate(),
+      23,
+      59,
+      59
+    );
     this.handleOnClickInterval = this.handleOnClickInterval.bind(this);
   }
 
@@ -39,18 +57,11 @@ export default class TimeLine extends React.Component {
     }
   }
 
-  /*Sort the list of travelObjects of displayDate */
-  sortItemList() {
-    this.displayItems.sort(travelObjectStartDateComparator);
-  }
-
   handleOnClickInterval(idV) {
     idV = idV.length < 5 ? "0" + idV : idV;
-    return handleClickedTimePoint(
-      idV,
-      this.props.displayDate,
-      this.displayItems
-    );
+
+    return handleClickedTimePoint(idV, this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel, this.emptySlots)
+
   }
 
   /* Handling rendering starts HERE */
@@ -59,6 +70,7 @@ export default class TimeLine extends React.Component {
     if (this.props.displayDate !== undefined) {
       this.date2Items = new Map();
       this.displayItems = [];
+      this.emptySlots = [];
       this.separateDates();
       this.displayItems = this.date2Items.has(
         this.props.displayDate.toDateString()
@@ -69,9 +81,13 @@ export default class TimeLine extends React.Component {
         this.displayItems,
         this.props.displayDate.toDateString()
       );
+      
 
-      this.sortItemList();
-
+      this.displayItems.sort(travelObjectStartDateComparator);
+      this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
+      console.log("displayItemsExcludeHotel ", this.displayItemsExcludeHotel);
+      this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
+    
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
         if (nextItemIndex < this.displayItems.length) {
