@@ -32,9 +32,8 @@ export const getEmptySlots = (startOfDisplayDate, endOfDisplayDate, displayItems
 
   return emptySlots;
 };
-
+// return whether timeRange from startDate to endDate contains timePoint
 const contains = (interval, timePoint) => {
-  // return whether timeRange from startDate to endDate contains timePoint
   return interval.startDate <= timePoint && timePoint <= interval.endDate;
 };
 
@@ -64,12 +63,11 @@ const searchForOverlappingPoint = (intervals,timePointStart,timePointEnd) => {
   return null;
 };
 
-/*Receives a list of travelobjects and returns the travelobjects that is in front and after the timePoint
-  fakeStart    |----A------|  timePoint  |--B--| |-C--|  |-------D------|         fakeEnd
-  return {A, {startDate: B}
-  if timePoint is in a travelobjects, return undefined for both A and B
-  if either A or B doesn't exist, return null for that travelobject
-*/
+//Receives a list of travelobjects and returns the travelobjects that is in front and after the timePoint
+//fakeStart    |----A------|  timePoint  |--B--| |-C--|  |-------D------|         fakeEnd
+//return {A, {startDate: B}
+//if timePoint is in a travelobjects, return undefined for both A and B
+//if either A or B doesn't exist, return null for that travelobject
 const searchForPrevAndNextTravelObject = (startOfDisplayDate, endOfDisplayDate, displayItems, timePoint) => {
   if (displayItems.length == 0) {
     return { prevTravelObject: null, nextTravelObject: null };
@@ -142,7 +140,7 @@ const searchForPrevAndNextTravelObject = (startOfDisplayDate, endOfDisplayDate, 
   return { prevTravelObject: undefined, nextTravelObject: undefined };
 };
 
-/*Return the empty timeRange that users click into by performing binary search on emptySlots array*/
+//Return the empty timeRange that users click into by performing binary search on emptySlots array
 export const handleClickedTimePoint = (idV, startOfDisplayDate, endOfDisplayDate, displayItems, emptySlots) => {
   let timePointStart = new Date(
     startOfDisplayDate.getFullYear(),
