@@ -31,6 +31,7 @@ export default function AddTrip(props) {
         startDate: new Date(),
         endDate: new Date(),
         destination: null,
+        photoUrl: null,
         description: "",
         userPref: {
             budget: 2,
@@ -49,6 +50,7 @@ export default function AddTrip(props) {
             <TripSettingPopover
                 button={false}
                 tripSetting={newTrip}
+                onFetchPhoto = {props.onFetchPhoto}
                 onEditTripSetting={handleEditTrip}
             />
         </Card>

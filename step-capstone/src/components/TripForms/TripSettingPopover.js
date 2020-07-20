@@ -27,6 +27,7 @@ export default function TripSettingPopover(props) {
   };
 
   const open = Boolean(anchorEl);
+  console.log("props in tripsetting popover ", props)
   return (
     <div>
       {(props.button) ? <Button variant='outlined' onClick={handleClick} >Trip setting</Button> : null}
@@ -58,6 +59,7 @@ export default function TripSettingPopover(props) {
         }}
       >
         <TripSettingFormPopover
+          onFetchPhoto = {props.onFetchPhoto}
           onClose={handleClose}
           tripSetting={props.tripSetting}
           onEditTripSetting={props.onEditTripSetting}
