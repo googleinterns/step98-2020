@@ -18,10 +18,33 @@ class TripList extends React.Component{
       selectedTrip : null,
       trips : [],
     };
+    this.map = null;
+    this.service = null;
     this.handleOpenTrip = this.handleOpenTrip.bind(this);
     this.handleAddTrip = this.handleAddTrip.bind(this);
     this.handleDeleteTrip = this.handleDeleteTrip.bind(this);
+    this.fetchPhoto = this.fetchPhoto.bind(this);
+  }
 
+  fetchPhoto(placeId) {
+    let request = {
+      placeId: placeId,
+      fields : ["photos"]
+    }
+    return new Promise((res) => {
+      this.service.getDetails(
+        request, (results, status) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+            // results.forEach((img) => {
+            //   console.log(img.photos.getUrl())
+            // })
+            let url = results.photos[0].getUrl();
+            res(url); 
+          }
+        }
+      )
+    })
+    
   }
 
   loadTrips() {
@@ -40,7 +63,9 @@ class TripList extends React.Component{
 
   componentDidMount() {
     this.loadTrips();
-    
+    this.map = new window.google.maps.Map(window.document.getElementById("map"));
+    this.service = new window.google.maps.places.PlacesService(this.map);
+    this.fetchPhoto();
   }
 
   handleOpenTrip(tripId) {
@@ -62,6 +87,8 @@ class TripList extends React.Component{
     const trips = this.state.trips;
     return (
       <div>
+        <div id="map"></div>
+        <div id="img"></div>
         {this.state.selectedTrip ? <Redirect to = {"/trips/"+this.state.selectedTrip}/> :
           <Grid id="trips" 
             container spacing = {2} 
@@ -85,6 +112,7 @@ class TripList extends React.Component{
             
             <Grid item>
               <AddTrip
+                onFetchPhoto = {this.fetchPhoto}
                 onAddTrip = {this.handleAddTrip}/>
             </Grid>
             
