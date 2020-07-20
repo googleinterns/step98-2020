@@ -63,7 +63,8 @@ export default function AddHotel(props) {
            finalized: checked,
            location: location ? location.address : null,
            coordinates: location ? location.coordinates : null,
-           description: description
+           description: description,
+           placeId: location.placeId
        })
  
        //validating input
