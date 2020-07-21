@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home page displays correctly 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-container"
+  id="home"
+>
+  <div
+    className="MuiGrid-root MuiGrid-item"
+    id="top-half"
+  >
+    <h2
+      className="MuiTypography-root MuiTypography-h2"
+      id="banner-header"
+    >
+       Less planning. More exploring. 
+    </h2>
+    <img
+      alt="ZED logo"
+      id="logo"
+      src="logo.png"
+    />
+    <button
+      className="MuiButtonBase-root MuiButton-root WithStyles(ForwardRef(Button))-root-1 MuiButton-contained"
+      disabled={false}
+      id="login-button"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <span
+        className="MuiButton-label WithStyles(ForwardRef(Button))-label-2"
+      >
+        Get Started
+      </span>
+    </button>
+  </div>
+  <div
+    className="MuiGrid-root MuiGrid-item"
+    id="bottom-half"
+  >
+    <br />
+    <h2
+      className="MuiTypography-root MuiTypography-h2"
+    >
+       Features 
+    </h2>
+    <br />
+    <div
+      className="MuiGrid-root MuiGrid-container MuiGrid-wrap-xs-nowrap MuiGrid-justify-xs-space-around"
+      id="features"
+    >
+      <div
+        className="MuiGrid-root MuiGrid-item"
+      >
+        <img
+          alt="travel tickets icon"
+          height="250px"
+          id="tickets-icon"
+          src="travel-tickets-colour-thumbnail.png"
+          width="250px"
+        />
+        <br />
+        <h6
+          className="MuiTypography-root MuiTypography-subtitle1"
+        >
+           Add flights, hotels, restaurants, concerts, sightseeing spots, and anything else you want to see or do.
+        </h6>
+      </div>
+      <div
+        className="MuiGrid-root MuiGrid-item"
+      >
+        <img
+          alt="calendar icon"
+          height="250px"
+          id="calendar-icon"
+          src="calendar-colour-thumbnail.png"
+          width="250px"
+        />
+        <br />
+        <h6
+          className="MuiTypography-root MuiTypography-subtitle1"
+        >
+           Take the stress out of scheduling by using our calendar to keep track of where you're going and when.
+        </h6>
+      </div>
+      <div
+        className="MuiGrid-root MuiGrid-item"
+      >
+        <img
+          alt="map icon"
+          height="250px"
+          id="map-icon"
+          src="map-colour-thumbnail.png"
+          width="250px"
+        />
+        <br />
+        <h6
+          className="MuiTypography-root MuiTypography-subtitle1"
+        >
+           Trying to optimize your day? Use our map to plot your perfect route - or let us do it for you.
+        </h6>
+      </div>
+      <div
+        className="MuiGrid-root MuiGrid-item"
+      >
+        <img
+          alt="help icon"
+          height="250px"
+          id="help-icon"
+          src="drawkit-support-woman-colour-thumbnail.png"
+          width="250px"
+        />
+        <br />
+        <h6
+          className="MuiTypography-root MuiTypography-subtitle1"
+        >
+           Running out of ideas? We can give you suggestions tailored to your schedule and preferences.
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+`;

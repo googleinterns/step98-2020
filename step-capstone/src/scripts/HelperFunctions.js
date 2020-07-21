@@ -14,3 +14,10 @@ export const travelObjectStartDateComparator = (travelObjectA, travelObjectB) =>
 export const sameDate = (timeA, timeB) => {
   return (timeA.getDate() === timeB.getDate() && timeA.getMonth() === timeB.getMonth() && timeA.getFullYear() === timeB.getFullYear());
 }
+
+export const isValid = function (date) {
+  // An invalid date object returns NaN for getTime() and NaN is the only
+  // object not strictly equal to itself.
+  return date.getTime() === date.getTime();
+};
+
