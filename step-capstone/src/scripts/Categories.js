@@ -64,18 +64,6 @@ const sightseeing = new Set([
   "synagogue",
 ])
 
-const eateries = new Set([
-  "bakery", 
-  "cafe", 
-  "restaurant"
-])
-
-const bakery = new Set(["bakery"])
-
-const cafe = new Set(["cafe"])
-
-const restaurant = new Set(["restaurant"])
-
 const historicalSites = new Set([
   "church",
   "hindu_temple",
@@ -86,6 +74,12 @@ const historicalSites = new Set([
   "cemetery"
 ])
 
+const bakery = new Set(["bakery"])
+
+const cafe = new Set(["cafe"])
+
+const restaurant = new Set(["restaurant"])
+
 export const activityCategories = new Map([["shopping", shopping],
 ["beauty", beauty],
 ["entertainment", entertainment],
@@ -94,7 +88,6 @@ export const activityCategories = new Map([["shopping", shopping],
 ["outdoors", outdoors],
 ["artsAndCulture", artsAndCulture],
 ["historicalSites", historicalSites],
-["sightseeing", sightseeing],
-["eateries", eateries]]);
+["sightseeing", sightseeing]]);
 
 export const foodCategories = new Map([["bakery", bakery], ["restaurant", restaurant], ["cafe", cafe]])

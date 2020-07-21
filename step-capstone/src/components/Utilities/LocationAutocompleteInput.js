@@ -9,7 +9,7 @@ export default class LocationAutocompleteInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            place: this.props.text === null ? "" : this.props.text,
+            place: this.props.text,
             bounds: new window.google.maps.LatLngBounds()
         };
     }
@@ -24,13 +24,13 @@ export default class LocationAutocompleteInput extends React.Component {
         this.setState({ place });
     };
 
-    handleSelect = place => {
+    handleSelect = (address, placeId) => {
         // retrieves latitue and logitude from address selected
-        geocodeByAddress(place)
+        geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
-            .then(latLng => this.props.onLocationSelected({ address: place, coordinates: latLng }))
+            .then(latLng => this.props.onLocationSelected({ address: address, coordinates: latLng, placeId: placeId}))
             .catch(error => console.error('Error', error));
-        this.setState({ place: place });
+        this.setState({ place: address });
     };
 
     renderSuggestions = ({ getInputProps, suggestions, getSuggestionItemProps, loading}) => {
