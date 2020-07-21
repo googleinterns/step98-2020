@@ -23,6 +23,7 @@ export default function AddItemButton(props) {
             </Fab>
             <FormPopover
                 data={undefined}
+                isNewItem = {true}
                 startDate={props.startDate}
                 open={open}
                 anchorEl={anchorEl}
