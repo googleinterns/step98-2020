@@ -8,10 +8,10 @@ import {
 } from "react-router-dom";
 
 
-class TripList extends React.Component{
+class TripList extends React.Component {
   static contextType = FirebaseContext;
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       reference : "/users/" + sessionStorage.getItem("userId") + "/trips/",
@@ -50,23 +50,24 @@ class TripList extends React.Component{
       tripList.forEach(trip => {
         trips.push(trip)
       })
-      this.setState({trips : trips})
+      this.setState({ trips: trips })
     })
-    .catch(error => {
-      console.log("Error Getting Trips")
-      console.error(error)
-    })
+      .catch(error => {
+        console.log("Error Getting Trips")
+        console.error(error)
+      })
   }
 
   componentDidMount() {
     this.loadTrips();
+
     this.map = new window.google.maps.Map(window.document.getElementById("map"));
     this.service = new window.google.maps.places.PlacesService(this.map);
   }
 
   handleOpenTrip(tripId) {
-    this.setState({selectedTrip : tripId})
-    sessionStorage.setItem("tripId",tripId);
+    this.setState({ selectedTrip: tripId })
+    sessionStorage.setItem("tripId", tripId);
   }
 
   handleAddTrip(newTrip) {
@@ -79,7 +80,7 @@ class TripList extends React.Component{
     this.loadTrips();
   }
 
-  render () {
+  render() {
     const trips = this.state.trips;
     return (
       <div>
@@ -92,31 +93,28 @@ class TripList extends React.Component{
                     left: "10%"}}
           > 
             {trips.map((trip) => {
-                return (
-                  <Grid item>
-                    <TripItemComponent 
-                      key = {trip.id} 
-                      data = {trip.data()} 
-                      tripId = {trip.id} 
-                      onOpenTrip ={this.handleOpenTrip}
-                      onDeleteTrip = {this.handleDeleteTrip} />
-                  </Grid>
-                );
-              })
-            }
-            
+              return (
+                <Grid item id="tripItem" key={trip.id}>
+                  <TripItemComponent
+                    key={trip.id}
+                    data={trip.data()}
+                    tripId={trip.id}
+                    onOpenTrip={this.handleOpenTrip}
+                    onDeleteTrip={this.handleDeleteTrip} />
+                </Grid>
+              );
+            })}
+
             <Grid item>
               <AddTrip
                 onFetchPhoto = {this.fetchPhoto}
                 onAddTrip = {this.handleAddTrip}/>
             </Grid>
-            
+
           </Grid>
         }
-        
       </div>
-
-   );
+    );
   }
 }
 
