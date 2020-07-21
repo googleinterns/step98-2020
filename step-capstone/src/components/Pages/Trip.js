@@ -193,8 +193,6 @@ export default class Trip extends React.Component {
         const todayEndTime = new Date(this.state.today.date);
         todayEndTime.setHours(23, 59, 59);
 
-        console.log(this.state.selectedTimeslot)
-
         if (this.state.map) {
             return (
                 <Grid item>

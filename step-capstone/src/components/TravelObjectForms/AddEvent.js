@@ -35,7 +35,11 @@ export default function AddEvent(props) {
           coordinates: props.data.coordinates,
           placeId: props.data.placeId,
         }
-      : null
+      : { 
+          address: "",
+          coordinates: "",
+          placeId: "",
+        }
   );
   const [description, setDescription] = useState(
     overwriting ? props.data.description : ""
@@ -83,11 +87,11 @@ export default function AddEvent(props) {
       description: description,
       placeId: location ? location.placeId : null,
     });
-    console.log(checked && location === "")
+
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
-    } else if (checked && location === "") {
+    } else if (checked && (location===null||location.address===""||location.address===null)) {
       props.onToggleValidation(false);
     } else if (!isValid(startDate) || !isValid(endDate)) {
       props.onToggleValidation(false);
@@ -145,7 +149,7 @@ export default function AddEvent(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleLocationChange}
-            error={checked && location === ""}
+            error={checked && (location===null||location.address===""||location.address===null)}
             text={location ? location.address : ""}
             type="event"
           />

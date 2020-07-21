@@ -90,9 +90,11 @@ function EditTripSetting(props) {
 
     const handleDestinationChange = (location) => {
         setDestination(location);
-        props.onFetchPhoto(location.placeId).then((url) => {
+        if(location!==null){
+          props.onFetchPhoto(location.placeId).then((url) => {
             setPhotoUrl(url);
-        })
+          })
+        }
     }
 
     const handleStartDateChange = (newStartDate) => {

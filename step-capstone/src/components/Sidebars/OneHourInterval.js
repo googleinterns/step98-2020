@@ -18,6 +18,10 @@ export default function OneHourInterval(props) {
     }
   };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
   /*Given startDate and endDate of a TravelObject, return the height of display (unit: pixel) */
   const getHeightPercentage = (startDate, endDate) => {
     let dif = 0;
@@ -119,6 +123,8 @@ export default function OneHourInterval(props) {
         onClickTimeslot={props.onClickTimeslot}
         onAddItem={props.onAddItem}
         onOpenSuggestions={props.onOpenSuggestions}
+        onClose={handleClose}
+        startDate={props.startDate}
       />
     </div>
   );

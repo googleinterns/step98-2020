@@ -113,6 +113,7 @@ export default class TimeLine extends React.Component {
                 onClickInterval={this.handleOnClickInterval}
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
+                startDate={this.props.startDate}
               />
             );
           } else {
@@ -150,6 +151,7 @@ export default class TimeLine extends React.Component {
                 onClickInterval={this.handleOnClickInterval}
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
+                startDate={this.props.startDate}
               />
             );
           }
@@ -167,6 +169,7 @@ export default class TimeLine extends React.Component {
               onClickInterval={this.handleOnClickInterval}
               onClickTimeslot={this.props.onClickTimeslot}
               onOpenSuggestions={this.props.onOpenSuggestions}
+              startDate={this.props.startDate}
             />
           );
         }

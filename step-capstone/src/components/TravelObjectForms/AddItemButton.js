@@ -13,6 +13,7 @@ export default function AddItemButton(props) {
 
     const handleClose = () => {
         setAnchorEl(null);
+        props.onClose()
     };
 
     const open = Boolean(anchorEl);

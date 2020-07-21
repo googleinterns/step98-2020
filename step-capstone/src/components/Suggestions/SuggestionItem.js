@@ -61,7 +61,7 @@ export default function SuggestionItem(props) {
 
   return (
     <Card className="suggestion-item" >
-      <CardHeader
+      <CardHeader titleTypographyProps={{noWrap:true}}
         title={
           <Typography noWrap variant="h6" gutterBottom>{(props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name}</Typography>
         }
