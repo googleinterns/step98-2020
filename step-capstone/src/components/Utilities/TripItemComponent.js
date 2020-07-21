@@ -19,6 +19,7 @@ const useStyles = makeStyles({
     height: 140,
   },
 });
+
 /*
  * Trip component should receive some trip
  */
@@ -32,6 +33,7 @@ export default function TripItemComponent(props) {
     props.data.photoUrl !== undefined && props.data.photoUrl !== null
       ? props.data.photoUrl.toString()
       : "https://www.state.gov/wp-content/uploads/2019/04/Japan-2107x1406.jpg";
+  
   return (
     <Card className={classes.root}>
       <CardHeader title={props.data.title} subheader={dateRange} />
