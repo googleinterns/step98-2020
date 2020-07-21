@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flight displays correctly 1`] = `
+<div
+  className="event double flights"
+>
+  <h6
+    className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
+  >
+    Flight from 
+    BOS
+     to 
+    SFO
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    10:00 AM - 12:00 PM
+  </h6>
+</div>
+`;
+
+exports[`Hotel displays correctly 1`] = `
+<div
+  className="event double hotels"
+>
+  <h6
+    className="MuiTypography-root MuiTypography-h6 MuiTypography-gutterBottom"
+  >
+     
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    12:00 AM - 12:00 AM
+     
+  </h6>
+  <h6
+    className="MuiTypography-root MuiTypography-subtitle2 MuiTypography-gutterBottom"
+  >
+    London
+  </h6>
+</div>
+`;

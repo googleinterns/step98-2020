@@ -9,7 +9,6 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 import SuggestionPopup from "../Utilities/SuggestionPopup"
 
-
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -26,8 +25,9 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
+
             queryResults: null,
-            palceIds: new Set(),
+            placeIds: new Set(),
             showSuggestions: false,
             selectedTimeslot: null
         }
@@ -151,6 +151,7 @@ export default class Trip extends React.Component {
 
     handleChangeDisplayDate(travelObjects, date) {
         if (this.state.today.date !== date) {
+
             this.setState({
                 today: {
                     events: travelObjects,
@@ -244,7 +245,6 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             onClickObject={this.handleSelectedObject}
                             setTodaysEvents={this.handleChangeDisplayDate}
-
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">

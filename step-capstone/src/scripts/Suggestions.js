@@ -1,10 +1,6 @@
 import queryPlaces from './PlacesQuery';
 import { activityCategories, foodCategories } from './Categories';
 
-const getDateString = (dateObject) => {
-    return dateObject.getFullYear() + "-" + dateObject.getMonth() + "-" + dateObject.getDate();
-}
-
 const contains = (startTime, endTime, timePoint) => {
     // return whether timeRange from startTime to endTime contains timePoint
     return startTime < timePoint && timePoint < endTime;
@@ -52,31 +48,23 @@ const millisToMinutes = (millis) => {
 }
 
 const filterByTimeRange = (results, timeRange) => {
-    let filteredResults = new Map();
-    results.forEach((placeObject, place_id) => {
-        if (placeObject.hasOwnProperty("opening_hours")) {
+    return results.filter((result) => {
+        if (result.hasOwnProperty("opening_hours")) {
             let day = timeRange[0].getDay();
 
-            let openHoursMinutes = placeObject.opening_hour.period[day].open.time;
-            let closeHoursMinutes = (placeObject.opening_hour.period[day].close !== undefined) ?
-                placeObject.opening_hour.period[day].close.time
+            let openHoursMinutes = result.opening_hour.period[day].open.time;
+            let closeHoursMinutes = (result.opening_hour.period[day].close !== undefined) ?
+                result.opening_hour.period[day].close.time
                 : "2359";
 
+            let date = timeRange[0];
+            let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.slice(2), 0);
+            let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.slice(2), 0);
 
-            let date = getDateString(timeRange[0]);
-            let openingTime = new Date(date + "T" + openHoursMinutes.slice(0, 2) + ":" + openHoursMinutes.splice(2) + ":00");
-            let closingTime = new Date(date + "T" + closeHoursMinutes.slice(0, 2) + ":" + closeHoursMinutes.splice(2) + ":00");
-
-            if (overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45) {
-                filteredResults.set(place_id, placeObject)
-            }
-        } else {
-            filteredResults.set(place_id, placeObject);
+            return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
         }
-
+        return true;
     })
-    return filteredResults
-
 }
 
 const query = (service, config, type) => {

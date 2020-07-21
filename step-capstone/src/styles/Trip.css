@@ -64,6 +64,7 @@
 #add-form-container {
     width: 600px;
     overflow: auto;
+    pointer-events: auto
 }
 
 .MuiGrid-container {

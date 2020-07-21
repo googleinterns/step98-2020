@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `yarn start`
+### `yarn local`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -15,7 +15,17 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br />
+This will launch the test runner and will run any tests for files it detects have changed <br/>
+To run all tests, you can press a in the test runner <br/>
+If a snapshot test fails because of intentional changes to the display, press u in the test runner to update <br/>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `yarn test:debug`
+
+Launches the test runner and hooks it up for debugging. <br/>
+Add `debugger;` in any file to create a breakpoint there for debugging <br/>
+Open your browser and go to (chrome://inspect) and click `Open Dedicated DevTools for Node` <br/>
+This will open Chrome's Dev Tool Debugger and will allow you to navigate the breakpoints you set <br/>
 
 ### `yarn build`
 
