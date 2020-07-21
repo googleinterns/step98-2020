@@ -85,7 +85,7 @@ export default class TimeLine extends React.Component {
 
       this.displayItems.sort(travelObjectStartDateComparator);
       this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
-      console.log("displayItemsExcludeHotel ", this.displayItemsExcludeHotel);
+      
       this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
     
       var nextItemIndex = 0;
