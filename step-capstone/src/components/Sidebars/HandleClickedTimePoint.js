@@ -89,6 +89,12 @@ const searchForPrevAndNextTravelObject = (startOfDisplayDate, endOfDisplayDate, 
     intervals.push(fakeEnd);
   }
 
+  return searchForPrevAndNextTravelObjectHelperFunction(startOfDisplayDate, endOfDisplayDate, intervals, timePoint);
+  
+};
+
+
+function searchForPrevAndNextTravelObjectHelperFunction(startOfDisplayDate, endOfDisplayDate, intervals, timePoint) {
   let low = 0;
   let high = intervals.length - 1;
   let prevTravelObject = undefined;
@@ -138,7 +144,7 @@ const searchForPrevAndNextTravelObject = (startOfDisplayDate, endOfDisplayDate, 
   }
 
   return { prevTravelObject: undefined, nextTravelObject: undefined };
-};
+}
 
 //Return the empty timeRange that users click into by performing binary search on emptySlots array
 export const handleClickedTimePoint = (idV, startOfDisplayDate, endOfDisplayDate, displayItems, emptySlots) => {
