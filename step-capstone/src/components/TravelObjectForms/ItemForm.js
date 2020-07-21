@@ -19,7 +19,7 @@ export default class ItemForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isNewItem: props.data === undefined,
+            isNewItem: props.isNewItem,
             value: 0,
             data: props.data,
             isValidated: false
