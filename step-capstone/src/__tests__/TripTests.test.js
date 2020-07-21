@@ -14,6 +14,7 @@ test('Trip displays correctly', async () => {
     </FirebaseContext.Provider>
     
   );
+  //we need to wait for a second to let promises resolve before taking our snapshot
   await new Promise(res => setTimeout(() => { res() }, 0.5))
   let test = tripComponent.toJSON();
   expect(test).toMatchSnapshot();
