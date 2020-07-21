@@ -16,19 +16,24 @@
 }
 
 .suggestion-photo{
-  width: 100px;
-  height: 100px;
+  width: 75%;
+  height: 40%;
+  object-fit: cover;
 }
 .suggestion-item{
-  width: 60%;
-  height:100%;
+  width: 250px;
+  height:300px;
   text-align: center;
 }
+
 .suggestion-item .MuiCardActions-root {
   justify-content: center;
+  height: 10%;
 } 
+.suggestion-item .MuiCardHeader-root {
+  height: 5%;
+}
 .arrow-buttons {
-  position: absolute;
   top:50%;
   transform: translate(0%,-50%);
 }

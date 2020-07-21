@@ -61,10 +61,11 @@ export default function SuggestionItem(props) {
 
   return (
     <Card className="suggestion-item" >
-      <Box height={75}>
-        <Typography variant="h6" gutterBottom>{(props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name}</Typography>
-
-      </Box>
+      <CardHeader
+        title={
+          <Typography noWrap variant="h6" gutterBottom>{(props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name}</Typography>
+        }
+      />
 
       <CardMedia
         className="suggestion-photo"

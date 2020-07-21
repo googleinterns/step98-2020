@@ -11,7 +11,7 @@ export default class SuggestionBar extends React.Component {
     this.state = {
       suggestions: props.suggestions,
       startIndex: 0,
-      numOfSuggestionsToDisplay: 4
+      numOfSuggestionsToDisplay: 4,
     }
 
     this.loadPrevious = this.loadPrevious.bind(this);
@@ -25,6 +25,28 @@ export default class SuggestionBar extends React.Component {
         startIndex: 0
       })
     }
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this.updateDisplayNum)
+  }
+
+  updateDisplayNum = () => {
+    var suggestionWidth = window.innerWidth - 300;
+    this.setState({ numOfSuggestionsToDisplay: Math.floor(suggestionWidth / 400) });
+    // if (window.innerWidth < 1000) {
+      
+    // } else if (window.innerWidth < 1300) {
+    //   this.setState({ numOfSuggestionsToDisplay: 2 });
+    // } else if (window.innderWidth < 1600) {
+    //   this.setState({ numOfSuggestionsToDisplay: 3 });
+    // } else {
+    //   this.setState({ numOfSuggestionsToDisplay: 4 });
+    // }
+  }
+
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateDisplayNum);
   }
 
   loadPrevious() {
@@ -50,10 +72,10 @@ export default class SuggestionBar extends React.Component {
         </Grid>
       );
     }
-    
+
     return (
       <div id="suggestion-bar">
-        <Grid id="suggestion-grid" container direction="row" justify="center" >
+        <Grid id="suggestion-grid" container direction="row" justify="center" nowrap>
           <Grid item>
             <IconButton
               className="arrow-buttons"
@@ -68,7 +90,7 @@ export default class SuggestionBar extends React.Component {
             {suggestionItems}
           </Grid>
 
-          <Grid item>
+          <Grid>
             <IconButton
               className="arrow-buttons"
               onClick={this.loadNext}
