@@ -48,23 +48,31 @@ const millisToMinutes = (millis) => {
 }
 
 const filterByTimeRange = (results, timeRange) => {
-    return results.filter((result) => {
-        if (result.hasOwnProperty("opening_hours")) {
+    let filteredResults = new Map();
+    results.forEach((placeObject, place_id) => {
+        if (placeObject.hasOwnProperty("opening_hours")) {
             let day = timeRange[0].getDay();
 
-            let openHoursMinutes = result.opening_hour.period[day].open.time;
-            let closeHoursMinutes = (result.opening_hour.period[day].close !== undefined) ?
-                result.opening_hour.period[day].close.time
+            let openHoursMinutes = placeObject.opening_hour.period[day].open.time;
+            let closeHoursMinutes = (placeObject.opening_hour.period[day].close !== undefined) ?
+                placeObject.opening_hour.period[day].close.time
                 : "2359";
 
-            let date = timeRange[0];
-            let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.slice(2), 0);
-            let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.slice(2), 0);
 
-            return overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45;
+                let date = timeRange[0];
+                let openingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), openHoursMinutes.slice(0, 2), openHoursMinutes.slice(2), 0);
+                let closingTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), closeHoursMinutes.slice(0, 2), closeHoursMinutes.slice(2), 0);
+
+            if (overlaps(openingTime, closingTime, timeRange[0], timeRange[1]) >= 45) {
+                filteredResults.set(place_id, placeObject)
+            }
+        } else {
+            filteredResults.set(place_id, placeObject);
         }
-        return true;
+
     })
+    return filteredResults
+
 }
 
 const query = (service, config, type) => {

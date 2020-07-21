@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import TravelObject from "../TravelObjects/TravelObject";
 import { sameDate } from "../../scripts/HelperFunctions";
-import PreferencePopover from "./PreferencePopover";
+import InsertObjectPopover from "./InsertObjectPopover"
 
 export default function OneHourInterval(props) {
   const [slots, setSlots] = useState(null);
   const displayHeightOfADiv = 45.0;
   const padding = 22.0;
   const minPerDiv = 30.0;
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOnClickInterval = (idV, event) => {
     let data = props.onClickInterval(idV);
     if (data.freeTimeSlot !== undefined) {
       setSlots(data);
+      setAnchorEl(event.currentTarget)
     }
   };
 
@@ -111,6 +113,13 @@ export default function OneHourInterval(props) {
           {item30.length === 0 ? null : item30}
         </td>
       </tr>
+      <InsertObjectPopover
+        anchorEl={anchorEl}
+        slots={slots}
+        onClickTimeslot={props.onClickTimeslot}
+        onAddItem={props.onAddItem}
+        onOpenSuggestions={props.onOpenSuggestions}
+      />
     </div>
   );
 }

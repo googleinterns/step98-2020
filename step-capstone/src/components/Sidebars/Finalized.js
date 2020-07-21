@@ -26,6 +26,8 @@ export default function Finalized(props) {
                 onChangeDisplayDate={handleDisplayDateChange}
                 onClickObject={props.onClickObject}
                 setTodaysEvents={props.setTodaysEvents}
+                onClickTimeslot={props.onClickTimeslot}
+                onOpenSuggestions={props.onOpenSuggestions}
             />
         </div>
 

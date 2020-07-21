@@ -6,8 +6,8 @@ import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import GetSuggestionButton from '../Utilities/GetSuggestionButton';
-import SuggestionPopup from "../Utilities/SuggestionPopup"
+import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
+import SuggestionPopup from "../Suggestions/SuggestionPopup"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -40,6 +40,7 @@ export default class Trip extends React.Component {
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
         this.setMap = this.setMap.bind(this);
         this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
+        this.handleSelectTimeslot = this.handleSelectTimeslot.bind(this);
     }
 
     componentDidMount() {
@@ -151,7 +152,6 @@ export default class Trip extends React.Component {
 
     handleChangeDisplayDate(travelObjects, date) {
         if (this.state.today.date !== date) {
-
             this.setState({
                 today: {
                     events: travelObjects,
@@ -176,12 +176,11 @@ export default class Trip extends React.Component {
     }
 
     // Triggered when a time slot is selected in timeline
-    handleSelectTimeslot(timeRange, coordinates, radius) {
+    handleSelectTimeslot(timeRange, coordinates) {
         this.setState({
             selectedTimeslot: {
                 timeRange: timeRange,
-                coordinates: coordinates,
-                radius: radius
+                coordinates: coordinates
             }
         })
     }
@@ -194,6 +193,8 @@ export default class Trip extends React.Component {
         const todayEndTime = new Date(this.state.today.date);
         todayEndTime.setHours(23, 59, 59);
 
+        console.log(this.state.selectedTimeslot)
+
         if (this.state.map) {
             return (
                 <Grid item>
@@ -204,7 +205,7 @@ export default class Trip extends React.Component {
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
-                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
+                        radius={this.state.tripSetting.userPref.radius }
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
@@ -245,6 +246,8 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             onClickObject={this.handleSelectedObject}
                             setTodaysEvents={this.handleChangeDisplayDate}
+                            onClickTimeslot={this.handleSelectTimeslot}
+                            onOpenSuggestions={this.toggleSuggestionBar}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">

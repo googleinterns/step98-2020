@@ -83,6 +83,7 @@ export default function AddEvent(props) {
       description: description,
       placeId: location ? location.placeId : null,
     });
+    console.log(checked && location === "")
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
@@ -144,7 +145,7 @@ export default function AddEvent(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleLocationChange}
-            error={checked && !location}
+            error={checked && location === ""}
             text={location ? location.address : ""}
             type="event"
           />

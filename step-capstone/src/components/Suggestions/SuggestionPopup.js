@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core"
 import CloseIcon from '@material-ui/icons/Close';
 import "../../styles/SuggestionPopup.css"
-import PreferenceForm from "./PreferenceForm"
+import PreferenceForm from "../Utilities/PreferenceForm"
 import { handleSuggestions } from "../../scripts/Suggestions"
 import SuggestionBar from "../Suggestions/SuggestionBar"
 
@@ -51,6 +51,7 @@ export default class SuggestionPopup extends React.Component {
     }
 
     getSuggestions() {
+        console.log("Config: ", this.getConfig("activities"))
         this.setState({ suggestionsLoaded: false });
         this.getActivitySuggestions(this.getConfig("activities")).then(activities => {
             this.getFoodSuggestions(this.getConfig("food")).then(foods => {
