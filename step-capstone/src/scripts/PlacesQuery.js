@@ -36,13 +36,10 @@ function queryPlacesByType (coordinates, radius, service, type) {
         radius: radius,
         types: [type]
     };
-    console.log("request", request);
     return new Promise((res) => {
-      console.log(new Date())
         service.nearbySearch(request, function (results, status, pagination) {
             if (status === window.google.maps.places.PlacesServiceStatus.OK) {
                 output = output.concat(results);
-                console.log(new Date())
                 pages[type] = pages[type] - 1;
                 if (pagination.hasNextPage && pages[type] > 0) {
                     pagination.nextPage();
