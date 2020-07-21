@@ -45,6 +45,7 @@ export default function TravelObject(props) {
             </div>
             <FormPopover
                     data={props.data}
+                    isNewItem={false}
                     open={open}
                     anchorEl={anchorEl}
                     onClose={handleClose}
