@@ -60,6 +60,8 @@ export default class TripSettingFormPopover extends React.Component {
                             tripSetting={this.props.tripSetting}
                             onValidation={this.handleValidation}
                             onDataChange={this.handleDataChange}
+                            onFetchPhoto = {this.props.onFetchPhoto}
+                            
                         />
                     </CardContent>
                     <CardActions>
@@ -76,6 +78,7 @@ function EditTripSetting(props) {
     // Sets values to previous values if editing, otherwise blank slate
     const [title, setTitle] = useState(props.tripSetting.title);
     const [destination, setDestination] = useState(props.tripSetting.destination);
+    const [photoUrl, setPhotoUrl] = useState((props.tripSetting.photoUrl !== undefined)? props.tripSetting.photoUrl: "null");
     const [startDate, setStartDate] = useState(props.tripSetting.startDate);
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
@@ -87,6 +90,9 @@ function EditTripSetting(props) {
 
     const handleDestinationChange = (location) => {
         setDestination(location);
+        props.onFetchPhoto(location.placeId).then((url) => {
+            setPhotoUrl(url);
+        })
     }
 
     const handleStartDateChange = (newStartDate) => {
@@ -116,6 +122,7 @@ function EditTripSetting(props) {
         props.onDataChange({
             title: title,
             destination: destination,
+            photoUrl: photoUrl,
             startDate: startDate,
             endDate: endDate,
             description: description,
