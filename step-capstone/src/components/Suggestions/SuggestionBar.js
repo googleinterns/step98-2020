@@ -11,11 +11,20 @@ export default class SuggestionBar extends React.Component {
     this.state = {
       suggestions: props.suggestions,
       startIndex: 0,
-      numOfSuggestionsToDisplay: 3
+      numOfSuggestionsToDisplay: 4
     }
 
     this.loadPrevious = this.loadPrevious.bind(this);
     this.loadNext = this.loadNext.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setState({
+        suggestions: this.props.suggestions,
+        startIndex: 0
+      })
+    }
   }
 
   loadPrevious() {
@@ -27,8 +36,6 @@ export default class SuggestionBar extends React.Component {
     let newStartIndex = this.state.startIndex + 1;
     this.setState({ startIndex: newStartIndex })
   }
-
-
 
   render() {
     let suggestionItems = [];
@@ -46,7 +53,7 @@ export default class SuggestionBar extends React.Component {
     
     return (
       <div id="suggestion-bar">
-        <Grid id="suggestion-grid" container direction="row" wrap="nowrap" justify="center" >
+        <Grid id="suggestion-grid" container direction="row" justify="center" >
           <Grid item>
             <IconButton
               className="arrow-buttons"
@@ -57,7 +64,7 @@ export default class SuggestionBar extends React.Component {
             </IconButton>
           </Grid>
 
-          <Grid item container id="displayed-suggestions" direction="row" wrap="nowrap" justify="space-around">
+          <Grid item container spacing={0} id="displayed-suggestions" direction="row" wrap="nowrap" justify="space-around">
             {suggestionItems}
           </Grid>
 

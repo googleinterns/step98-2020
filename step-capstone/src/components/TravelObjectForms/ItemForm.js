@@ -19,7 +19,7 @@ export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isNewItem: props.data === undefined,
+      isNewItem: props.isNewItem,
       value: 0,
       data: props.data,
       isValidated: false,
@@ -32,7 +32,7 @@ export default class ItemForm extends React.Component {
   }
 
   renderDeleteButton() {
-    return this.props.data === undefined ? null : (
+    return this.props.isNewItem ? null : (
       <Button
         onClick={() => this.props.onRemoveItem(this.state.data)}
         color="primary"

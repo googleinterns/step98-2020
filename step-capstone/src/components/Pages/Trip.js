@@ -127,7 +127,6 @@ export default class Trip extends React.Component {
         if (data.type !== "flight") {
             newPlaceIds.add(data.placeId);
         }
-
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
@@ -188,6 +187,12 @@ export default class Trip extends React.Component {
 
     // only allows rendering of suggestion bar once map is set
     renderSuggestionBar() {
+        const todayStartTime = new Date(this.state.today.date);
+        todayStartTime.setHours(0, 0, 0);
+
+        const todayEndTime = new Date(this.state.today.date);
+        todayEndTime.setHours(23, 59, 59);
+
         if (this.state.map) {
             return (
                 <Grid item>
@@ -197,9 +202,11 @@ export default class Trip extends React.Component {
                         userPref={this.state.tripSetting.userPref}
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
+                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
                         radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
                         onClose={this.toggleSuggestionBar}
+                        finalized={this.state.selectedTimeslot !== null}
+                        onAddItem={this.handleAddItem}
                     />
                 </Grid>
             )

@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import "../../styles/SuggestionPopup.css"
 import PreferenceForm from "./PreferenceForm"
 import { handleSuggestions } from "../../scripts/Suggestions"
+import SuggestionBar from "../Suggestions/SuggestionBar"
 
 export default class SuggestionPopup extends React.Component {
     constructor(props) {
@@ -113,12 +114,18 @@ export default class SuggestionPopup extends React.Component {
                 </Grid>
             )
         }
-        // TODO: Pass data into Zachs suggestion component.
-        if (this.state.tabPos === 0) {
-            console.log("Activities: ", this.state.activitySuggestions)
-        } else {
-            console.log("Food: ", this.state.foodSuggestions)
-        }
+        console.log(this.state.tabPos === 0 ? this.state.activitySuggestions : this.state.foodSuggestions);
+        return (
+            <SuggestionBar
+                suggestions={this.state.tabPos === 0 ? this.state.activitySuggestions : this.state.foodSuggestions}
+                context={{
+                    finalized: this.props.finalized,
+                    startDate: this.props.timeRange[0],
+                    endDate: this.props.timeRange[1]
+                }}
+                onAddItem={this.props.onAddItem}
+            />
+        )
     }
 
     handleUserPrefChange(newPref) {

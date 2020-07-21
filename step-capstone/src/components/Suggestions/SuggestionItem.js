@@ -7,7 +7,8 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  Typography
+  Typography,
+  Box
 } from '@material-ui/core'
 import FormPopover from "../TravelObjectForms/FormPopover"
 import "../../styles/Suggestions.css"
@@ -39,10 +40,10 @@ export default function SuggestionItem(props) {
     }
   }
 
-  const suggestionToData = (suggestion) => {
+  const suggestionToData = () => {
     return {
       title: (props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name,
-      placeId: props.suggestion.place_id,
+      placeId: props.suggestion.place.place_id,
       finalized: props.context.finalized,
       startDate: props.context.startDate,
       endDate: props.context.endDate,
@@ -50,8 +51,8 @@ export default function SuggestionItem(props) {
       coordinates: {
         lat: props.suggestion.place.geometry.location.lat(),
         lng: props.suggestion.place.geometry.location.lng()
-      } ,
-      description :"",
+      },
+      description: "",
       type: "event"
     }
   }
@@ -60,7 +61,10 @@ export default function SuggestionItem(props) {
 
   return (
     <Card className="suggestion-item" >
-      <CardHeader titleTypographyProps={{noWrap:"true"}} title={(props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name} />
+      <Box height={75}>
+        <Typography variant="h6" gutterBottom>{(props.suggestion.place.name === undefined) ? "" : props.suggestion.place.name}</Typography>
+
+      </Box>
 
       <CardMedia
         className="suggestion-photo"
@@ -68,14 +72,13 @@ export default function SuggestionItem(props) {
         image={(props.suggestion.place.photos === undefined) ? logo : props.suggestion.place.photos[0].getUrl()}
         title="suggestion photo"
       />
-
       <CardContent>
-        <Grid container justify="space-between">  
+        <Grid container justify="space-between">
           <Typography className="suggestion-body" variant="subtitle2" inline gutterBottom align="left">
-            Price: {printDollarSigns(props.suggestion.place.price_level)} 
+            Price: {printDollarSigns(props.suggestion.place.price_level)}
           </Typography>
           <Typography className="suggestion-body" variant="subtitle2" inline gutterBottom align="right">
-            Rating: {(props.suggestion.place.rating === undefined) ? "" : props.suggestion.place.rating +"/5"}
+            Rating: {(props.suggestion.place.rating === undefined) ? "" : props.suggestion.place.rating + "/5"}
           </Typography>
         </Grid>
       </CardContent>
@@ -88,7 +91,7 @@ export default function SuggestionItem(props) {
 
 
       <FormPopover
-        data={suggestionToData(props.suggestion)}
+        data={suggestionToData()}
         isNewItem={true}
         open={open}
         anchorEl={anchorEl}
