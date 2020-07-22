@@ -34,15 +34,6 @@ export default class SuggestionBar extends React.Component {
   updateDisplayNum = () => {
     var suggestionWidth = window.innerWidth - 300;
     this.setState({ numOfSuggestionsToDisplay: Math.floor(suggestionWidth / 400) });
-    // if (window.innerWidth < 1000) {
-      
-    // } else if (window.innerWidth < 1300) {
-    //   this.setState({ numOfSuggestionsToDisplay: 2 });
-    // } else if (window.innderWidth < 1600) {
-    //   this.setState({ numOfSuggestionsToDisplay: 3 });
-    // } else {
-    //   this.setState({ numOfSuggestionsToDisplay: 4 });
-    // }
   }
 
   componentWillUnmount = () => {
