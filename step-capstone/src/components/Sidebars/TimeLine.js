@@ -60,7 +60,6 @@ export default class TimeLine extends React.Component {
     idV = idV.length < 5 ? "0" + idV : idV;
 
     return handleClickedTimePoint(idV, this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel, this.emptySlots)
-
   }
 
   /* Handling rendering starts HERE */

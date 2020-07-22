@@ -6,7 +6,7 @@ import {FirebaseContext} from '../Firebase';
 import {
   Redirect
 } from "react-router-dom";
-
+import { fetchPhoto } from "../../scripts/HelperFunctions"
 
 class TripList extends React.Component {
   static contextType = FirebaseContext;
@@ -23,25 +23,6 @@ class TripList extends React.Component {
     this.handleOpenTrip = this.handleOpenTrip.bind(this);
     this.handleAddTrip = this.handleAddTrip.bind(this);
     this.handleDeleteTrip = this.handleDeleteTrip.bind(this);
-    this.fetchPhoto = this.fetchPhoto.bind(this);
-  }
-
-  fetchPhoto(placeId) {
-    let request = {
-      placeId: placeId,
-      fields : ["photos"]
-    }
-    return new Promise((res) => {
-      this.service.getDetails(
-        request, (results, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            let url = results.photos[0].getUrl();
-            res(url); 
-          }
-        }
-      )
-    })
-    
   }
 
   loadTrips() {
@@ -100,17 +81,15 @@ class TripList extends React.Component {
                     data={trip.data()}
                     tripId={trip.id}
                     onOpenTrip={this.handleOpenTrip}
-                    onDeleteTrip={this.handleDeleteTrip} />
+                    onDeleteTrip={this.handleDeleteTrip}
+                  />
                 </Grid>
               );
             })}
-
             <Grid item>
               <AddTrip
-                onFetchPhoto = {this.fetchPhoto}
                 onAddTrip = {this.handleAddTrip}/>
             </Grid>
-
           </Grid>
         }
       </div>

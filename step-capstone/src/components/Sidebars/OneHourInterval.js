@@ -36,7 +36,9 @@ export default function OneHourInterval(props) {
     } else {
       dif = endDate.getHours() * 60 + endDate.getMinutes();
     }
-    return (dif * displayHeightOfADiv) / minPerDiv - padding;
+
+    let height = (dif * displayHeightOfADiv) / minPerDiv
+    return  height < padding ? 0 : height - padding;
   };
 
   const getHeightFromMin = (min) => {

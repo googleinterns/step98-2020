@@ -141,7 +141,7 @@ export default class ItemForm extends React.Component {
     }
   }
 
-  handleSave() {
+  handleSave(event) {
     // Doesn't save data if improper input --> doesn't close popover which shows error
     if (!this.state.isValidated) {
       return;

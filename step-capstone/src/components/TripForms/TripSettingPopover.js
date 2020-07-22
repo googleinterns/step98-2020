@@ -49,7 +49,6 @@ export default function TripSettingPopover(props) {
         style={{alignItems: "center", justifyContent: "center", display: "flex"}}
       >
         <TripSettingFormPopover
-          onFetchPhoto = {props.onFetchPhoto}
           onClose={handleClose}
           tripSetting={props.tripSetting}
           onEditTripSetting={props.onEditTripSetting}

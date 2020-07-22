@@ -11,6 +11,7 @@ export default function TravelObject(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     
     const handleClick = (event) => {
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
         // if has a placeId, zoom to marker on map
         if (props.data.placeId) {
@@ -18,7 +19,8 @@ export default function TravelObject(props) {
         }
     };
 
-    const handleClose = () => {
+    const handleClose = (event) => {
+        event.stopPropagation();
         setAnchorEl(null);
     };
     

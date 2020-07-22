@@ -112,6 +112,7 @@ export default function AddEvent(props) {
             defaultValue={title}
             fullWidth
             onChange={handleTitleChange}
+            onClick="event.stopPropagation();"
           />
         </Box>
       </Grid>

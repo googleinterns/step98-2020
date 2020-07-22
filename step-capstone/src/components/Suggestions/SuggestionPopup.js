@@ -51,7 +51,6 @@ export default class SuggestionPopup extends React.Component {
     }
 
     getSuggestions() {
-        console.log("Config: ", this.getConfig("activities"))
         this.setState({ suggestionsLoaded: false });
         this.getActivitySuggestions(this.getConfig("activities")).then(activities => {
             this.getFoodSuggestions(this.getConfig("food")).then(foods => {
@@ -115,7 +114,6 @@ export default class SuggestionPopup extends React.Component {
                 </Grid>
             )
         }
-        console.log(this.state.tabPos === 0 ? this.state.activitySuggestions : this.state.foodSuggestions);
         return (
             <SuggestionBar
                 suggestions={this.state.tabPos === 0 ? this.state.activitySuggestions : this.state.foodSuggestions}

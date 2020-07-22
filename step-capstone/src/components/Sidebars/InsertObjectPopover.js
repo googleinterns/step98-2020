@@ -14,7 +14,6 @@ export default function InsertObjectPopover(props) {
 
   const getCoordinates = () => {
     let coordinates = { lat: 0, lng: 0 }
-    console.log(props.slots)
     if (props.slots !== null) {
       if (props.slots.prevTravelObject !== null && props.slots.nextTravelObject !== null && props.slots.prevTravelObject.type !== 'flight' && props.slots.nextTravelObject.type !== 'flight') {
         coordinates.lat = (props.slots.prevTravelObject.coordinates.lat + props.slots.nextTravelObject.coordinates.lat) / 2;
