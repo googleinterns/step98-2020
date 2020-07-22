@@ -92,7 +92,6 @@ const searchForPrevAndNextTravelObject = (startOfDisplayDate, endOfDisplayDate, 
   return searchForPrevAndNextTravelObjectHelperFunction(startOfDisplayDate, endOfDisplayDate, intervals, timePoint);
 };
 
-
 function searchForPrevAndNextTravelObjectHelperFunction(startOfDisplayDate, endOfDisplayDate, intervals, timePoint) {
   let low = 0;
   let high = intervals.length - 1;
