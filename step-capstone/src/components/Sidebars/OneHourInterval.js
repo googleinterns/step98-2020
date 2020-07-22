@@ -11,11 +11,15 @@ export default function OneHourInterval(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOnClickInterval = (idV, event) => {
-    let data = props.onClickInterval(idV);
-    if (data.freeTimeSlot !== undefined) {
-      setSlots(data);
-      setAnchorEl(event.currentTarget)
+    console.log(event.target);
+    if (event.target.className === "Interval") {
+      let data = props.onClickInterval(idV);
+      if (data.freeTimeSlot !== undefined) {
+        setSlots(data);
+        setAnchorEl(event.currentTarget)
+      }
     }
+    
   };
 
   const handleClose = () => {
