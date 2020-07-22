@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Popover } from "@material-ui/core"
+import { Grid, Popover, Box } from "@material-ui/core"
 import AddItemButton from "../TravelObjectForms/AddItemButton"
 import GetSuggestionButton from "../Suggestions/GetSuggestionButton"
 
@@ -16,13 +16,13 @@ export default function InsertObjectPopover(props) {
     let coordinates = { lat: 0, lng: 0 }
     console.log(props.slots)
     if (props.slots !== null) {
-      if (props.slots.prevTravelObject !== null && props.slots.nextTravelObject !== null && props.slots.prevTravelObject.type!=='flight' && props.slots.nextTravelObject.type!=='flight') {
+      if (props.slots.prevTravelObject !== null && props.slots.nextTravelObject !== null && props.slots.prevTravelObject.type !== 'flight' && props.slots.nextTravelObject.type !== 'flight') {
         coordinates.lat = (props.slots.prevTravelObject.coordinates.lat + props.slots.nextTravelObject.coordinates.lat) / 2;
         coordinates.lng = (props.slots.prevTravelObject.coordinates.lng + props.slots.nextTravelObject.coordinates.lng) / 2
-      } else if (props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type!=='flight') {
+      } else if (props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type !== 'flight') {
         coordinates.lat = props.slots.prevTravelObject.coordinates.lat;
         coordinates.lng = props.slots.prevTravelObject.coordinates.lng;
-      } else if (props.slots.nextTravelObject !== null  && props.slots.nextTravelObject.type!=='flight') {
+      } else if (props.slots.nextTravelObject !== null && props.slots.nextTravelObject.type !== 'flight') {
         coordinates.lat = props.slots.nextTravelObject.coordinates.lat;
         coordinates.lng = props.slots.nextTravelObject.coordinates.lng;
       } else {
@@ -50,9 +50,8 @@ export default function InsertObjectPopover(props) {
   }
 
   return (
-    
+
     <div>
-   
       <Popover
         id={id}
         open={anchorEl !== null}
@@ -68,7 +67,8 @@ export default function InsertObjectPopover(props) {
         }}
       >
         <Grid container direction='row'>
-          <AddItemButton
+          <Box p={5}>
+            <AddItemButton
               data={props.slots === null ? undefined : {
                 coordinates: null,
                 description: "",
@@ -83,9 +83,12 @@ export default function InsertObjectPopover(props) {
               onAddItem={props.onAddItem}
               onClose={handleClose}
             />
+          </Box>
+          <Box p={5}>
             <GetSuggestionButton
               onClick={getSuggestions}
             />
+          </Box>
         </Grid>
       </Popover>
     </div>
