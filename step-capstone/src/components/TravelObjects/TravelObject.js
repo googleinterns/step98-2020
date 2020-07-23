@@ -18,7 +18,7 @@ export default function TravelObject(props) {
         }
     };
 
-    const handleClose = () => {
+    const handleClose = (event) => {
         setAnchorEl(null);
     };
     

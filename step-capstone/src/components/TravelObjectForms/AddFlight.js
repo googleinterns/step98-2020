@@ -30,19 +30,23 @@ export default function AddFlight(props) {
   const [departureAirport, setDepartureAirport] = useState(
     overwriting
       ? {
-          address: props.data.departureAirport,
-          coordinates: props.data.departureCoordinates,
-          placeId: props.data.departurePlaceId,
-        }
-      : null
+        address: props.data.departureAirport,
+        coordinates: props.data.departureCoordinates,
+        placeId: props.data.departurePlaceId,
+      }
+      : {
+        address: "",
+        coordinates:"",
+        placeId: ""
+      }
   );
   const [arrivalAirport, setArrivalAirport] = useState(
     overwriting
       ? {
-          address: props.data.arrivalAirport,
-          coordinates: props.data.arrivalCoordinates,
-          placeId: props.data.arrivalPlaceId,
-        }
+        address: props.data.arrivalAirport,
+        coordinates: props.data.arrivalCoordinates,
+        placeId: props.data.arrivalPlaceId,
+      }
       : null
   );
   const [description, setDescription] = useState(
@@ -95,10 +99,10 @@ export default function AddFlight(props) {
     // notifies form if necessary inputs are present
     props.onToggleValidation(
       !(
-        departureAirport === "" ||
-        arrivalAirport === "" ||
-        isValid(startDate) ||
-        isValid(endDate)
+        (departureAirport === null || departureAirport.address === "") ||
+        (arrivalAirport === null || arrivalAirport.addresss === "") ||
+        !isValid(startDate) ||
+        !isValid(endDate)
       )
     );
   }, [
@@ -116,7 +120,7 @@ export default function AddFlight(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleDepartureAirport}
-            error={departureAirport}
+            error={departureAirport === null || departureAirport.address === ""}
             text={departureAirport ? departureAirport.address : ""}
             type="flight"
             departure={true}
@@ -125,7 +129,7 @@ export default function AddFlight(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleArrivalAirport}
-            error={arrivalAirport}
+            error={arrivalAirport === null || arrivalAirport.address === ""}
             text={arrivalAirport ? arrivalAirport.address : ""}
             type="flight"
             departure={false}

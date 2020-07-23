@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import TravelObject from "../TravelObjects/TravelObject";
+import React from "react";
 import FinalizedHeader from "../Sidebars/FinalizedHeader";
 import "../../styles/TimeLine.css";
 import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
@@ -61,7 +60,6 @@ export default class TimeLine extends React.Component {
     idV = idV.length < 5 ? "0" + idV : idV;
 
     return handleClickedTimePoint(idV, this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel, this.emptySlots)
-
   }
 
   /* Handling rendering starts HERE */
@@ -112,6 +110,9 @@ export default class TimeLine extends React.Component {
                 onAddItem={this.props.onAddItem}
                 onClickObject={this.props.onClickObject}
                 onClickInterval={this.handleOnClickInterval}
+                onClickTimeslot={this.props.onClickTimeslot}
+                onOpenSuggestions={this.props.onOpenSuggestions}
+                startDate={this.props.startDate}
               />
             );
           } else {
@@ -147,6 +148,9 @@ export default class TimeLine extends React.Component {
                 onAddItem={this.props.onAddItem}
                 onClickObject={this.props.onClickObject}
                 onClickInterval={this.handleOnClickInterval}
+                onClickTimeslot={this.props.onClickTimeslot}
+                onOpenSuggestions={this.props.onOpenSuggestions}
+                startDate={this.props.startDate}
               />
             );
           }
@@ -162,6 +166,9 @@ export default class TimeLine extends React.Component {
               onAddItem={this.props.onAddItem}
               onClickObject={this.props.onClickObject}
               onClickInterval={this.handleOnClickInterval}
+              onClickTimeslot={this.props.onClickTimeslot}
+              onOpenSuggestions={this.props.onOpenSuggestions}
+              startDate={this.props.startDate}
             />
           );
         }

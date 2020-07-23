@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
-    Button,
     Card,
-    CardHeader,
-    CardMedia,
-    CardContent,
-    CardActions,
-    Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TripSettingPopover from './TripSettingPopover';
@@ -22,7 +16,6 @@ const useStyles = makeStyles({
         height: 140
     },
 })
-
 
 export default function AddTrip(props) {
     const classes = useStyles();
@@ -50,7 +43,6 @@ export default function AddTrip(props) {
             <TripSettingPopover
                 button={false}
                 tripSetting={newTrip}
-                onFetchPhoto = {props.onFetchPhoto}
                 onEditTripSetting={handleEditTrip}
             />
         </Card>
