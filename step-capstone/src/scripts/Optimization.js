@@ -1,4 +1,5 @@
 export const getOptimalRoute = function (travelObjects, start, end) {
+    console.log(travelObjects)
     let request = {
         origin: new window.google.maps.LatLng(start.coordinates.lat, start.coordinates.lng),
         destination: new window.google.maps.LatLng(end.coordinates.lat, end.coordinates.lng),
@@ -33,7 +34,7 @@ export const getOptimalRoute = function (travelObjects, start, end) {
 export const createSchedule = function (travelObjects, userPref, displayDate) {
 
     var curTime = new Date(displayDate);
-    curTime.setTime(userPref.startTime.getTime() + travelObjects[0].toNextLocation.duration.value * 1000)
+    curTime.setTime(userPref.startDate.getTime() + travelObjects[0].toNextLocation.duration.value * 1000)
 
     const foodTimeRanges = [[6, 10], [11, 15], [17, 21]]
     var nextFoodRange = 0;
@@ -49,13 +50,28 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
             nextFoodRange++;
         }
         var curTravelObject = travelObjects[i];
+        console.log(curTravelObject)
         var diff = curTravelObject.endDate.getTime() - curTravelObject.startDate.getTime();
-        curTravelObject.startDate = new Date(curTime);
-        curTime.setTime(curTime.getTime() + diff);
-        curTravelObject.endDate = new Date(curTime);
+        let newStart = new Date(curTime);
+        let newEnd = new Date(curTime.getTime() + diff);
+        curTime.setTime(newEnd.getTime() + curTravelObject.toNextLocation.duration.value * 1000);
+
+        if (curTime.getTime() > userPref.endDate.getTime()) {
+            let numLeft = travelObjects.length - i - 1;
+            var timeLeft = curTime.getTime() - userPref.endDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+            curTravelObject = travelObjects[++i];
+            while (i < travelObjects.length - 1) {
+                timeLeft += curTravelObject.endDate.getTime() - curTravelObject.startDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+            }
+            throw "We couldn't fit " + numLeft + " number of events totaling " + Math.floor(timeLeft / 60000) + " minutes into your day."
+        }
+
+        curTravelObject.startDate = new Date(newStart);
+        curTravelObject.endDate = new Date(newEnd);
+        curTravelObject.finalized = true;
         editedTravelObjects.push(curTravelObject);
-        curTime.setTime(curTime.getTime() + curTravelObject.toNextLocation.duration.value * 1000);
     }
+
     return editedTravelObjects;
 }
 

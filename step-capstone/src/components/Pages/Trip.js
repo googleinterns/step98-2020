@@ -9,6 +9,7 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 import SuggestionPopup from "../Utilities/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
+import _ from "lodash" 
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -133,15 +134,16 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
-                getOptimalRoute(this.state.items, { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
+                getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
                     .then(travelObjects => {
                         var startTime = new Date(this.state.today.date);
                         startTime.setHours(9, 0, 0);
                         let schedule = createSchedule(travelObjects, {
-                            startTime: startTime,
+                            startDate: startTime,
                             foodTimeRanges: [3600000, 3600000, 3600000]
                         }, this.state.today.date);
-                        console.log(schedule.map(item => item.startDate));
+                        console.log(schedule);
+                        console.log(this.state.items);
                     })
             })
             .catch(error => {
