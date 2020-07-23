@@ -52,8 +52,8 @@ export default class ItemForm extends React.Component {
   }
 
   /* Mimic Google Calendar's behavior: when user edits the newStartDate to be bigger than the current endDate,
-    this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editting.
-    This behavior happends during editting, so the user can never submit an invalid time range.
+    this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editing.
+    This behavior happens during editing, so the user can never submit an invalid time range.
     */
    handleStartDateChange(newData) {
     if (this.state.data.endDate <= newData.startDate) {
@@ -64,8 +64,8 @@ export default class ItemForm extends React.Component {
 }
 
   /* Mimic Google Calendar's behavior: when user edits the newEndDate to be smaller than the current startDate,
-    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editting.
-    This behavior happends during editting, so the user can never submit an invalid time range. 
+    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editing.
+    This behavior happens during editing, so the user can never submit an invalid time range. 
     */
   handleEndDateChange(newData) {
     if (this.state.data.startDate >= newData.endDate) {

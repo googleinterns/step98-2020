@@ -15,13 +15,16 @@ export default function InsertObjectPopover(props) {
   const getCoordinates = () => {
     let coordinates = { lat: 0, lng: 0 }
     if (props.slots !== null) {
-      if (props.slots.prevTravelObject !== null && props.slots.nextTravelObject !== null && props.slots.prevTravelObject.type !== 'flight' && props.slots.nextTravelObject.type !== 'flight') {
+      let prevNotNullOrFlight = props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type !== 'flight';
+      let nextNotNullOrFlight = props.slots.nextTravelObject !== null && props.slots.nextTravelObject.type !== 'flight';
+
+      if (prevNotNullOrFlight && nextNotNullOrFlight) {
         coordinates.lat = (props.slots.prevTravelObject.coordinates.lat + props.slots.nextTravelObject.coordinates.lat) / 2;
         coordinates.lng = (props.slots.prevTravelObject.coordinates.lng + props.slots.nextTravelObject.coordinates.lng) / 2
-      } else if (props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type !== 'flight') {
+      } else if (prevNotNullOrFlight) {
         coordinates.lat = props.slots.prevTravelObject.coordinates.lat;
         coordinates.lng = props.slots.prevTravelObject.coordinates.lng;
-      } else if (props.slots.nextTravelObject !== null && props.slots.nextTravelObject.type !== 'flight') {
+      } else if (nextNotNullOrFlight) {
         coordinates.lat = props.slots.nextTravelObject.coordinates.lat;
         coordinates.lng = props.slots.nextTravelObject.coordinates.lng;
       } else {
