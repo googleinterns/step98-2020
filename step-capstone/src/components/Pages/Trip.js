@@ -8,6 +8,7 @@ import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Utilities/GetSuggestionButton';
 import SuggestionPopup from "../Utilities/SuggestionPopup"
+import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -78,7 +79,7 @@ export default class Trip extends React.Component {
             .then(() => {
                 var placeIdCopy = new Set(this.state.placeIds);
                 if (data.type !== "flight") {
-                    placeIdCopy = placeIdCopy.delete(data.placeId);
+                    placeIdCopy.delete(data.placeId);
                 }
                 this.setState({
                     items: this.state.items.filter((item) => item.id !== data.id),
@@ -132,6 +133,16 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
+                getOptimalRoute(this.state.items, { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
+                    .then(travelObjects => {
+                        var startTime = new Date(this.state.today.date);
+                        startTime.setHours(9, 0, 0);
+                        let schedule = createSchedule(travelObjects, {
+                            startTime: startTime,
+                            foodTimeRanges: [3600000, 3600000, 3600000]
+                        }, this.state.today.date);
+                        console.log(schedule.map(item => item.startDate));
+                    })
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -198,8 +209,8 @@ export default class Trip extends React.Component {
                         userPref={this.state.tripSetting.userPref}
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
-                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius }
+                        timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
+                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                     />
                 </Grid>
