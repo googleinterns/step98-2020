@@ -1,5 +1,4 @@
 export const getOptimalRoute = function (travelObjects, start, end) {
-    console.log(travelObjects)
     let request = {
         origin: new window.google.maps.LatLng(start.coordinates.lat, start.coordinates.lng),
         destination: new window.google.maps.LatLng(end.coordinates.lat, end.coordinates.lng),
@@ -41,8 +40,6 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
 
     var editedTravelObjects = [];
     for (let i = 1; i < travelObjects.length - 1; i++) {
-        console.log("Curtime hours: ", curTime.getHours());
-        console.log(foodTimeRanges[nextFoodRange][0]);
         if (nextFoodRange < 3 && curTime.getHours() >= foodTimeRanges[nextFoodRange][0] && curTime.getHours() <= foodTimeRanges[nextFoodRange][1]) {
             curTime.setTime(curTime.getTime() + userPref.foodTimeRanges[nextFoodRange]);
             nextFoodRange++;
@@ -57,18 +54,23 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
         curTime.setTime(newEnd.getTime() + curTravelObject.toNextLocation.duration.value * 1000);
 
         if (curTime.getTime() > userPref.endDate.getTime()) {
+            console.log("Day's end: ", userPref.endDate);
+            console.log("Curtime: ", curTime);
             let numLeft = travelObjects.length - i - 1;
             var timeLeft = curTime.getTime() - userPref.endDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
             curTravelObject = travelObjects[++i];
             while (i < travelObjects.length - 1) {
                 timeLeft += curTravelObject.endDate.getTime() - curTravelObject.startDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+                curTravelObject = travelObjects[++i];
             }
+            console.log(editedTravelObjects)
             throw "We couldn't fit " + numLeft + " number of events totaling " + Math.floor(timeLeft / 60000) + " minutes into your day."
         }
 
         curTravelObject.startDate = new Date(newStart);
         curTravelObject.endDate = new Date(newEnd);
         curTravelObject.finalized = true;
+        delete curTravelObject.toNextLocation;
         editedTravelObjects.push(curTravelObject);
     }
 

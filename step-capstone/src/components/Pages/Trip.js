@@ -9,7 +9,7 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
-import _ from "lodash" 
+import _ from "lodash"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -110,7 +110,7 @@ export default class Trip extends React.Component {
                 newItems.push(item);
             }
         });
-        this.context.editTravelObject(this.state.reference, itemToChange, data)
+        this.context.editTravelObject(this.state.reference, itemToChange, _.cloneDeep(data))
             .then(() => {
                 this.setState({
                     items: newItems,
@@ -121,7 +121,28 @@ export default class Trip extends React.Component {
                 console.log("Error Editing Item");
                 console.log(error);
             });
-        this.setState({ items: newItems });
+    }
+
+    editMultipleItems(editedTravelObjects) {
+        let editedIds = editedTravelObjects.reduce((objectMap, object) => {
+            objectMap.set(object.id, {edited: object});
+            return objectMap;
+        }, new Map());
+        let newItems = this.state.items.map((item) => {
+            if (editedIds.has(item.id)) {
+                // add old object into map
+                editedIds.set(item.id, {edited: editedIds.get(item.id).edited, previous: item});
+                return editedIds.get(item.id).edited;
+            } else {
+                return item;
+            }
+        })
+        let editingPromises = editedTravelObjects.map(item =>
+            {this.context.editTravelObject(this.state.reference, editedIds.get(item.id).previous, editedIds.get(item.id).edited)}
+        );
+        Promise.all(editingPromises).then(() => {
+            this.setState({ items: newItems })
+        })
     }
 
     handleAddItem(data) {
@@ -134,16 +155,22 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
-                getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
+                getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
                     .then(travelObjects => {
                         var startTime = new Date(this.state.today.date);
                         startTime.setHours(9, 0, 0);
-                        let schedule = createSchedule(travelObjects, {
-                            startDate: startTime,
-                            foodTimeRanges: [3600000, 3600000, 3600000]
-                        }, this.state.today.date);
-                        console.log(schedule);
-                        console.log(this.state.items);
+                        var endTime = new Date(this.state.today.date);
+                        endTime.setHours(20, 0, 0);
+                        try {
+                            let schedule = createSchedule(travelObjects, {
+                                startDate: startTime,
+                                endDate: endTime,
+                                foodTimeRanges: [3600000, 3600000, 3600000]
+                            }, this.state.today.date);
+                            this.editMultipleItems(schedule);
+                        } catch (error) {
+                            console.log(error);
+                        }
                     })
             })
             .catch(error => {
@@ -215,8 +242,8 @@ export default class Trip extends React.Component {
                         userPref={this.state.tripSetting.userPref}
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
-                        radius={this.state.tripSetting.userPref.radius }
+                        timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
+                        radius={this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
