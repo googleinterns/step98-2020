@@ -32,11 +32,15 @@ export default function AddHotel(props) {
   const [location, setLocation] = useState(
     overwriting
       ? {
-          address: props.data.location,
-          coordinates: props.data.coordinates,
-          placeId: props.data.placeId,
-        }
-      : null
+        address: props.data.location,
+        coordinates: props.data.coordinates,
+        placeId: props.data.placeId,
+      }
+      : {
+        address: "",
+        coordinates: "",
+        placeId: "",
+      }
   );
   const [description, setDescription] = useState(
     overwriting ? props.data.description : ""
@@ -86,7 +90,7 @@ export default function AddHotel(props) {
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
-    } else if (checked && location === "") {
+    } else if (checked && (location===null||location.address==="")) {
       props.onToggleValidation(false);
     } else if (!isValid(startDate) || !isValid(endDate)) {
       props.onToggleValidation(false);
@@ -142,7 +146,7 @@ export default function AddHotel(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleLocationChange}
-            error={checked && location}
+            error={checked && (location === null || location.address === "")}
             text={location ? location.address : ""}
             type="hotel"
           />

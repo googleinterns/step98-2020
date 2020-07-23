@@ -35,11 +35,9 @@ class App extends React.Component {
 
     if (status.signInStatus) {
       this.setState({authState: true, user: status.user});
-      console.log("You have logged in.");
     }
     else {
       this.setState({authState: false, user: null});
-      console.log("You havent logged in yet");
     }
   }
 
