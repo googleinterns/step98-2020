@@ -11,6 +11,25 @@ import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 
+// TODO: Implement code with form
+// getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
+//     .then(travelObjects => {
+//         var startTime = new Date(this.state.today.date);
+//         startTime.setHours(9, 0, 0);
+//         var endTime = new Date(this.state.today.date);
+//         endTime.setHours(20, 0, 0);
+//         try {
+//             let schedule = createSchedule(travelObjects, {
+//                 startDate: startTime,
+//                 endDate: endTime,
+//                 foodTimeRanges: [3600000, 3600000, 3600000]
+//             }, this.state.today.date);
+//             this.editMultipleItems(schedule);
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     })
+
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -125,21 +144,21 @@ export default class Trip extends React.Component {
 
     editMultipleItems(editedTravelObjects) {
         let editedIds = editedTravelObjects.reduce((objectMap, object) => {
-            objectMap.set(object.id, {edited: object});
+            objectMap.set(object.id, { edited: object });
             return objectMap;
         }, new Map());
         let newItems = this.state.items.map((item) => {
             if (editedIds.has(item.id)) {
                 // add old object into map
-                editedIds.set(item.id, {edited: editedIds.get(item.id).edited, previous: item});
+                editedIds.set(item.id, { edited: editedIds.get(item.id).edited, previous: item });
                 return editedIds.get(item.id).edited;
             } else {
                 return item;
             }
         })
-        let editingPromises = editedTravelObjects.map(item =>
-            {this.context.editTravelObject(this.state.reference, editedIds.get(item.id).previous, editedIds.get(item.id).edited)}
-        );
+        let editingPromises = editedTravelObjects.map(item => {
+            return this.context.editTravelObject(this.state.reference, editedIds.get(item.id).previous, editedIds.get(item.id).edited);
+        });
         Promise.all(editingPromises).then(() => {
             this.setState({ items: newItems })
         })
@@ -155,23 +174,6 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
-                getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
-                    .then(travelObjects => {
-                        var startTime = new Date(this.state.today.date);
-                        startTime.setHours(9, 0, 0);
-                        var endTime = new Date(this.state.today.date);
-                        endTime.setHours(20, 0, 0);
-                        try {
-                            let schedule = createSchedule(travelObjects, {
-                                startDate: startTime,
-                                endDate: endTime,
-                                foodTimeRanges: [3600000, 3600000, 3600000]
-                            }, this.state.today.date);
-                            this.editMultipleItems(schedule);
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    })
             })
             .catch(error => {
                 console.log("Error Adding Item")

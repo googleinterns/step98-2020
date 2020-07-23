@@ -111,7 +111,6 @@ class Firebase {
   }
 
   editTravelObject(reference, oldTravelObject, newTravelObject) {
-    console.log(newTravelObject);
     const tripRef = this.db.doc(reference);
     return new Promise((resolve) => {
       tripRef.update({ travelObjects: firebase.firestore.FieldValue.arrayRemove(oldTravelObject) })
@@ -120,15 +119,6 @@ class Firebase {
             .then(() => { resolve() });
         })
     });
-  }
-
-  editAllTravelObjects(reference, travelObjects) {
-    console.log(travelObjects);
-    const tripRef = this.db.doc(reference);
-    return new Promise((resolve) => {
-      tripRef.update({ travelObjects: travelObjects })
-        .then(() => resolve())
-    })
   }
 
   deleteTravelObject(reference, travelObject) {
