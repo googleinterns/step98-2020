@@ -5,6 +5,8 @@ import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
 import { getEmptySlots, handleClickedTimePoint } from "./HandleClickedTimePoint";
 import { sameDate } from "../../scripts/HelperFunctions";
 import OneHourInterval from "./OneHourInterval";
+import { Grid } from "@material-ui/core"
+import TravelObject from "../TravelObjects/TravelObject"
 
 export default class TimeLine extends React.Component {
   constructor(props) {
@@ -79,13 +81,13 @@ export default class TimeLine extends React.Component {
         this.displayItems,
         this.props.displayDate.toDateString()
       );
-      
+
 
       this.displayItems.sort(travelObjectStartDateComparator);
       this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
-      
+
       this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
-    
+
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
         if (nextItemIndex < this.displayItems.length) {
@@ -188,7 +190,11 @@ export default class TimeLine extends React.Component {
           <table className="offset">
             <tbody>
               <tr></tr>
+              <div className="hotel-bar">
+              </div>
               <div id="intervals">{this.getIntervals()}</div>
+              <div className="hotel-bar">
+              </div>
             </tbody>
           </table>
         </div>
