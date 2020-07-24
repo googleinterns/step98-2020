@@ -190,15 +190,16 @@ export default class TimeLine extends React.Component {
   }
 
   getMorningHotel() {
-    
-    if (this.getTodaysHotel().morningHotel !== undefined) {
+    let hotel = this.getTodaysHotel()
+    if (hotel && this.getTodaysHotel().morningHotel !== undefined) {
       return this.getHotelBar(this.getTodaysHotel().morningHotel);
     }
     return null;
   }
 
   getNightHotel() {
-    if (this.getTodaysHotel().nightHotel !== undefined) {
+    let hotel = this.getTodaysHotel()
+    if (hotel && this.getTodaysHotel().nightHotel !== undefined) {
       return this.getHotelBar(this.getTodaysHotel().nightHotel);
     }
     return null;
@@ -213,6 +214,7 @@ export default class TimeLine extends React.Component {
           onRemoveItem={this.props.onRemoveItem}
           onAddItem={this.props.onAddItem}
           onClickObject={this.props.onClickObject}
+          onEditItem={this.props.onEditItem}
         />
       </div>
     )

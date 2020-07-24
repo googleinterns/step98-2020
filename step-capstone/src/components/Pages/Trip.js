@@ -81,30 +81,36 @@ export default class Trip extends React.Component {
                         userPref: trip.userPref,
                     }
                 })
-                var hotelMap = new Map(); // Map date to morning and night hotel
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject);
-                    if (travelObject.type === "hotel") {
-                        hotelMap.set(travelObject.startDate.toDateString(), {nightHotel: travelObject})
-                        var curDate = new Date(travelObject.startDate);
-                        curDate.setDate(curDate.getDate() + 1);
-                        while (!sameDate(curDate, travelObject.endDate)) {
-                            hotelMap.set(curDate.toDateString(), {morningHotel: travelObject, nightHotel: travelObject});
-                            curDate.setDate(curDate.getDate() + 1);
-                            
-                        }
-                        hotelMap.set(travelObject.endDate.toDateString(), {morningHotel: travelObject})
-                    } 
                     placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList, placeIds: placeIds, hotelMap: hotelMap });
+                this.setState({ items: travelObjectList, placeIds: placeIds, hotelMap: this.getHotelMap(trip.travelObjects) });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
                 console.error(error);
             });
+    }
+
+    getHotelMap(items) {
+        var hotelMap = new Map(); // Map date to morning and night hotel
+        items.forEach(travelObject => {
+            if (travelObject.type === "hotel") {
+                hotelMap.set(travelObject.startDate.toDateString(), { nightHotel: travelObject })
+                var curDate = new Date(travelObject.startDate);
+                curDate.setDate(curDate.getDate() + 1);
+                while (!sameDate(curDate, travelObject.endDate)) {
+                    hotelMap.set(curDate.toDateString(), { morningHotel: travelObject, nightHotel: travelObject });
+                    curDate.setDate(curDate.getDate() + 1);
+
+                }
+                hotelMap.set(travelObject.endDate.toDateString(), { morningHotel: travelObject })
+            }
+        })
+        return hotelMap;
     }
 
     handleRemoveItem(data) {
@@ -114,9 +120,12 @@ export default class Trip extends React.Component {
                 if (data.type !== "flight") {
                     placeIdCopy.delete(data.placeId);
                 }
+                let items = this.state.items.filter((item) => item.id !== data.id)
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.hotelMap;
                 this.setState({
-                    items: this.state.items.filter((item) => item.id !== data.id),
-                    placeIds: placeIdCopy
+                    items: items,
+                    placeIds: placeIdCopy,
+                    hotelMap: hotelMap
                 });
             })
             .catch(error => {
@@ -143,9 +152,11 @@ export default class Trip extends React.Component {
         });
         this.context.editTravelObject(this.state.reference, itemToChange, _.cloneDeep(data))
             .then(() => {
+                let hotelMap = itemToChange.type === "hotel" ? this.getHotelMap(newItems) : this.state.hotelMap;
                 this.setState({
                     items: newItems,
-                    placeIds: newPlaceIds
+                    placeIds: newPlaceIds,
+                    hotelMap: hotelMap
                 });
             })
             .catch((error) => {
@@ -185,7 +196,9 @@ export default class Trip extends React.Component {
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
-                this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
+                let items = this.state.items.concat(data);
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.hotelMap;
+                this.setState({ items: items, placeIds: newPlaceIds });
             })
             .catch(error => {
                 console.log("Error Adding Item")
