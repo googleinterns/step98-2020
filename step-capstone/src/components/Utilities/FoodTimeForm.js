@@ -32,7 +32,7 @@ export default function FoodTimeForm(props) {
     useEffect(() => {
         props.onChange({
             foodTimeRanges: [
-                breakfastDuration * MILLISECONDS_PER_MIN, 
+                breakfastDuration * MILLISECONDS_PER_MIN,
                 lunchDuration * MILLISECONDS_PER_MIN,
                 dinnerDuration * MILLISECONDS_PER_MIN
             ]
@@ -61,6 +61,11 @@ export default function FoodTimeForm(props) {
     return (
         <Grid container direction="column">
             <Grid item>
+                <Box mt={2}>
+                    <Typography variant="subtitle2" gutterBottom>Enter a duration for each meal and we'll be sure to leave space in your schedule.</Typography>
+                </Box>
+            </Grid>
+            <Grid item>
                 <Box my={3} mr={3}>
                     <Typography id="discrete-slider-custom" gutterBottom>Breakfast Duration</Typography>
                     <Slider
@@ -68,7 +73,7 @@ export default function FoodTimeForm(props) {
                         step={10}
                         valueLabelDisplay="auto"
                         marks={marks}
-                        min={20}
+                        min={0}
                         max={120}
                         onChange={handleBreakfastDurationChange}
                     />
