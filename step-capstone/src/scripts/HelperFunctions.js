@@ -1,3 +1,4 @@
+
 export const travelObjectStartDateComparator = (travelObjectA, travelObjectB) => {
     if (travelObjectA.startDate === travelObjectB.startDate) {
       return 0;
@@ -38,3 +39,22 @@ export const fetchPhoto = function(placeId, service) {
   })
 }
 
+//returns true if there is a conflict, false otherwise
+export const hasTimeConflict = (date, travelObjects) => {
+  console.log("in time conflict")
+  console.log("date",date)
+  var foundConflict = false;
+  travelObjects.forEach((travelObject) => {
+    console.log("objects",travelObject.startDate)
+    if(contains(travelObject.startDate, travelObject.endDate, date)) {
+      foundConflict = true;
+    } 
+  });
+  console.log(foundConflict)
+  return foundConflict;
+}
+
+export const contains = (startTime, endTime, timePoint) => {
+  // return whether timeRange from startTime to endTime contains timePoint
+  return startTime < timePoint && timePoint < endTime;
+}

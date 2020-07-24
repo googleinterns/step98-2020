@@ -13,7 +13,9 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import {isValid} from '../../scripts/HelperFunctions';
+import {isValid, hasTimeConflict} from '../../scripts/HelperFunctions';
+
+const travelObjects = [{startDate:new Date(2020,6,24,8), endDate: new Date(2020,6,24,12)}]
 
 export default function AddEvent(props) {
   let overwriting = props.data !== undefined;
@@ -134,6 +136,8 @@ export default function AddEvent(props) {
             label={"Start"}
             value={startDate}
             onChange={setStartDate}
+            error={hasTimeConflict(startDate, travelObjects)}
+            helperText={hasTimeConflict(startDate, travelObjects)? "You already have something scheduled for that time" :""}
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -142,6 +146,8 @@ export default function AddEvent(props) {
             label={"End"}
             value={endDate}
             onChange={setEndDate}
+            error={hasTimeConflict(endDate, travelObjects)}
+            helperText="You already have something scheduled for that time"
           />
         </MuiPickersUtilsProvider>
       </Grid>
