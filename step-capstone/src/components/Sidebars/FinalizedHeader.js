@@ -68,32 +68,31 @@ function ArrowRight(props) {
 
 
 export default function FinalizedHeader(props) {
-    return (
-      <div>
-        <header className="header">
-          <div className="calendar__title">
-            <ArrowLeft 
-              displayDate = {props.displayDate}
-              onChangeDisplayDate = {props.onChangeDisplayDate}
-            />
-            <Button id='timezone' variant='outlined'>EST</Button>
-            <PickDisplayDate 
-              displayDate = {props.displayDate}
-              onChangeDisplayDate = {props.onChangeDisplayDate}
-            />
-            <ArrowRight 
-              displayDate = {props.displayDate}
-              onChangeDisplayDate = {props.onChangeDisplayDate}
-            />
-          </div> 
-          <div className="gap"></div>
-        </header>
-        <table>
-          <thead className="header-name">
-            <Typography variant="h6" gutterBottom>Itinerary</Typography>
-          </thead>
-        </table>
-      </div>
-    )
+  return (
+    <div>
+      <header className="header">
+        <div className="calendar__title">
+          <ArrowLeft
+            displayDate={props.displayDate}
+            onChangeDisplayDate={props.onChangeDisplayDate}
+          />
+          <PickDisplayDate
+            displayDate={props.displayDate}
+            onChangeDisplayDate={props.onChangeDisplayDate}
+          />
+          <ArrowRight
+            displayDate={props.displayDate}
+            onChangeDisplayDate={props.onChangeDisplayDate}
+          />
+        </div>
+        <div className="gap"></div>
+      </header>
+      <table>
+        <thead className="header-name">
+          <Typography variant="h6" gutterBottom>Itinerary</Typography>
+        </thead>
+      </table>
+    </div>
+  )
 }
 
