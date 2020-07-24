@@ -1,7 +1,7 @@
 import React from "react";
 import Draggable from "react-draggable"; // The default
 import TravelObject from "./TravelObject";
-import _ from "lodash";
+import _, { clone } from "lodash";
 
 export default class DraggableTravelObject extends React.Component {
   constructor(props) {
@@ -14,6 +14,14 @@ export default class DraggableTravelObject extends React.Component {
     this.pixelPerDiv = 45.0;
     this.onStop = this.onStop.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.startOfDisplayDate = new Date(
+      this.props.displayDate.getFullYear(),
+      this.props.displayDate.getMonth(),
+      this.props.displayDate.getDate(),
+      0,
+      0,
+      0
+    );
   }
   handleClose = (event) => {
     this.setState({ anchorEl: null });
@@ -32,14 +40,48 @@ export default class DraggableTravelObject extends React.Component {
     } else {
       // Handle Drag and drop
       var cloneData = _.cloneDeep(this.props.data);
-      cloneData.startDate = new Date(
+      console.log(this.props)
+      const startOfDisplayDate = new Date(
+        this.props.displayDate.getFullYear(),
+        this.props.displayDate.getMonth(),
+        this.props.displayDate.getDate(),
+        0,
+        0,
+        0
+      );
+
+      const endOfDisplayDate = new Date(
+        this.props.displayDate.getFullYear(),
+        this.props.displayDate.getMonth(),
+        this.props.displayDate.getDate(),
+        23,
+        59,
+        59
+      );
+
+      var newStartDate = new Date(
         this.props.data.startDate.getTime() +
           (((data.y - this.state.y) * this.minPerDiv) / this.pixelPerDiv) * 60000
       );
-      cloneData.endDate = new Date(
-        this.props.data.endDate.getTime() +
-          (((data.y - this.state.y) * this.minPerDiv) / this.pixelPerDiv) * 60000
+      newStartDate = (newStartDate < startOfDisplayDate)? startOfDisplayDate : newStartDate;
+      
+
+      var newEndDate = new Date(
+        newStartDate.getTime() +
+          this.props.data.endDate.getTime() - this.props.data.startDate.getTime()
       );
+      
+      if (newEndDate > endOfDisplayDate) {
+        newEndDate = endOfDisplayDate;
+        newStartDate = new Date(
+          newEndDate.getTime() - 
+          (this.props.data.endDate.getTime() - this.props.data.startDate.getTime())
+        );
+      }
+
+      cloneData.startDate = newStartDate;
+      cloneData.endDate = newEndDate;
+
       this.props.onEditItem(cloneData);
       this.setState({
         y: data.y,
@@ -57,7 +99,11 @@ export default class DraggableTravelObject extends React.Component {
   render() {
     return (
       <div>
-        <Draggable axis="y" onStart={this.onStart} onStop={this.onStop}>
+        <Draggable 
+          axis="y" 
+          onStart={this.onStart} 
+          onStop={this.onStop}
+        >
           <div
             style={{
               position: "absolute",

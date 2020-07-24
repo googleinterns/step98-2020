@@ -77,6 +77,7 @@ export default function OneHourInterval(props) {
       let travelObject = (
         <DraggableTravelObject
           key={item.data.id}
+          displayDate={props.displayDate}
           data={item.data}
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
