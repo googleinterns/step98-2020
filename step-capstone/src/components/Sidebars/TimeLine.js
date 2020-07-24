@@ -34,6 +34,12 @@ export default class TimeLine extends React.Component {
     this.handleOnClickInterval = this.handleOnClickInterval.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString) {
+      this.setState()
+    }
+  }
+
   /*Given a date and an item, put the item to the list of items belonging to the given date. */
   addItemToDate(item, dateKey) {
     if (!this.date2Items.has(dateKey)) {
@@ -179,6 +185,39 @@ export default class TimeLine extends React.Component {
     return intervals;
   }
 
+  getTodaysHotel(){
+    return this.props.hotelMap.get(this.props.displayDate.toDateString());
+  }
+
+  getMorningHotel() {
+    
+    if (this.getTodaysHotel().morningHotel !== undefined) {
+      return this.getHotelBar(this.getTodaysHotel().morningHotel);
+    }
+    return null;
+  }
+
+  getNightHotel() {
+    if (this.getTodaysHotel().nightHotel !== undefined) {
+      return this.getHotelBar(this.getTodaysHotel().nightHotel);
+    }
+    return null;
+  }
+
+  getHotelBar(object) {
+    return (
+      <div className="hotel-bar">
+        < TravelObject
+          key={object.id}
+          data={object}
+          onRemoveItem={this.props.onRemoveItem}
+          onAddItem={this.props.onAddItem}
+          onClickObject={this.props.onClickObject}
+        />
+      </div>
+    )
+  }
+
   render() {
     return (
       <div>
@@ -190,11 +229,9 @@ export default class TimeLine extends React.Component {
           <table className="offset">
             <tbody>
               <tr></tr>
-              <div className="hotel-bar">
-              </div>
+              {this.getMorningHotel()}
               <div id="intervals">{this.getIntervals()}</div>
-              <div className="hotel-bar">
-              </div>
+              {this.getNightHotel()}
             </tbody>
           </table>
         </div>

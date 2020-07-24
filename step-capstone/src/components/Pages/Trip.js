@@ -10,7 +10,7 @@ import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
-import FoodTimeForm from '../Utilities/FoodTimeForm';
+import { sameDate } from "../../scripts/HelperFunctions"
 
 // TODO: Implement code with form
 // getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
@@ -47,11 +47,11 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-
             queryResults: null,
             placeIds: new Set(),
             showSuggestions: false,
-            selectedTimeslot: null
+            selectedTimeslot: null,
+            hotelMap: new Map()
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -81,14 +81,25 @@ export default class Trip extends React.Component {
                         userPref: trip.userPref,
                     }
                 })
-
+                var hotelMap = new Map(); // Map date to morning and night hotel
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
-                    travelObjectList.push(travelObject)
+                    travelObjectList.push(travelObject);
+                    if (travelObject.type === "hotel") {
+                        hotelMap.set(travelObject.startDate.toDateString(), {nightHotel: travelObject})
+                        var curDate = new Date(travelObject.startDate);
+                        curDate.setDate(curDate.getDate() + 1);
+                        while (!sameDate(curDate, travelObject.endDate)) {
+                            hotelMap.set(curDate.toDateString(), {morningHotel: travelObject, nightHotel: travelObject});
+                            curDate.setDate(curDate.getDate() + 1);
+                            
+                        }
+                        hotelMap.set(travelObject.endDate.toDateString(), {morningHotel: travelObject})
+                    } 
                     placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList, placeIds: placeIds });
+                this.setState({ items: travelObjectList, placeIds: placeIds, hotelMap: hotelMap });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -289,6 +300,7 @@ export default class Trip extends React.Component {
                             setTodaysEvents={this.handleChangeDisplayDate}
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
+                            hotelMap={this.state.hotelMap}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">

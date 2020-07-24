@@ -240,4 +240,5 @@
   height: 50px;
   background-color: #DB4437;
   margin-bottom: 10px;
+  overflow: hidden;
 }
