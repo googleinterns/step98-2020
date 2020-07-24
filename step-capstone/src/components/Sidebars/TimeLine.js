@@ -95,17 +95,20 @@ export default class TimeLine extends React.Component {
       this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
 
       var nextItemIndex = 0;
+      var hotel = null; // flags hotel until finds right place to palce in timeline
+
       for (var i = 0; i < 24; i++) {
         // if there are still travel objects that haven't been rendered
-        if (nextItemIndex < this.displayItems.length) {
-          var nextItem = this.displayItems[nextItemIndex];
-          var nextItemStartDate = nextItem.startDate;
-          // End date within current display date for catching checkout time for hotel
-          if (
-            !sameDate(this.props.displayDate, nextItemStartDate) &&
-            (nextItem.type !== "hotel" || nextItem.endDate.getHour === i)
-          ) {
-            nextItemIndex++;
+        if (hotel || nextItemIndex < this.displayItems.length) {
+          // End date within current display date for catching checkout time for flight
+          // Renders interval from midnight until arrival time
+          if (nextItemIndex < this.displayItems.length 
+            && !sameDate(this.props.displayDate, this.displayItems[nextItemIndex].startDate)
+            && this.displayItems[nextItemIndex].type === "flight") {
+
+            var nextItem = this.displayItems[nextItemIndex];
+            var nextItemStartDate = nextItem.startDate;
+
             intervals.push(
               <OneHourInterval
                 idV={
@@ -127,12 +130,33 @@ export default class TimeLine extends React.Component {
           } else {
             var items = [];
             var div = null;
-            while (
-              nextItemIndex < this.displayItems.length &&
-              this.displayItems[nextItemIndex].startDate.getHours() === i
-            ) {
+            // loops through all travelobjects within this one hour period
+            // goes/continues in loop if:
+            // a hotel was flagged and the flagged hotel is in this timeBlock
+            // there are more travel objects in the list and the next one goes in this timeblock (if hotel, endDate in timeblock. Otherwise, startDate)
+            while ((hotel && hotel.endDate.getHours() === i)
+              || (nextItemIndex < this.displayItems.length
+                && (this.displayItems[nextItemIndex].type === "hotel"
+                  || (this.displayItems[nextItemIndex].displayItems !== hotel && this.displayItems[nextItemIndex].startDate.getHours() === i)))) {
               var item = this.displayItems[nextItemIndex];
-              nextItemStartDate = item.startDate;
+              // found hotel who's checkout time isn't in the current hour block --> flags it and moves index
+              if (!hotel && item.type === "hotel" && !sameDate(this.props.displayDate, item.startDate) && item.endDate.getHours() !== i) {
+                hotel = item;
+                nextItemIndex++;
+                if (nextItemIndex === this.displayItems.length) {
+                  break;
+                }
+                item = this.displayItems[nextItemIndex];
+              }
+              // found proper location for previously flagged hotel.
+              if (hotel && hotel.endDate.getHours() === i) {
+                item = hotel;
+                hotel = null;
+              } else {
+                nextItemIndex++;
+              }
+
+              var nextItemStartDate = item.startDate;
               var nextItemMinutes = nextItemStartDate.getMinutes();
 
               if (nextItemMinutes < 30) {
@@ -142,8 +166,6 @@ export default class TimeLine extends React.Component {
               }
 
               items.push({ data: item, div: div });
-
-              nextItemIndex++;
             }
 
             intervals.push(
@@ -163,7 +185,7 @@ export default class TimeLine extends React.Component {
               />
             );
           }
-        // No more travel objects in the day, just render empty slots
+          // No more travel objects in the day, just render empty slots
         } else {
           intervals.push(
             <OneHourInterval
@@ -187,7 +209,7 @@ export default class TimeLine extends React.Component {
     return intervals;
   }
 
-  getTodaysHotel(){
+  getTodaysHotel() {
     return this.props.hotelMap.get(this.props.displayDate.toDateString());
   }
 
