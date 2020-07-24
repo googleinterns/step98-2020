@@ -1,14 +1,14 @@
 
 export const travelObjectStartDateComparator = (travelObjectA, travelObjectB) => {
-    if (travelObjectA.startDate === travelObjectB.startDate) {
-      return 0;
-    }
-    else if (travelObjectA.startDate > travelObjectB.startDate) {
-      return 1;
-    }
-    else {
-      return -1;
-    }
+  if (travelObjectA.startDate === travelObjectB.startDate) {
+    return 0;
+  }
+  else if (travelObjectA.startDate > travelObjectB.startDate) {
+    return 1;
+  }
+  else {
+    return -1;
+  }
 }
 
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
@@ -22,17 +22,17 @@ export const isValid = function (date) {
   return date.getTime() === date.getTime();
 };
 
-export const fetchPhoto = function(placeId, service) {
+export const fetchPhoto = function (placeId, service) {
   let request = {
     placeId: placeId,
-    fields : ["photos"]
+    fields: ["photos"]
   }
   return new Promise((res) => {
     service.getDetails(
       request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           let url = results.photos[0].getUrl();
-          res(url); 
+          res(url);
         }
       }
     )
@@ -40,21 +40,24 @@ export const fetchPhoto = function(placeId, service) {
 }
 
 //returns true if there is a conflict, false otherwise
-export const hasTimeConflict = (date, travelObjects) => {
-  console.log("in time conflict")
-  console.log("date",date)
+export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
   var foundConflict = false;
   travelObjects.forEach((travelObject) => {
-    console.log("objects",travelObject.startDate)
-    if(contains(travelObject.startDate, travelObject.endDate, date)) {
-      foundConflict = true;
-    } 
+    console.log("editing id", id)
+    console.log("travelobj", travelObject.id)
+    if(travelObject.finalized && id!==travelObject.id){
+      if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
+        foundConflict = true;
+      }
+    }
   });
-  console.log(foundConflict)
   return foundConflict;
 }
 
-export const contains = (startTime, endTime, timePoint) => {
-  // return whether timeRange from startTime to endTime contains timePoint
-  return startTime < timePoint && timePoint < endTime;
+export const overlaps = (startTimeA, endTimeA, startTimeB, endTimeB) => {
+  if ((startTimeA < endTimeB) && (endTimeA > startTimeB)) {
+    return true;
+  } else {
+    return false;
+  }
 }

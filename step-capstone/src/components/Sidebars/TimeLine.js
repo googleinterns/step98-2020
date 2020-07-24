@@ -113,6 +113,7 @@ export default class TimeLine extends React.Component {
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
                 startDate={this.props.startDate}
+                travelObjects={this.props.travelObjects}
               />
             );
           } else {
@@ -151,6 +152,7 @@ export default class TimeLine extends React.Component {
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
                 startDate={this.props.startDate}
+                travelObjects={this.props.travelObjects}
               />
             );
           }
@@ -169,6 +171,7 @@ export default class TimeLine extends React.Component {
               onClickTimeslot={this.props.onClickTimeslot}
               onOpenSuggestions={this.props.onOpenSuggestions}
               startDate={this.props.startDate}
+              travelObjects={this.props.travelObjects}
             />
           );
         }

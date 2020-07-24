@@ -59,6 +59,7 @@ export default class SuggestionBar extends React.Component {
             suggestion={this.state.suggestions[this.state.startIndex + i]}
             context={this.props.context}
             onAddItem={this.props.onAddItem}
+            travelObjects={this.props.travelObjects}
           />
         </Grid>
       );

@@ -115,6 +115,7 @@ export default class ItemForm extends React.Component {
           data={this.state.data}
           onToggleValidation={this.handleToggleValidation}
           startDate={this.props.startDate}
+          travelObjects={this.props.travelObjects}
         />
       );
     } else if (
@@ -127,6 +128,7 @@ export default class ItemForm extends React.Component {
           data={this.state.data}
           onToggleValidation={this.handleToggleValidation}
           startDate={this.props.startDate}
+          travelObjects={this.props.travelObjects}
         />
       );
     } else {
@@ -136,6 +138,7 @@ export default class ItemForm extends React.Component {
           data={this.state.data}
           onToggleValidation={this.handleToggleValidation}
           startDate={this.props.startDate}
+          travelObjects={this.props.travelObjects}
         />
       );
     }
