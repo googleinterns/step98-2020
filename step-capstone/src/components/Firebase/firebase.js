@@ -91,8 +91,8 @@ class Firebase {
       await tripRef.update({ endDate: firebase.firestore.Timestamp.fromDate(newValue.endDate) });
     }
 
-    if (oldValue.destinations !== newValue.destinations) {
-      await tripRef.update({ destinations: newValue.destinations });
+    if (oldValue.destination !== newValue.destination) {
+      await tripRef.update({ destination: newValue.destination });
       await tripRef.update({ photoUrl: newValue.photoUrl})
     }
 

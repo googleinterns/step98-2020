@@ -22,6 +22,7 @@ export default class LocationAutocompleteInput extends React.Component {
 
     handleChange = place => {
         this.setState({ place });
+        this.props.onLocationSelected(null)
     };
 
     handleSelect = (address, placeId) => {

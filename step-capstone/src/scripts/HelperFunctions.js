@@ -21,3 +21,20 @@ export const isValid = function (date) {
   return date.getTime() === date.getTime();
 };
 
+export const fetchPhoto = function(placeId, service) {
+  let request = {
+    placeId: placeId,
+    fields : ["photos"]
+  }
+  return new Promise((res) => {
+    service.getDetails(
+      request, (results, status) => {
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          let url = results.photos[0].getUrl();
+          res(url); 
+        }
+      }
+    )
+  })
+}
+

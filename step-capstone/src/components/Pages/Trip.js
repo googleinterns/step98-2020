@@ -6,9 +6,8 @@ import { Grid, Box } from '@material-ui/core'
 import '../../styles/Trip.css'
 import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
-import GetSuggestionButton from '../Utilities/GetSuggestionButton';
-import SuggestionPopup from "../Utilities/SuggestionPopup"
-import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
+import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
+import SuggestionPopup from "../Suggestions/SuggestionPopup"
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -41,6 +40,7 @@ export default class Trip extends React.Component {
         this.handleChangeDisplayDate = this.handleChangeDisplayDate.bind(this);
         this.setMap = this.setMap.bind(this);
         this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
+        this.handleSelectTimeslot = this.handleSelectTimeslot.bind(this);
     }
 
     componentDidMount() {
@@ -128,21 +128,20 @@ export default class Trip extends React.Component {
         if (data.type !== "flight") {
             newPlaceIds.add(data.placeId);
         }
-
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
-                getOptimalRoute(this.state.items, { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
-                    .then(travelObjects => {
-                        var startTime = new Date(this.state.today.date);
-                        startTime.setHours(9, 0, 0);
-                        let schedule = createSchedule(travelObjects, {
-                            startTime: startTime,
-                            foodTimeRanges: [3600000, 3600000, 3600000]
-                        }, this.state.today.date);
-                        console.log(schedule.map(item => item.startDate));
-                    })
+                // getOptimalRoute(this.state.items, { coordinates: {lat: 51.501167, lng: -0.119185} }, { coordinates: {lat: 51.501167, lng: -0.119185} })
+                //     .then(travelObjects => {
+                //         var startTime = new Date(this.state.today.date);
+                //         startTime.setHours(9, 0, 0);
+                //         let schedule = createSchedule(travelObjects, {
+                //             startTime: startTime,
+                //             foodTimeRanges: [3600000, 3600000, 3600000]
+                //         }, this.state.today.date);
+                //         console.log(schedule.map(item => item.startDate));
+                //     })
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -163,7 +162,6 @@ export default class Trip extends React.Component {
 
     handleChangeDisplayDate(travelObjects, date) {
         if (this.state.today.date !== date) {
-
             this.setState({
                 today: {
                     events: travelObjects,
@@ -188,18 +186,23 @@ export default class Trip extends React.Component {
     }
 
     // Triggered when a time slot is selected in timeline
-    handleSelectTimeslot(timeRange, coordinates, radius) {
+    handleSelectTimeslot(timeRange, coordinates) {
         this.setState({
             selectedTimeslot: {
                 timeRange: timeRange,
-                coordinates: coordinates,
-                radius: radius
+                coordinates: coordinates
             }
         })
     }
 
     // only allows rendering of suggestion bar once map is set
     renderSuggestionBar() {
+        const todayStartTime = new Date(this.state.today.date);
+        todayStartTime.setHours(0, 0, 0);
+
+        const todayEndTime = new Date(this.state.today.date);
+        todayEndTime.setHours(23, 59, 59);
+
         if (this.state.map) {
             return (
                 <Grid item>
@@ -209,9 +212,11 @@ export default class Trip extends React.Component {
                         userPref={this.state.tripSetting.userPref}
                         coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [this.state.today.date, this.state.today.date]}
-                        radius={this.state.selectedTimeslot ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius}
+                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
+                        radius={this.state.tripSetting.userPref.radius }
                         onClose={this.toggleSuggestionBar}
+                        finalized={this.state.selectedTimeslot !== null}
+                        onAddItem={this.handleAddItem}
                     />
                 </Grid>
             )
@@ -249,6 +254,8 @@ export default class Trip extends React.Component {
                             onAddItem={this.handleAddItem}
                             onClickObject={this.handleSelectedObject}
                             setTodaysEvents={this.handleChangeDisplayDate}
+                            onClickTimeslot={this.handleSelectTimeslot}
+                            onOpenSuggestions={this.toggleSuggestionBar}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
