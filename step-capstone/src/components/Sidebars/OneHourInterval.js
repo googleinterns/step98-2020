@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import TravelObject from "../TravelObjects/TravelObject";
+import React, { useState } from "react";
 import { sameDate } from "../../scripts/HelperFunctions";
 import InsertObjectPopover from "./InsertObjectPopover"
 import DraggableTravelObject from "../TravelObjects/DragabbleTravelObject";
@@ -12,7 +11,6 @@ export default function OneHourInterval(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOnClickInterval = (idV, event) => {
-    
     if (event.target.className === "Interval") {
       let data = props.onClickInterval(idV);
       if (data.freeTimeSlot !== undefined) {

@@ -1,51 +1,63 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Draggable from "react-draggable"; // The default
 import TravelObject from "./TravelObject";
+import _ from "lodash";
 
 export default class DraggableTravelObject extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       y: 0,
-      anchorEl: null
+      anchorEl: null,
     };
+    this.minPerDiv = 30.0;
+    this.pixelPerDiv = 45.0;
     this.onStop = this.onStop.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
   handleClose = (event) => {
-    this.setState({anchorEl: null});
+    this.setState({ anchorEl: null });
   };
 
   onStop = (e, data) => {
     const lastY = this.state.y;
     if (lastY === data.y) {
-      if(e.target.className.slice(0, 5) == "event")
-      //TODO: handle flights and hotel
+      // Handle Click
+      if (e.path[0].className.slice(0, 5) == "event")
+        //to handle events
         this.onClick(e.target);
+      else if (e.path[1].className.slice(0, 5) == "event")
+        // to handle flights and hotels
+        this.onClick(e.path[1]);
     } else {
-      //TODO: calculate the current Time and then setState of y to be 0 again
+      // Handle Drag and drop
+      var cloneData = _.cloneDeep(this.props.data);
+      cloneData.startDate = new Date(
+        this.props.data.startDate.getTime() +
+          (((data.y - this.state.y) * this.minPerDiv) / this.pixelPerDiv) * 60000
+      );
+      cloneData.endDate = new Date(
+        this.props.data.endDate.getTime() +
+          (((data.y - this.state.y) * this.minPerDiv) / this.pixelPerDiv) * 60000
+      );
+      this.props.onEditItem(cloneData);
       this.setState({
         y: data.y,
       });
     }
-  }
+  };
 
   onClick(target) {
     if (this.props.data.placeId) {
       this.props.onClickObject(this.props.data.id);
     }
-    this.setState({anchorEl: target})
+    this.setState({ anchorEl: target });
   }
 
   render() {
-    console.log("hey rerendering with new state ", this.state.y);
     return (
       <div>
-        <Draggable
-          axis="y"
-          onStop= {this.onStop}
-        >
+        <Draggable axis="y" onStart={this.onStart} onStop={this.onStop}>
           <div
             style={{
               position: "absolute",
