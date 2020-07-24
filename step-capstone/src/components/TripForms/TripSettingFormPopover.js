@@ -18,7 +18,6 @@ import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import "../../styles/TripSetting.css"
 import { fetchPhoto } from "../../scripts/HelperFunctions"
-import FoodTimeForm from "../Utilities/FoodTimeForm"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -54,7 +53,6 @@ export default class TripSettingFormPopover extends React.Component {
     }
 
     render() {
-
         return (
             <Card id="setting-container">
                 <Box>
@@ -87,7 +85,6 @@ function EditTripSetting(props) {
     const [endDate, setEndDate] = useState(props.tripSetting.endDate);
     const [description, setDescription] = useState(props.tripSetting.description);
     const [userPref, setUserPref] = useState(props.tripSetting.userPref);
-    const [foodTimeRanges, setFoodTimeRanges] = useState(props.tripSetting.foodTimeRanges);
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
@@ -125,10 +122,6 @@ function EditTripSetting(props) {
         setUserPref(pref);
     }
 
-    const handleFoodTimeRangesChange = (timeranges) => {
-        setFoodTimeRanges(timeranges);
-    }
-
     useEffect(() => {
         let newMap = new window.google.maps.Map(window.document.getElementById("map"))
         setMap(newMap);
@@ -144,11 +137,11 @@ function EditTripSetting(props) {
             endDate: endDate,
             description: description,
             userPref: userPref,
-            foodTimeRanges: foodTimeRanges
         })
         // notifies form if necessary inputs are present
         props.onValidation(!(!destination || (title === "")))
-    }, [destination, startDate, endDate, description, userPref, photoUrl, foodTimeRanges])
+    }, [destination, startDate, endDate, description, userPref, photoUrl])
+
     return (
         <div>
             <div id="map"></div>
@@ -208,7 +201,6 @@ function EditTripSetting(props) {
                 />
             </Grid>
             <PreferenceForm pref={userPref} onChange={handleUserPrefChange} />
-            <FoodTimeForm foodTimeRanges={foodTimeRanges} onChange={handleFoodTimeRangesChange} />
         </div>
     )
 }

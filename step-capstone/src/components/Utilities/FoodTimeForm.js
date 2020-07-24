@@ -2,20 +2,15 @@ import React, { useEffect, useState } from "react"
 import {
     Grid,
     Box,
-    TextField,
-    InputAdornment,
-    Input,
-    FormControl,
-    FormHelperText,
     Slider,
     Typography
 } from "@material-ui/core"
-const MILLISECONDS_PER_MIN = 60000;
 
 export default function FoodTimeForm(props) {
-    const [breakfastDuration, setBreakfastDuration] = useState(props.foodTimeRanges[0] / MILLISECONDS_PER_MIN);
-    const [lunchDuration, setLunchDuration] = useState(props.foodTimeRanges[1] / MILLISECONDS_PER_MIN);
-    const [dinnerDuration, setDinnerDuration] = useState(props.foodTimeRanges[2] / MILLISECONDS_PER_MIN);
+    const MILLISECONDS_PER_MIN = 60000;
+    const [breakfastDuration, setBreakfastDuration] = useState(Math.floor(props.foodTimeRanges[0] / MILLISECONDS_PER_MIN));
+    const [lunchDuration, setLunchDuration] = useState(Math.floor(props.foodTimeRanges[1] / MILLISECONDS_PER_MIN));
+    const [dinnerDuration, setDinnerDuration] = useState(Math.floor(props.foodTimeRanges[2] / MILLISECONDS_PER_MIN));
 
     const handleBreakfastDurationChange = (event, hours) => {
         setBreakfastDuration(hours);
@@ -30,13 +25,11 @@ export default function FoodTimeForm(props) {
     }
 
     useEffect(() => {
-        props.onChange({
-            foodTimeRanges: [
-                breakfastDuration * MILLISECONDS_PER_MIN,
-                lunchDuration * MILLISECONDS_PER_MIN,
-                dinnerDuration * MILLISECONDS_PER_MIN
-            ]
-        })
+        props.onChange([
+            breakfastDuration * MILLISECONDS_PER_MIN,
+            lunchDuration * MILLISECONDS_PER_MIN,
+            dinnerDuration * MILLISECONDS_PER_MIN
+        ])
     }, [breakfastDuration, lunchDuration, dinnerDuration])
 
     const marks = [
@@ -87,7 +80,7 @@ export default function FoodTimeForm(props) {
                         step={10}
                         valueLabelDisplay="auto"
                         marks={marks}
-                        min={20}
+                        min={0}
                         max={120}
                         onChange={handleLunchDurationChange}
                     />
@@ -101,7 +94,7 @@ export default function FoodTimeForm(props) {
                         step={10}
                         valueLabelDisplay="auto"
                         marks={marks}
-                        min={20}
+                        min={0}
                         max={120}
                         onChange={handleDinnerDurationChange}
                     />

@@ -30,9 +30,9 @@ export default function AddTrip(props) {
             budget: 2,
             radius: 10,
             activityPreferences: [],
-            foodPreferences: []
-        },
-        foodTimeRanges: [3600000, 3600000, 3600000]
+            foodPreferences: [],
+            foodTimeRanges: [3600000, 3600000, 3600000]
+        }
     }
     const handleEditTrip = (newTrip) => {
         newTrip.travelObjects = [];
