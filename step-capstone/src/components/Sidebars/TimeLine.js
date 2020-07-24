@@ -96,10 +96,11 @@ export default class TimeLine extends React.Component {
 
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
+        // if there are still travel objects that haven't been rendered
         if (nextItemIndex < this.displayItems.length) {
           var nextItem = this.displayItems[nextItemIndex];
           var nextItemStartDate = nextItem.startDate;
-          // End date within current display date
+          // End date within current display date for catching checkout time for hotel
           if (
             !sameDate(this.props.displayDate, nextItemStartDate) &&
             (nextItem.type !== "hotel" || nextItem.endDate.getHour === i)
@@ -162,6 +163,7 @@ export default class TimeLine extends React.Component {
               />
             );
           }
+        // No more travel objects in the day, just render empty slots
         } else {
           intervals.push(
             <OneHourInterval
