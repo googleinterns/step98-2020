@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import TravelObject from "../TravelObjects/TravelObject";
 import { sameDate } from "../../scripts/HelperFunctions";
 import InsertObjectPopover from "./InsertObjectPopover"
+import DraggableTravelObject from "../TravelObjects/DragabbleTravelObject";
 
 export default function OneHourInterval(props) {
   const [slots, setSlots] = useState(null);
@@ -11,7 +12,7 @@ export default function OneHourInterval(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleOnClickInterval = (idV, event) => {
-    console.log(event.target);
+    
     if (event.target.className === "Interval") {
       let data = props.onClickInterval(idV);
       if (data.freeTimeSlot !== undefined) {
@@ -76,7 +77,7 @@ export default function OneHourInterval(props) {
           : getTopPixel(item.data.startDate);
 
       let travelObject = (
-        <TravelObject
+        <DraggableTravelObject
           key={item.data.id}
           data={item.data}
           onRemoveItem={props.onRemoveItem}

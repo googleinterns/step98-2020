@@ -7,22 +7,7 @@ import '../../styles/TimeLine.css';
 
 export default function TravelObject(props) {
     let content = null;
-    
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-        // if has a placeId, zoom to marker on map
-        if (props.data.placeId) {
-            props.onClickObject(props.data.id);
-        }
-    };
-
-    const handleClose = (event) => {
-        setAnchorEl(null);
-    };
-    
-    const open = Boolean(anchorEl);
+    const open = Boolean(props.anchorEl);
     
     switch (props.data.type) {
         case 'event':
@@ -37,18 +22,18 @@ export default function TravelObject(props) {
         default:
             return null;
     }
-
+    console.log("anchorEl ", props.anchorEl)
     return (
         <div>
-            <div onClick={handleClick}>
+            <div>
                 {content}
             </div>
             <FormPopover
                     data={props.data}
                     isNewItem={false}
                     open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
+                    anchorEl={props.anchorEl}
+                    onClose={props.handleClose}
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
