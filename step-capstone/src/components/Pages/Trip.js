@@ -79,7 +79,7 @@ export default class Trip extends React.Component {
             .then(() => {
                 var placeIdCopy = new Set(this.state.placeIds);
                 if (data.type !== "flight") {
-                    placeIdCopy = placeIdCopy.delete(data.placeId);
+                    placeIdCopy.delete(data.placeId);
                 }
                 this.setState({
                     items: this.state.items.filter((item) => item.id !== data.id),
