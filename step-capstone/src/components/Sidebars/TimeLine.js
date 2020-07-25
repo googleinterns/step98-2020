@@ -102,13 +102,8 @@ export default class TimeLine extends React.Component {
         if (hotel || nextItemIndex < this.displayItems.length) {
           // End date within current display date for catching checkout time for flight
           // Renders interval from midnight until arrival time
-          if (nextItemIndex < this.displayItems.length 
-            && !sameDate(this.props.displayDate, this.displayItems[nextItemIndex].startDate)
-            && this.displayItems[nextItemIndex].type === "flight") {
-
-            var nextItem = this.displayItems[nextItemIndex];
-            var nextItemStartDate = nextItem.startDate;
-
+          var nextItem = this.displayItems[nextItemIndex];
+          if (nextItem !== undefined && (!sameDate(this.props.displayDate, nextItem.startDate) && nextItem.type === "flight")) {
             intervals.push(
               <OneHourInterval
                 idV={
@@ -130,42 +125,45 @@ export default class TimeLine extends React.Component {
           } else {
             var items = [];
             var div = null;
-            // loops through all travelobjects within this one hour period
-            // goes/continues in loop if:
-            // a hotel was flagged and the flagged hotel is in this timeBlock
-            // there are more travel objects in the list and the next one goes in this timeblock (if hotel, endDate in timeblock. Otherwise, startDate)
-            while ((hotel && hotel.endDate.getHours() === i)
-              || (nextItemIndex < this.displayItems.length
-                && (this.displayItems[nextItemIndex].type === "hotel"
-                  || (this.displayItems[nextItemIndex].displayItems !== hotel && this.displayItems[nextItemIndex].startDate.getHours() === i)))) {
-              var item = this.displayItems[nextItemIndex];
-              // found hotel who's checkout time isn't in the current hour block --> flags it and moves index
-              if (!hotel && item.type === "hotel" && !sameDate(this.props.displayDate, item.startDate) && item.endDate.getHours() !== i) {
-                hotel = item;
-                nextItemIndex++;
-                if (nextItemIndex === this.displayItems.length) {
-                  break;
+
+            var item = this.displayItems[nextItemIndex];
+
+            // found hotel who's checkout time isn't in the current hour block --> flags it and moves index
+            if (!hotel && item.type === "hotel" && !sameDate(item.startDate, this.props.displayDate) && item.endDate.getHours() !== i) {
+              hotel = item;
+              item = this.displayItems[++nextItemIndex];
+            }
+
+            if (hotel && this.displayItems.length === 1) {
+              if (hotel.endDate.getHours() === i) {
+                items.push({ data: hotel, div: hotel.endDate.getMinutes() < 30 ? ":00" : ":30"})
+              }
+            } else {
+              // loops through all travelobjects within this one hour period
+              while (
+                (nextItemIndex < this.displayItems.length &&
+                  this.displayItems[nextItemIndex].startDate.getHours() === i) || (hotel && hotel.endDate.getHours() === i)
+              ) {
+                // found proper location for previously flagged hotel.
+                if (hotel && hotel.endDate.getHours() === i) {
+                  item = hotel;
+                  hotel = null;
+                } else {
+                  nextItemIndex++;
                 }
+
+                let nextItemStartDate = item.startDate;
+                var nextItemMinutes = nextItemStartDate.getMinutes();
+
+                if (nextItemMinutes < 30) {
+                  div = ":00";
+                } else {
+                  div = ":30";
+                }
+
+                items.push({ data: item, div: div });
                 item = this.displayItems[nextItemIndex];
               }
-              // found proper location for previously flagged hotel.
-              if (hotel && hotel.endDate.getHours() === i) {
-                item = hotel;
-                hotel = null;
-              } else {
-                nextItemIndex++;
-              }
-
-              var nextItemStartDate = item.startDate;
-              var nextItemMinutes = nextItemStartDate.getMinutes();
-
-              if (nextItemMinutes < 30) {
-                div = ":00";
-              } else {
-                div = ":30";
-              }
-
-              items.push({ data: item, div: div });
             }
 
             intervals.push(
