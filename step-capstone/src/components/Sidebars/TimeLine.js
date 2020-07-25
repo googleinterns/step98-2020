@@ -134,6 +134,7 @@ export default class TimeLine extends React.Component {
               item = this.displayItems[++nextItemIndex];
             }
 
+            // special case: no travel objects except for checkout for hotel
             if (hotel && this.displayItems.length === 1) {
               if (hotel.endDate.getHours() === i) {
                 items.push({ data: hotel, div: hotel.endDate.getMinutes() < 30 ? ":00" : ":30"})
