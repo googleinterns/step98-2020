@@ -1,143 +1,97 @@
 
- .offset {
-    position: absolute;
-    top: 120px;
-  }
-  
-  .outer {
-    width: 300px;
-    height: 100%;
-    position: fixed;
-    left: 0px;
-    top: 0px; 
-    overflow-y: scroll;
-  }
+.offset {
+  position: absolute;
+  top: 120px;
+}
 
-  .calendar__title {
-      width:100%;
-      display: flex; 
-      justify-content: center; 
-      align-items: center;
-  }
-  .duration {
-    flex: 1;
-  }
-  .gap {
-    align-self: flex-start; 
-    flex: 0 0 1;
-  }
-  
-  thead {
-    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
-    position: absolute;
-    top: 100px;
-  }
-  
-  thead th {
-    text-align: center;
-    width: 100%;
-  }
+.outer {
+  width: 300px;
+  height: 100%;
+  position: fixed;
+  left: 0px;
+  top: 0px; 
+  overflow-y: scroll;
+}
 
-
-  header {
-    background: #fff;
-    color: rgba(0, 0, 0, 0.7);
-    position: absolute;
-    left: 0px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.calendar__title {
+    width:100%;
+    display: flex; 
+    justify-content: center; 
     align-items: center;
-    z-index: 7;
-  }
-  
-  .header-name {
-    text-align: center;
-    padding-top: 7px;
-    padding-bottom: 0px;
-  }
+}
+.duration {
+  flex: 1;
+}
+.gap {
+  align-self: flex-start; 
+  flex: 0 0 1;
+}
 
-  header h1 {
-   font-size: 1rem;
-   text-align: center;
-   font-weight: normal;
-  }
+thead {
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 100px;
+}
 
-  table {
-    background: #fff;
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-  }
- 
-  .headcol {
-    width: 60px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.5);
-    padding-left: 10px;
-    text-align: center;
-    border: 0;
-    position: relative;
-    top: -12px;
-    border-bottom: 1px solid transparent;
-    font-family: "DINPro", "Helvetica Neue", sans-serif;
-  }
-  
-  thead {
-      position: absolute;
-      top: 69px;
-      z-index: 2;
-      background: white;
-      width: 100%;
-  }
+thead th {
+  text-align: center;
+  width: 100%;
+}
 
-  #finalized-header {
-    font-size: 1rem;
-    font-weight: bold;
-    color: rgba(0, 0, 0, 0.9);
-    padding: 1rem;
-    width: 100%;
-    background-color: #DB4437;
-  }
- 
-  tr, tr td {
-    height: 20px;
-  }
-  .OneHourInterval .Interval {
+
+header {
+  background: #fff;
+  color: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 7;
+}
+
+.header-name {
+  text-align: center;
+  padding-top: 7px;
+  padding-bottom: 0px;
+}
+
+header h1 {
+  font-size: 1rem;
+  text-align: center;
+  font-weight: normal;
+}
+
+table {
+  background: #fff;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.headcol {
+  width: 60px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  padding-left: 10px;
+  text-align: center;
+  border: 0;
+  position: relative;
+  top: -12px;
+  border-bottom: 1px solid transparent;
+  font-family: "DINPro", "Helvetica Neue", sans-serif;
+}
+
+thead {
     position: absolute;
-    left: 55px;
-    width: 228px;
-  }
-  .OneHourInterval .headcol {
-    width: 40px;
-  }
-  td {
-    text-align: center;
-  }
-  tr:nth-child(odd) td:not(.headcol) {
-    border-bottom: 1px solid #e8e8e8;
-  }
-  
-  tr:nth-child(even) td:not(.headcol) {
-    border-bottom: 1px solid #eee;
-  }
-  
-  tr td {
-    border-right: 1px solid #eee;
-    padding: 0;
-    white-space: none;
-    word-wrap: nowrap;
-  }
-  
-  tbody tr td {
-    position: relative;
-    vertical-align: top;
-    height: 40px;
-    padding: 0.28rem 0.28rem 0 0.28rem;
+    top: 69px;
+    z-index: 2;
+    background: white;
     width: 100%;
-  }
+}
 
   tbody {
     width: 100%;
@@ -241,4 +195,141 @@
   background-color: #DB4437;
   margin-bottom: 10px;
   overflow: hidden;
+}
+
+#finalized-header {
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.9);
+  padding: 1rem;
+  width: 100%;
+  background-color: #DB4437;
+}
+
+tr, tr td {
+  height: 20px;
+}
+.OneHourInterval .Interval {
+  position: absolute;
+  left: 55px;
+  width: 228px;
+}
+.OneHourInterval .headcol {
+  width: 40px;
+}
+td {
+  text-align: center;
+}
+tr:nth-child(odd) td:not(.headcol) {
+  border-bottom: 1px solid #e8e8e8;
+}
+
+tr:nth-child(even) td:not(.headcol) {
+  border-bottom: 1px solid #eee;
+}
+
+tr td {
+  border-right: 1px solid #eee;
+  padding: 0;
+  white-space: none;
+  word-wrap: nowrap;
+}
+
+tbody tr td {
+  position: relative;
+  vertical-align: top;
+  height: 40px;
+  padding: 0.28rem 0.28rem 0 0.28rem;
+  width: 100%;
+}
+
+tbody {
+  width: 100%;
+}
+
+.secondary {
+  color: rgba(0, 0, 0, 0.4);
+  align-self: flex-start; 
+  flex: 0 0 1;
+}
+
+.event {
+  color: white;
+  border-radius: 2px;
+  text-align: left;
+  font-size: 0.875rem;
+  overflow-x: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.event:hover {
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+.event.double {
+  border-style: solid;
+  border-width: 2px 2px 2px 2px;
+  border-color: white;
+}
+
+.event.double.flights {
+  background: #00B4FC;
+  padding: 0.5rem;
+}
+.event.double.hotels {
+  background: #DB4437;
+  padding: 0.5rem;
+}
+.event.double.events {
+  background: #0F9D58;
+  padding: 0.5rem;
+}
+
+
+.OneHourInterval .Interval:hover:after {
+  content: "+";
+  vertical-align: middle;
+  font-size: 1.875rem;
+  font-weight: 100;
+}
+
+tr td:nth-child(2), tr td:nth-child(3), .past {
+  background: #fafafa;
+} 
+
+.icon {
+  font-size: 1.5rem;
+  margin: 0 1rem;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+  top: 35px;
+}
+
+.icon:hover {
+  color: red;
+}
+.OneHourInterval {
+  width: 100% !important;
+}
+
+#top-buttons {
+  top: 2%;
+  left: 2%;
+  width:100%;
+  position: absolute;
+}
+
+.timeline .MuiFormControl-root {
+  border: 0;
+  margin: 0;
+  display: inline-flex;
+  padding: 0;
+  position: relative;
+  min-width: 0;
+  flex-direction: column;
+  vertical-align: top;
+  max-width: 141px;
+  left: 20px;
 }

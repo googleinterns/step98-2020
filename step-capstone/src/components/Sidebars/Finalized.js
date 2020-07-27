@@ -30,6 +30,7 @@ export default function Finalized(props) {
                 onOpenSuggestions={props.onOpenSuggestions}
                 startDate={props.startDate}
                 hotelMap={props.hotelMap}
+                travelObjects={props.travelObjects}
             />
         </div>
 

@@ -5,30 +5,30 @@ import {
     Slider,
     Typography
 } from "@material-ui/core"
+import moment from "moment"
 
 export default function FoodTimeForm(props) {
-    const MILLISECONDS_PER_MIN = 60000;
-    const [breakfastDuration, setBreakfastDuration] = useState(Math.floor(props.foodTimeRanges[0] / MILLISECONDS_PER_MIN));
-    const [lunchDuration, setLunchDuration] = useState(Math.floor(props.foodTimeRanges[1] / MILLISECONDS_PER_MIN));
-    const [dinnerDuration, setDinnerDuration] = useState(Math.floor(props.foodTimeRanges[2] / MILLISECONDS_PER_MIN));
+    const [breakfastDuration, setBreakfastDuration] = useState(moment.duration(props.foodTimeRanges[0]).asMinutes());
+    const [lunchDuration, setLunchDuration] = useState(moment.duration(props.foodTimeRanges[1]).asMinutes());
+    const [dinnerDuration, setDinnerDuration] = useState(moment.duration(props.foodTimeRanges[2]).asMinutes());
 
-    const handleBreakfastDurationChange = (event, hours) => {
-        setBreakfastDuration(hours);
+    const handleBreakfastDurationChange = (event, mins) => {
+        setBreakfastDuration(mins);
     }
 
-    const handleLunchDurationChange = (event, hours) => {
-        setLunchDuration(hours);
+    const handleLunchDurationChange = (event, mins) => {
+        setLunchDuration(mins);
     }
 
-    const handleDinnerDurationChange = (event, hours) => {
-        setDinnerDuration(hours);
+    const handleDinnerDurationChange = (event, mins) => {
+        setDinnerDuration(mins);
     }
 
     useEffect(() => {
         props.onChange([
-            breakfastDuration * MILLISECONDS_PER_MIN,
-            lunchDuration * MILLISECONDS_PER_MIN,
-            dinnerDuration * MILLISECONDS_PER_MIN
+            moment.duration(breakfastDuration, "minutes").asMilliseconds(),
+            moment.duration(lunchDuration, "minutes").asMilliseconds(),
+            moment.duration(dinnerDuration, "minutes").asMilliseconds(),
         ])
     }, [breakfastDuration, lunchDuration, dinnerDuration])
 

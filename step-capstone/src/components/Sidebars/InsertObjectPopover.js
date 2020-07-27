@@ -84,6 +84,7 @@ export default function InsertObjectPopover(props) {
               startDate={props.startDate}
               onAddItem={props.onAddItem}
               onClose={handleClose}
+              travelObjects={props.travelObjects}
             />
           </Box>
           <Box p={5}>
