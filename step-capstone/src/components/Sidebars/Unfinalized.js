@@ -33,9 +33,7 @@ function Header(props) {
       <Grid container direction='row' justify='space-around' id='top-buttons'>
         <div>
           {tripRedirect ? <Redirect to="/trips/" /> : ""}
-          <Button variant='outlined' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-            Menu
-                  </Button>
+          <Button variant='outlined' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>Menu</Button>
           <Menu
             id="trip-nav"
             anchorEl={anchorEl}
