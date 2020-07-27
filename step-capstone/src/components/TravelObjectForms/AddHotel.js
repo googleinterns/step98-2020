@@ -82,8 +82,8 @@ export default function AddHotel(props) {
       startDate: startDate,
       endDate: endDate,
       finalized: checked,
-      location: location ? location.address : null,
-      coordinates: location ? location.coordinates : null,
+      location: location ? location.address : "",
+      coordinates: location ? location.coordinates : "",
       description: description,
     });
     //validating input

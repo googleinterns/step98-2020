@@ -74,9 +74,25 @@ export default class TimeLine extends React.Component {
   getIntervals() {
     let intervals = [];
     if (this.props.displayDate !== undefined) {
-      this.date2Items = new Map();
+      this.startOfDisplayDate = this.date2Items = new Map();
       this.displayItems = [];
       this.emptySlots = [];
+      this.startOfDisplayDate = new Date(
+        this.props.displayDate.getFullYear(),
+        this.props.displayDate.getMonth(),
+        this.props.displayDate.getDate(),
+        0,
+        0,
+        0
+      );
+      this.endOfDisplayDate = new Date(
+        this.props.displayDate.getFullYear(),
+        this.props.displayDate.getMonth(),
+        this.props.displayDate.getDate(),
+        23,
+        59,
+        59
+      );
       this.separateDates();
       this.displayItems = this.date2Items.has(
         this.props.displayDate.toDateString()
@@ -120,6 +136,7 @@ export default class TimeLine extends React.Component {
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
                 startDate={this.props.startDate}
+                travelObjects={this.props.travelObjects}
               />
             );
           } else {
@@ -181,6 +198,7 @@ export default class TimeLine extends React.Component {
                 onClickTimeslot={this.props.onClickTimeslot}
                 onOpenSuggestions={this.props.onOpenSuggestions}
                 startDate={this.props.startDate}
+                travelObjects={this.props.travelObjects}
               />
             );
           }
@@ -200,6 +218,7 @@ export default class TimeLine extends React.Component {
               onClickTimeslot={this.props.onClickTimeslot}
               onOpenSuggestions={this.props.onOpenSuggestions}
               startDate={this.props.startDate}
+              travelObjects={this.props.travelObjects}
             />
           );
         }

@@ -267,13 +267,15 @@ export default class Trip extends React.Component {
                         show={this.state.showSuggestions}
                         service={this.state.service}
                         userPref={this.state.tripSetting.userPref}
-                        coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                        coordinates={(this.state.selectedTimeslot && this.state.selectedTimeslot.coordinates) ?
+                          this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
                         radius={this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
+                        travelObjects={this.state.items}
                     />
                 </Grid>
             )
@@ -294,7 +296,7 @@ export default class Trip extends React.Component {
                         zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
                         selected={this.state.selectedObject}
                         displayDate={this.state.today}
                         setMap={this.setMap}
@@ -314,6 +316,7 @@ export default class Trip extends React.Component {
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
                             hotelMap={this.state.date2HotelMap}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -325,6 +328,7 @@ export default class Trip extends React.Component {
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
                             onClickObject={this.handleSelectedObject}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                 </Grid>
@@ -337,8 +341,9 @@ export default class Trip extends React.Component {
                     </Box>
                     <Box>
                         <AddItemButton
-                            startDate={this.state.tripSetting.startDate}
+                            startDate={new Date(this.state.today.date)}
                             onAddItem={this.handleAddItem}
+                            travelObjects={this.state.items}
                         />
                     </Box>
                 </Grid>

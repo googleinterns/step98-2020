@@ -1,13 +1,14 @@
+
 export const travelObjectStartDateComparator = (travelObjectA, travelObjectB) => {
-    if (travelObjectA.startDate === travelObjectB.startDate) {
-      return 0;
-    }
-    else if (travelObjectA.startDate > travelObjectB.startDate) {
-      return 1;
-    }
-    else {
-      return -1;
-    }
+  if (travelObjectA.startDate === travelObjectB.startDate) {
+    return 0;
+  }
+  else if (travelObjectA.startDate > travelObjectB.startDate) {
+    return 1;
+  }
+  else {
+    return -1;
+  }
 }
 
 /*Given 2 Date objects, return true if they have the same date; return false otherwise */
@@ -21,20 +22,40 @@ export const isValid = function (date) {
   return date.getTime() === date.getTime();
 };
 
-export const fetchPhoto = function(placeId, service) {
+export const fetchPhoto = function (placeId, service) {
   let request = {
     placeId: placeId,
-    fields : ["photos"]
+    fields: ["photos"]
   }
   return new Promise((res) => {
     service.getDetails(
       request, (results, status) => {
         if (status === window.google.maps.places.PlacesServiceStatus.OK) {
           let url = results.photos[0].getUrl();
-          res(url); 
+          res(url);
         }
       }
     )
   })
 }
 
+//returns true if there is a conflict, false otherwise
+export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
+  var foundConflict = false;
+  travelObjects.forEach((travelObject) => {
+    if(travelObject.finalized && id!==travelObject.id){
+      if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
+        foundConflict = true;
+      }
+    }
+  });
+  return foundConflict;
+}
+
+export const overlaps = (startTimeA, endTimeA, startTimeB, endTimeB) => {
+  if ((startTimeA < endTimeB) && (endTimeA > startTimeB)) {
+    return true;
+  } else {
+    return false;
+  }
+}
