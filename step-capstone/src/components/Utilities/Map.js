@@ -1,9 +1,8 @@
 import React, { createRef } from 'react'
 import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
-import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
-import MapIcon from '@material-ui/icons/Map';
-import TodayIcon from '@material-ui/icons/Today';
-import { Typography } from '@material-ui/core';
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import ZoomOutIcon from '@material-ui/icons/ZoomOut';
+import { Box, Fab } from "@material-ui/core"
 
 const MARKER_ZOOM = 15;
 const CENTER_ZOOM = 12;
@@ -150,7 +149,7 @@ class MapComponent extends React.Component {
       icon: { url: iconUrl }
     })
 
-    const infowindow = new window.google.maps.InfoWindow({content: content})
+    const infowindow = new window.google.maps.InfoWindow({ content: content })
 
     // zoom to marker when clicked
     newMarker.addListener('click', () => {
