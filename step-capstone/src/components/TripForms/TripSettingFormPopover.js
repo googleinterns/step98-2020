@@ -123,7 +123,7 @@ function EditTripSetting(props) {
     }
 
     useEffect(() => {
-        let newMap = new window.google.maps.Map(window.document.getElementById("map"))
+        let newMap = new window.google.maps.Map(window.document.getElementById("trip-setting-map"))
         setMap(newMap);
         setService(new window.google.maps.places.PlacesService(newMap));
     }, [])
@@ -144,7 +144,7 @@ function EditTripSetting(props) {
 
     return (
         <div>
-            <div id="map"></div>
+            <div id="trip-setting-map"></div>
             <Grid container direction="column">
                 <Grid>
                     <Typography variant={"h4"} gutterBottom>Trip Settings</Typography>
