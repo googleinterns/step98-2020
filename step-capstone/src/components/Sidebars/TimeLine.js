@@ -2,9 +2,14 @@ import React from "react";
 import FinalizedHeader from "../Sidebars/FinalizedHeader";
 import "../../styles/TimeLine.css";
 import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
-import { getEmptySlots, handleClickedTimePoint } from "./HandleClickedTimePoint";
+import {
+  getEmptySlots,
+  handleClickedTimePoint,
+} from "./HandleClickedTimePoint";
 import { sameDate } from "../../scripts/HelperFunctions";
 import OneHourInterval from "./OneHourInterval";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default class TimeLine extends React.Component {
   constructor(props) {
@@ -59,7 +64,13 @@ export default class TimeLine extends React.Component {
   handleOnClickInterval(idV) {
     idV = idV.length < 5 ? "0" + idV : idV;
 
-    return handleClickedTimePoint(idV, this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel, this.emptySlots)
+    return handleClickedTimePoint(
+      idV,
+      this.startOfDisplayDate,
+      this.endOfDisplayDate,
+      this.displayItemsExcludeHotel,
+      this.emptySlots
+    );
   }
 
   /* Handling rendering starts HERE */
@@ -79,13 +90,18 @@ export default class TimeLine extends React.Component {
         this.displayItems,
         this.props.displayDate.toDateString()
       );
-      
 
       this.displayItems.sort(travelObjectStartDateComparator);
-      this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
-      
-      this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
-    
+      this.displayItemsExcludeHotel = this.displayItems.filter(
+        (item) => item.type !== "hotel"
+      );
+
+      this.emptySlots = getEmptySlots(
+        this.startOfDisplayDate,
+        this.endOfDisplayDate,
+        this.displayItemsExcludeHotel
+      );
+
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
         if (nextItemIndex < this.displayItems.length) {
@@ -185,12 +201,14 @@ export default class TimeLine extends React.Component {
           onChangeDisplayDate={this.props.onChangeDisplayDate}
         />
         <div className="outer">
-          <table className="offset">
-            <tbody>
-              <tr></tr>
-              <div id="intervals">{this.getIntervals()}</div>
-            </tbody>
-          </table>
+          <DndProvider backend={HTML5Backend}>
+            <table className="offset">
+              <tbody>
+                <tr></tr>
+                <div id="intervals">{this.getIntervals()}</div>
+              </tbody>
+            </table>
+          </DndProvider>
         </div>
       </div>
     );

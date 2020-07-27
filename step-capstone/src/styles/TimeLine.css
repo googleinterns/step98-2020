@@ -183,7 +183,6 @@
   
   
   .OneHourInterval .Interval:hover:after {
-    content: "+";
     vertical-align: middle;
     font-size: 1.875rem;
     font-weight: 100;
