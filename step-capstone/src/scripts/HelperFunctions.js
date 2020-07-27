@@ -43,8 +43,6 @@ export const fetchPhoto = function (placeId, service) {
 export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
   var foundConflict = false;
   travelObjects.forEach((travelObject) => {
-    console.log("editing id", id)
-    console.log("travelobj", travelObject.id)
     if(travelObject.finalized && id!==travelObject.id){
       if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
         foundConflict = true;
