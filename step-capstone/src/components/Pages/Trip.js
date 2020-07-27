@@ -291,7 +291,6 @@ export default class Trip extends React.Component {
             <div className="trip">
                 <Grid id="map-component">
                     <MapComponent
-                        zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}

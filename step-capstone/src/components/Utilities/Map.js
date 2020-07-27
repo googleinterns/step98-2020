@@ -1,11 +1,8 @@
 import React, { createRef } from 'react'
-import { travelObjectStartDateComparator, sameTravelObjectList } from "../../scripts/HelperFunctions"
+import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
 
-/**
- * Props:
- * zoom : 13 - higher the number, the more zoomed the map is on center
- * center: {lat:0.0, lng:0.0} - coordinates for center of map
- */
+const MARKER_ZOOM = 15;
+const CENTER_ZOOM = 12;
 
 class MapComponent extends React.Component {
   constructor(props) {
@@ -47,6 +44,8 @@ class MapComponent extends React.Component {
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
     } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
+      console.log(!sameTravelObjectList(prevProps.finalized, this.props.finalized))
+      console.log("changed props")
       this.clearMap();
       let bounds = this.drawMap();
       if (this.props.displayDate.events.length === 0) {
@@ -62,12 +61,12 @@ class MapComponent extends React.Component {
   }
 
   zoomToDefaultCoordinates() {
-    this.googleMap.setZoom(15);
+    this.googleMap.setZoom(CENTER_ZOOM);
     this.googleMap.setCenter(this.props.defaultCenter);
   }
 
   zoomToMarker(marker) {
-    this.googleMap.setZoom(25);
+    this.googleMap.setZoom(MARKER_ZOOM);
     this.googleMap.setCenter(marker.getPosition());
   }
 
@@ -83,13 +82,9 @@ class MapComponent extends React.Component {
     return bounds;
   }
 
-  sortList(list) {
-    return list.sort(travelObjectStartDateComparator)
-  }
-
   createMap() {
     return new window.google.maps.Map(this.googleMapRef.current, {
-      zoom: this.props.zoom,
+      zoom: CENTER_ZOOM,
       center: this.props.defaultCenter
     })
   }
@@ -98,7 +93,7 @@ class MapComponent extends React.Component {
     var bounds = new window.google.maps.LatLngBounds();
 
     let unfinalizedMarkers = this.drawMarkers(this.props.unfinalized, bounds);
-    let finalizedMarkers = this.drawMarkers(this.sortList(this.props.finalized), bounds);
+    let finalizedMarkers = this.drawMarkers(sortTravelObjectsByDate(this.props.finalized), bounds);
 
     let pathArr = this.drawPaths();
 
@@ -156,7 +151,7 @@ class MapComponent extends React.Component {
 
     // zoom to marker when clicked
     newMarker.addListener('click', () => {
-      this.googleMap.setZoom(15);
+      this.googleMap.setZoom(MARKER_ZOOM);
       this.googleMap.setCenter(newMarker.getPosition());
     });
 
