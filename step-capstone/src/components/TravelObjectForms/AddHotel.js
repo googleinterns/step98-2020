@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid, AutoCapitalize } from "../../scripts/HelperFunctions";
+import { isValid, AutoCapitalize, sameDate } from "../../scripts/HelperFunctions";
 
 export default function AddHotel(props) {
   let overwriting = props.data !== undefined;

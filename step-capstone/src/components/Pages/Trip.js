@@ -218,7 +218,7 @@ export default class Trip extends React.Component {
     }
 
     handleChangeDisplayDate(travelObjects, date) {
-        if (!sameTravelObjectList(travelObjects, this.state.today.events)) {
+        if (!sameTravelObjectList(travelObjects, this.state.today.events) || this.state.today.date !== date) {
             this.setState({
                 today: {
                     events: travelObjects,
@@ -289,6 +289,7 @@ export default class Trip extends React.Component {
         if (!this.state.items || !this.state.tripSetting) {
             return null;
         }
+        console.log(this.state.today.date)
         return (
             <div className="trip">
                 <Grid id="map-component">
