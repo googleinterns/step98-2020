@@ -79,3 +79,11 @@ const equalsTravelObject = function (obj1, obj2) {
   return true;
 }
 
+export const AutoCapitalize = function(string) {
+  let words = string.split(" ");
+  return words.reduce((title, word) => {
+    title += word.charAt(0).toUpperCase() + word.substring(1) + " ";
+    return title;
+  }, "")
+}
+

@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid } from "../../scripts/HelperFunctions";
+import { isValid, AutoCapitalize } from "../../scripts/HelperFunctions";
 
 export default function AddFlight(props) {
   let overwriting = props.data !== undefined;
@@ -86,8 +86,8 @@ export default function AddFlight(props) {
       type: "flight",
       startDate: startDate,
       endDate: endDate,
-      departureAirport: departureAirport ? departureAirport.address : null,
-      arrivalAirport: arrivalAirport ? arrivalAirport.address : null,
+      departureAirport: departureAirport ? AutoCapitalize(departureAirport.address) : null,
+      arrivalAirport: arrivalAirport ? AutoCapitalize(arrivalAirport.address) : null,
       departureCoordinates: departureAirport
         ? departureAirport.coordinates
         : null,
