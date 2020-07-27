@@ -20,7 +20,6 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
-    console.log("mounting")
     this.googleMap = this.createMap();
 
     if (this.props.finalized.length > 0 || this.props.unfinalized > 0) {
@@ -64,6 +63,7 @@ class MapComponent extends React.Component {
   }
 
   zoomToDefaultCoordinates() {
+    console.log("zooming")
     this.googleMap.setZoom(CENTER_ZOOM);
     this.googleMap.setCenter(this.props.defaultCenter);
   }
