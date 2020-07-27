@@ -13,6 +13,9 @@ export default function AddItemButton(props) {
 
     const handleClose = () => {
         setAnchorEl(null);
+        if (props.onClose !== undefined) {
+            props.onClose();
+        }
     };
 
     const open = Boolean(anchorEl);
@@ -22,7 +25,7 @@ export default function AddItemButton(props) {
                 <AddIcon />
             </Fab>
             <FormPopover
-                data={undefined}
+                data={props.data}
                 isNewItem = {true}
                 startDate={props.startDate}
                 open={open}

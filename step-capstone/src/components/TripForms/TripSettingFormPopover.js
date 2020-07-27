@@ -17,6 +17,7 @@ import {
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import "../../styles/TripSetting.css"
+import { fetchPhoto } from "../../scripts/HelperFunctions"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -60,8 +61,6 @@ export default class TripSettingFormPopover extends React.Component {
                             tripSetting={this.props.tripSetting}
                             onValidation={this.handleValidation}
                             onDataChange={this.handleDataChange}
-                            onFetchPhoto = {this.props.onFetchPhoto}
-                            
                         />
                     </CardContent>
                     <CardActions>
@@ -75,6 +74,9 @@ export default class TripSettingFormPopover extends React.Component {
 }
 
 function EditTripSetting(props) {
+    const [map, setMap] = useState(null);
+    const [service, setService] = useState(null);
+
     // Sets values to previous values if editing, otherwise blank slate
     const [title, setTitle] = useState(props.tripSetting.title);
     const [destination, setDestination] = useState(props.tripSetting.destination);
@@ -90,9 +92,11 @@ function EditTripSetting(props) {
 
     const handleDestinationChange = (location) => {
         setDestination(location);
-        props.onFetchPhoto(location.placeId).then((url) => {
+        if(location!==null){
+          fetchPhoto(location.placeId, service).then((url) => {
             setPhotoUrl(url);
-        })
+          })
+        }
     }
 
     const handleStartDateChange = (newStartDate) => {
@@ -119,6 +123,12 @@ function EditTripSetting(props) {
     }
 
     useEffect(() => {
+        let newMap = new window.google.maps.Map(window.document.getElementById("map"))
+        setMap(newMap);
+        setService(new window.google.maps.places.PlacesService(newMap));
+    }, [])
+
+    useEffect(() => {
         props.onDataChange({
             title: title,
             destination: destination,
@@ -130,10 +140,11 @@ function EditTripSetting(props) {
         })
         // notifies form if necessary inputs are present
         props.onValidation(!(!destination || (title === "")))
-    }, [destination, startDate, endDate, description, userPref])
+    }, [destination, startDate, endDate, description, userPref, photoUrl])
 
     return (
         <div >
+            <div id="map"></div>
             <Grid container direction="column">
                 <Grid>
                     <Typography variant={"h4"} gutterBottom>Trip Settings</Typography>

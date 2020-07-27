@@ -19,7 +19,7 @@ export default class ItemForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isNewItem: props.data === undefined,
+      isNewItem: props.isNewItem,
       value: 0,
       data: props.data,
       isValidated: false,
@@ -32,7 +32,7 @@ export default class ItemForm extends React.Component {
   }
 
   renderDeleteButton() {
-    return this.props.data === undefined ? null : (
+    return this.props.isNewItem ? null : (
       <Button
         onClick={() => this.props.onRemoveItem(this.state.data)}
         color="primary"
@@ -51,9 +51,21 @@ export default class ItemForm extends React.Component {
     });
   }
 
+  /* Mimic Google Calendar's behavior: when user edits the newStartDate to be bigger than the current endDate,
+    this function will automatically reset the endDate to be bigger than the newStartDate by the same duration as before editing.
+    This behavior happens during editing, so the user can never submit an invalid time range.
+    */
+   handleStartDateChange(newData) {
+    if (this.state.data.endDate <= newData.startDate) {
+        var newEndDate = new Date(newData.startDate);
+        newEndDate.setTime(newData.startDate.getTime() + this.state.data.endDate.getTime() - this.state.data.startDate.getTime());
+        newData.endDate = newEndDate;
+    }
+}
+
   /* Mimic Google Calendar's behavior: when user edits the newEndDate to be smaller than the current startDate,
-    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editting.
-    This behavior happends during editting, so the user can never submit an invalid time range. 
+    this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editing.
+    This behavior happens during editing, so the user can never submit an invalid time range. 
     */
   handleEndDateChange(newData) {
     if (this.state.data.startDate >= newData.endDate) {
@@ -129,7 +141,7 @@ export default class ItemForm extends React.Component {
     }
   }
 
-  handleSave() {
+  handleSave(event) {
     // Doesn't save data if improper input --> doesn't close popover which shows error
     if (!this.state.isValidated) {
       return;
