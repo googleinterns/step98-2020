@@ -95,7 +95,7 @@ export default class TimeLine extends React.Component {
       this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
 
       var nextItemIndex = 0;
-      var hotel = null; // flags hotel until finds right place to palce in timeline
+      var hotel = null; // flags hotel until finds right place in timeline
 
       for (var i = 0; i < 24; i++) {
         // if there are still travel objects that haven't been rendered
