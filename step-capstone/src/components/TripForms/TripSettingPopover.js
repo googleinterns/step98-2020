@@ -1,5 +1,5 @@
 import React from 'react';
-import { Backdrop, Button, makeStyles, Modal, DialogContent } from '@material-ui/core';
+import { Backdrop, Button, makeStyles, Modal, Dialog } from '@material-ui/core';
 import TripSettingFormPopover from './TripSettingFormPopover';
 import AddIcon from '@material-ui/icons/Add';
 import "../../styles/TripSetting.css"
@@ -43,7 +43,7 @@ export default function TripSettingPopover(props) {
       /> : null}
 
       <Backdrop className={classes.backdrop} open={openBackDrop}></Backdrop>
-      <Modal
+      <Dialog
         open={open}
         onClose={handleClose}
         style={{alignItems: "center", justifyContent: "center", display: "flex"}}
@@ -53,7 +53,7 @@ export default function TripSettingPopover(props) {
           tripSetting={props.tripSetting}
           onEditTripSetting={props.onEditTripSetting}
         />
-      </Modal>
+      </Dialog>
     </div>
   );
 }
