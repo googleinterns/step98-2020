@@ -38,7 +38,7 @@ class MapComponent extends React.Component {
 
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
       this.zoomToMarker(marker);
-    } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events)) {
+    } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events) && this.props.displayDate.events.length !== 0) {
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
@@ -46,9 +46,11 @@ class MapComponent extends React.Component {
       this.clearMap();
       let bounds = this.drawMap();
       if (this.props.displayDate.events.length === 0) {
+        // if there are no travel objects, set map to default trip location
         if (this.props.finalized.length == 0 && this.props.unfinalized.length == 0) {
           this.zoomToDefaultCoordinates();
         } else {
+          // no finalized events for current display date, set bounds to encompass all markers
           this.googleMap.fitBounds(bounds);
         }
       } else {
