@@ -1,8 +1,5 @@
 import React, { createRef } from 'react'
 import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
-import ZoomOutIcon from '@material-ui/icons/ZoomOut';
-import { Box, Fab } from "@material-ui/core"
 
 const MARKER_ZOOM = 15;
 const CENTER_ZOOM = 12;
