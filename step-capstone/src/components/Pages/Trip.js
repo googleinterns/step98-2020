@@ -272,7 +272,7 @@ export default class Trip extends React.Component {
                     </Box>
                     <Box>
                         <AddItemButton
-                            startDate={this.state.tripSetting.startDate}
+                            startDate={new Date(this.state.today.date)}
                             onAddItem={this.handleAddItem}
                             travelObjects={this.state.items}
                         />
