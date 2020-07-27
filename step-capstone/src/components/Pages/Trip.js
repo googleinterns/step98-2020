@@ -61,6 +61,7 @@ export default class Trip extends React.Component {
                 })
 
                 trip.travelObjects.forEach(travelObject => {
+                    console.log(travelObject)
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
                     travelObjectList.push(travelObject)
@@ -237,7 +238,7 @@ export default class Trip extends React.Component {
                         zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
                         selected={this.state.selectedObject}
                         displayDate={this.state.today}
                         setMap={this.setMap}
