@@ -44,9 +44,8 @@ export default function DraggableTravelObject(props) {
       ref={dragRef}
       style={{
         position: "absolute",
-        background: "red",
         width: "100%",
-        height: props.styleConfig.height,
+        height: "30px",
         top: props.styleConfig.top,
         opacity,
         zIndex: props.styleConfig.zIndex,
