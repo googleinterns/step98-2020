@@ -51,7 +51,7 @@ export default class Trip extends React.Component {
             placeIds: new Set(),
             showSuggestions: false,
             selectedTimeslot: null,
-            hotelMap: new Map()
+            date2HotelMap: new Map()
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -87,7 +87,7 @@ export default class Trip extends React.Component {
                     travelObjectList.push(travelObject);
                     placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList, placeIds: placeIds, hotelMap: this.getHotelMap(trip.travelObjects) });
+                this.setState({ items: travelObjectList, placeIds: placeIds, date2HotelMap: this.getHotelMap(trip.travelObjects) });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
@@ -121,11 +121,11 @@ export default class Trip extends React.Component {
                     placeIdCopy.delete(data.placeId);
                 }
                 let items = this.state.items.filter((item) => item.id !== data.id)
-                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.hotelMap;
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
                 this.setState({
                     items: items,
                     placeIds: placeIdCopy,
-                    hotelMap: hotelMap
+                    date2HotelMap: hotelMap
                 });
             })
             .catch(error => {
@@ -152,11 +152,11 @@ export default class Trip extends React.Component {
         });
         this.context.editTravelObject(this.state.reference, itemToChange, _.cloneDeep(data))
             .then(() => {
-                let hotelMap = itemToChange.type === "hotel" ? this.getHotelMap(newItems) : this.state.hotelMap;
+                let hotelMap = itemToChange.type === "hotel" ? this.getHotelMap(newItems) : this.state.date2HotelMap;
                 this.setState({
                     items: newItems,
                     placeIds: newPlaceIds,
-                    hotelMap: hotelMap
+                    date2HotelMap: hotelMap
                 });
             })
             .catch((error) => {
@@ -197,8 +197,8 @@ export default class Trip extends React.Component {
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
                 let items = this.state.items.concat(data);
-                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.hotelMap;
-                this.setState({ items: items, placeIds: newPlaceIds, hotelMap: hotelMap });
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
+                this.setState({ items: items, placeIds: newPlaceIds, date2HotelMap: hotelMap });
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -313,7 +313,7 @@ export default class Trip extends React.Component {
                             setTodaysEvents={this.handleChangeDisplayDate}
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
-                            hotelMap={this.state.hotelMap}
+                            hotelMap={this.state.date2HotelMap}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
