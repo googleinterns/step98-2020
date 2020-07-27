@@ -66,8 +66,7 @@ export default class TimeLine extends React.Component {
   getIntervals() {
     let intervals = [];
     if (this.props.displayDate !== undefined) {
-      this.startOfDisplayDate = 
-      this.date2Items = new Map();
+      this.startOfDisplayDate = this.date2Items = new Map();
       this.displayItems = [];
       this.emptySlots = [];
       this.startOfDisplayDate = new Date(
@@ -96,13 +95,13 @@ export default class TimeLine extends React.Component {
         this.displayItems,
         this.props.displayDate.toDateString()
       );
-      
+
 
       this.displayItems.sort(travelObjectStartDateComparator);
       this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
-      
+
       this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
-    
+
       var nextItemIndex = 0;
       for (var i = 0; i < 24; i++) {
         if (nextItemIndex < this.displayItems.length) {

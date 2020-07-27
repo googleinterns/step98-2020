@@ -242,7 +242,8 @@ export default class Trip extends React.Component {
                         show={this.state.showSuggestions}
                         service={this.state.service}
                         userPref={this.state.tripSetting.userPref}
-                        coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                        coordinates={(this.state.selectedTimeslot && this.state.selectedTimeslot.coordinates) ?
+                          this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
                         radius={this.state.tripSetting.userPref.radius}
