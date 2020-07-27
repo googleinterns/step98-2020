@@ -146,7 +146,7 @@ export default class TimeLine extends React.Component {
                   this.displayItems[nextItemIndex].startDate.getHours() === i) || (hotel && hotel.endDate.getHours() === i)
               ) {
                 // found proper location for previously flagged hotel.
-                if (hotel && hotel.endDate.getHours() === i) {
+                if (hotel && hotel.endDate.getHours() === i && travelObjectStartDateComparator(hotel, this.displayItems[nextItemIndex]) < 0) {
                   item = hotel;
                   hotel = null;
                 } else {
