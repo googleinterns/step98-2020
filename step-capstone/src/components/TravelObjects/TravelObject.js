@@ -58,6 +58,7 @@ export default function TravelObject(props) {
                     onAddItem={props.onAddItem}
                     onEditItem={props.onEditItem}
                     onRemoveItem={props.onRemoveItem}
+                    travelObjects={props.travelObjects}
                 />
         </div>
 

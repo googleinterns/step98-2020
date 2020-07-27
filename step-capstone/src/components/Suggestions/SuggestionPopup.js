@@ -123,6 +123,7 @@ export default class SuggestionPopup extends React.Component {
                     endDate: this.props.timeRange[1]
                 }}
                 onAddItem={this.props.onAddItem}
+                travelObjects={this.props.travelObjects}
             />
         )
     }

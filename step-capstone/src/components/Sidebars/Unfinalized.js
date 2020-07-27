@@ -81,6 +81,7 @@ export default class Unfinalized extends React.Component {
                 onAddItem={this.props.onAddItem}
                 styleConfig={{ position: "relative", top: "1px" }}
                 onClickObject={this.props.onClickObject}
+                travelObjects={this.props.travelObjects}
               />
             })
           }

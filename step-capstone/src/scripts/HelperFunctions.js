@@ -1,3 +1,4 @@
+
 export const travelObjectStartDateComparator = (travelObjectA, travelObjectB) => {
   if (travelObjectA.startDate === travelObjectB.startDate) {
     return 0;
@@ -79,3 +80,23 @@ const equalsTravelObject = function (obj1, obj2) {
   return true;
 }
 
+//returns true if there is a conflict, false otherwise
+export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
+  var foundConflict = false;
+  travelObjects.forEach((travelObject) => {
+    if(travelObject.finalized && id!==travelObject.id){
+      if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
+        foundConflict = true;
+      }
+    }
+  });
+  return foundConflict;
+}
+
+export const overlaps = (startTimeA, endTimeA, startTimeB, endTimeB) => {
+  if ((startTimeA < endTimeB) && (endTimeA > startTimeB)) {
+    return true;
+  } else {
+    return false;
+  }
+}

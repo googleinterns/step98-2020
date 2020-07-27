@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid } from "../../scripts/HelperFunctions";
+import { isValid, hasTimeConflict } from "../../scripts/HelperFunctions";
 
 export default function AddFlight(props) {
   let overwriting = props.data !== undefined;
@@ -102,7 +102,8 @@ export default function AddFlight(props) {
         (departureAirport === null || departureAirport.address === "") ||
         (arrivalAirport === null || arrivalAirport.addresss === "") ||
         !isValid(startDate) ||
-        !isValid(endDate)
+        !isValid(endDate) ||
+        (checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects))
       )
     );
   }, [
@@ -155,6 +156,8 @@ export default function AddFlight(props) {
             label="Departure"
             value={startDate}
             onChange={setStartDate}
+            error={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects)}
+            helperText={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects) ? "You already have something scheduled for that time" : ""}
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -163,6 +166,8 @@ export default function AddFlight(props) {
             label="Arrival"
             value={endDate}
             onChange={setEndDate}
+            error={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects)}
+            helperText={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects) ? "You already have something scheduled for that time" : ""}
           />
         </MuiPickersUtilsProvider>
       </Grid>
