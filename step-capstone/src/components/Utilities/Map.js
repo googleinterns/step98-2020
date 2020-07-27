@@ -1,5 +1,5 @@
 import React, { createRef } from 'react'
-import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions"
+import { travelObjectStartDateComparator, sameTravelObjectList } from "../../scripts/HelperFunctions"
 
 /**
  * Props:
@@ -46,7 +46,7 @@ class MapComponent extends React.Component {
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
-    } else if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
+    } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
       this.clearMap();
       let bounds = this.drawMap();
       if (this.props.displayDate.events.length === 0) {
