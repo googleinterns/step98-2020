@@ -10,7 +10,7 @@ import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
-import FoodTimeForm from '../Utilities/FoodTimeForm';
+import { sameDate } from "../../scripts/HelperFunctions"
 
 // TODO: Implement code with form
 // getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
@@ -47,11 +47,11 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-
             queryResults: null,
             placeIds: new Set(),
             showSuggestions: false,
-            selectedTimeslot: null
+            selectedTimeslot: null,
+            date2HotelMap: new Map()
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -81,19 +81,36 @@ export default class Trip extends React.Component {
                         userPref: trip.userPref,
                     }
                 })
-
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
-                    travelObjectList.push(travelObject)
+                    travelObjectList.push(travelObject);
                     placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList, placeIds: placeIds });
+                this.setState({ items: travelObjectList, placeIds: placeIds, date2HotelMap: this.getHotelMap(trip.travelObjects) });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
                 console.error(error);
             });
+    }
+
+    getHotelMap(items) {
+        var hotelMap = new Map(); // Map date to morning and night hotel
+        items.forEach(travelObject => {
+            if (travelObject.type === "hotel") {
+                hotelMap.set(travelObject.startDate.toDateString(), { nightHotel: travelObject })
+                var curDate = new Date(travelObject.startDate);
+                curDate.setDate(curDate.getDate() + 1);
+                while (!sameDate(curDate, travelObject.endDate)) {
+                    hotelMap.set(curDate.toDateString(), { morningHotel: travelObject, nightHotel: travelObject });
+                    curDate.setDate(curDate.getDate() + 1);
+
+                }
+                hotelMap.set(travelObject.endDate.toDateString(), { morningHotel: travelObject })
+            }
+        })
+        return hotelMap;
     }
 
     handleRemoveItem(data) {
@@ -103,9 +120,12 @@ export default class Trip extends React.Component {
                 if (data.type !== "flight") {
                     placeIdCopy.delete(data.placeId);
                 }
+                let items = this.state.items.filter((item) => item.id !== data.id)
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
                 this.setState({
-                    items: this.state.items.filter((item) => item.id !== data.id),
-                    placeIds: placeIdCopy
+                    items: items,
+                    placeIds: placeIdCopy,
+                    date2HotelMap: hotelMap
                 });
             })
             .catch(error => {
@@ -132,9 +152,11 @@ export default class Trip extends React.Component {
         });
         this.context.editTravelObject(this.state.reference, itemToChange, _.cloneDeep(data))
             .then(() => {
+                let hotelMap = itemToChange.type === "hotel" ? this.getHotelMap(newItems) : this.state.date2HotelMap;
                 this.setState({
                     items: newItems,
-                    placeIds: newPlaceIds
+                    placeIds: newPlaceIds,
+                    date2HotelMap: hotelMap
                 });
             })
             .catch((error) => {
@@ -174,7 +196,9 @@ export default class Trip extends React.Component {
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
-                this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
+                let items = this.state.items.concat(data);
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
+                this.setState({ items: items, placeIds: newPlaceIds, date2HotelMap: hotelMap });
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -291,6 +315,7 @@ export default class Trip extends React.Component {
                             setTodaysEvents={this.handleChangeDisplayDate}
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
+                            hotelMap={this.state.date2HotelMap}
                             travelObjects={this.state.items}
                         />
                     </Grid>

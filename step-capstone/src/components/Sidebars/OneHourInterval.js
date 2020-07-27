@@ -86,7 +86,7 @@ export default function OneHourInterval(props) {
             top: top.toString() + "px",
             height: height.toString() + "px",
             width: "216px",
-            overflowY: "scroll",
+            overflowY: "auto",
             position: "absolute",
             zIndex: props.zIndex.toString(),
           }}
