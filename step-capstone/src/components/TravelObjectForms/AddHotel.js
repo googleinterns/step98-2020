@@ -86,13 +86,13 @@ export default function AddHotel(props) {
       coordinates: location ? location.coordinates : null,
       description: description,
     });
-
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
+      
     } else if (checked && (location===null||location.address==="")) {
       props.onToggleValidation(false);
-    } else if (!isValid(startDate) || !isValid(endDate)) {
+    } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
       props.onToggleValidation(false);
     } else {
       props.onToggleValidation(true);
