@@ -40,30 +40,28 @@ class MapComponent extends React.Component {
         : this.state.unfinalizedMarkers.get(this.props.selected);
 
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
+
       this.zoomToMarker(marker);
     } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events) && this.props.displayDate.events.length !== 0) {
+      // if changes to current day's events and isn't empty, zoom to todays events
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
     } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
+      // any other changes to finalized or unfinalized zoom out to encompass all markers.
       this.clearMap();
       let bounds = this.drawMap();
-      if (this.props.displayDate.events.length === 0) {
-        // if there are no travel objects, set map to default trip location
-        if (this.props.finalized.length == 0 && this.props.unfinalized.length == 0) {
-          this.zoomToDefaultCoordinates();
-        } else {
-          // no finalized events for current display date, set bounds to encompass all markers
-          this.googleMap.fitBounds(bounds);
-        }
+      // if there are no travel objects, set map to default trip location
+      if (this.props.finalized.length == 0 && this.props.unfinalized.length == 0) {
+        this.zoomToDefaultCoordinates();
       } else {
-        this.googleMap.fitBounds(this.getTodaysBounds());
+        // no finalized events for current display date, set bounds to encompass all markers
+        this.googleMap.fitBounds(bounds);
       }
     }
   }
 
   zoomToDefaultCoordinates() {
-    console.log("zooming")
     this.googleMap.setZoom(CENTER_ZOOM);
     this.googleMap.setCenter(this.props.defaultCenter);
   }
@@ -128,7 +126,6 @@ class MapComponent extends React.Component {
           type: item.type
         });
 
-        bounds.extend(item.departureCoordinates);
         bounds.extend(item.arrivalCoordinates);
       }
       return objectIDToMarker;
