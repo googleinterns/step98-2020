@@ -47,9 +47,7 @@ export const sameTravelObjectList = function (list1, list2) {
   let sortedList2 = sortTravelObjectsByDate(list2);
 
   for (let i = 0; i < list1.length; i++) {
-    if (sortedList1[i].id !== sortedList2[i].id) {
-      console.log("list1: ", list1[i]);
-      console.log("list2: ", list2[i]);
+    if (!equalsTravelObject(sortedList1[i], sortedList2[i])) {
       return false;
     }
   }
@@ -58,5 +56,26 @@ export const sameTravelObjectList = function (list1, list2) {
 
 export const sortTravelObjectsByDate = function (list) {
   return list.sort(travelObjectStartDateComparator)
+}
+
+const equalsTravelObject = function (obj1, obj2) {
+  if (obj1.id !== obj2.id ||
+    !sameDate(obj1.startDate, obj2.startDate) ||
+    !sameDate(obj1.endDate, obj2.endDate) ||
+    obj1.finalized !== obj2.finalized ||
+    obj1.description !== obj2.description) {
+
+    return false;
+  }
+  if (obj1.type === "flight") {
+    if (obj1.departurePlaceId !== obj2.departurePlaceId || obj1.arrivalPlaceId !== obj2.arrivalPlaceId) {
+      return false;
+    } 
+  } else {
+    if (obj1.title !== obj2.title || obj1.placeId !== obj2.placeId) {
+      return false;
+    }
+  }
+  return true;
 }
 
