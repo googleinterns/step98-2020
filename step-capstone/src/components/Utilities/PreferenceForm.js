@@ -13,6 +13,7 @@ import {
     FormGroup,
     Checkbox
 } from "@material-ui/core"
+import FoodTimeForm from "../Utilities/FoodTimeForm"
 
 export default class PreferenceForm extends React.Component {
     constructor(props) {
@@ -21,7 +22,8 @@ export default class PreferenceForm extends React.Component {
             budget: this.props.pref.budget,
             radius: this.props.pref.radius,
             activityPreferences: this.props.pref.activityPreferences,
-            foodPreferences: this.props.pref.foodPreferences
+            foodPreferences: this.props.pref.foodPreferences,
+            foodTimeRanges: this.props.pref.foodTimeRanges
         }
     }
 
@@ -45,6 +47,10 @@ export default class PreferenceForm extends React.Component {
 
     handleFoodPreferenceCheck = (event) => {
         this.togglePreferenceHelper("foodPreferences", event.target.name)
+    }
+
+    handleFoodTimeRangesChange = (timeranges) => {
+        this.setState({ foodTimeRanges: timeranges });
     }
 
     togglePreferenceHelper = (listName, pref) => {
@@ -250,6 +256,7 @@ export default class PreferenceForm extends React.Component {
                                 </Grid>
                             </FormControl>
                         </Grid>
+                        <FoodTimeForm foodTimeRanges={this.state.foodTimeRanges} onChange={this.handleFoodTimeRangesChange} />
                     </Grid>
                 </Grid>
             </Box>

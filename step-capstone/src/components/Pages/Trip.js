@@ -10,6 +10,7 @@ import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
+import FoodTimeForm from '../Utilities/FoodTimeForm';
 
 // TODO: Implement code with form
 // getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
@@ -77,7 +78,7 @@ export default class Trip extends React.Component {
                         endDate: trip.startDate.toDate(),
                         destination: trip.destination,
                         description: trip.description,
-                        userPref: trip.userPref
+                        userPref: trip.userPref,
                     }
                 })
 

@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TripSettingPopover from './TripSettingPopover';
+import moment from "moment"
 
 const useStyles = makeStyles({
     root: {
@@ -30,7 +31,8 @@ export default function AddTrip(props) {
             budget: 2,
             radius: 10,
             activityPreferences: [],
-            foodPreferences: []
+            foodPreferences: [],
+            foodTimeRanges: [moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds()]
         }
     }
     const handleEditTrip = (newTrip) => {
