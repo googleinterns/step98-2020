@@ -40,8 +40,7 @@ class MapComponent extends React.Component {
         : this.state.unfinalizedMarkers.get(this.props.selected);
 
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
-      this.googleMap.setZoom(25);
-      this.googleMap.setCenter(marker.getPosition());
+      this.zoomToMarker(marker);
     }
     if (prevProps.displayDate.date !== this.props.displayDate.date && this.props.displayDate.events.length !== 0) {
       this.clearMap()
@@ -49,15 +48,33 @@ class MapComponent extends React.Component {
       this.googleMap.fitBounds(this.getTodaysBounds());
     } else if (prevProps.finalized !== this.props.finalized || prevProps.unfinalized !== this.props.unfinalized) {
       this.clearMap();
-      this.drawMap();
+      let bounds = this.drawMap();
+      if (this.props.displayDate.events.length === 0) {
+        if (this.props.finalized.length == 0 && this.props.unfinalized.length == 0) {
+          this.zoomToDefaultCoordinates();
+        } else {
+          this.googleMap.fitBounds(bounds);
+        }
+      } else {
+        this.googleMap.fitBounds(this.getTodaysBounds());
+      }
     }
+  }
+
+  zoomToDefaultCoordinates() {
+    this.googleMap.setZoom(15);
+    this.googleMap.setCenter(this.props.defaultCenter);
+  }
+
+  zoomToMarker(marker) {
+    this.googleMap.setZoom(25);
+    this.googleMap.setCenter(marker.getPosition());
   }
 
   getTodaysBounds() {
     var bounds = new window.google.maps.LatLngBounds();
     this.props.displayDate.events.map((event) => {
       if (event.type === "flight") {
-        bounds.extend(event.departureCoordinates);
         bounds.extend(event.arrivalCoordinates);
       } else {
         bounds.extend(event.coordinates);
@@ -66,11 +83,58 @@ class MapComponent extends React.Component {
     return bounds;
   }
 
+  sortList(list) {
+    return list.sort(travelObjectStartDateComparator)
+  }
+
   createMap() {
     return new window.google.maps.Map(this.googleMapRef.current, {
       zoom: this.props.zoom,
       center: this.props.defaultCenter
     })
+  }
+
+  drawMap() {
+    var bounds = new window.google.maps.LatLngBounds();
+
+    let unfinalizedMarkers = this.drawMarkers(this.props.unfinalized, bounds);
+    let finalizedMarkers = this.drawMarkers(this.sortList(this.props.finalized), bounds);
+
+    let pathArr = this.drawPaths();
+
+    this.setState({
+      unfinalizedMarkers: unfinalizedMarkers,
+      finalizedMarkers: finalizedMarkers,
+      geoPaths: pathArr
+    });
+
+    return bounds;
+  }
+
+  /* 
+   * Given a list of travel object data, draws corresponding markers on map and 
+   * returns hash map containing marker objects 
+   */
+  drawMarkers(list, bounds) {
+    // construct hashmap with key: travelObject id, value: marker object
+    return list.reduce((objectIDToMarker, item) => {
+      if (item.type !== "flight") {
+        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
+        bounds.extend(item.coordinates);
+      } else {
+        objectIDToMarker.set(item.id, {
+          marker: {
+            departure: this.addMarker(item.departureCoordinates, item.type),
+            arrival: this.addMarker(item.arrivalCoordinates, item.type)
+          },
+          type: item.type
+        });
+
+        bounds.extend(item.departureCoordinates);
+        bounds.extend(item.arrivalCoordinates);
+      }
+      return objectIDToMarker;
+    }, new Map())
   }
 
   addMarker(coordinates, type) {
@@ -99,57 +163,20 @@ class MapComponent extends React.Component {
     return newMarker;
   }
 
-  // constructs path object and places on map. Returns path object.
-  addPath(map, path, color) {
-    // TODO : change to show directions between paths
-    // dotted line
-    var lineSymbol = {
-      path: 'M 0,-1 0,1',
-      strokeOpacity: 1,
-      scale: 4
-    };
-
-    let geoPath = new window.google.maps.Polyline({
-      path: path,
-      strokeColor: color,
-      strokeOpacity: 0,
-      strokeWeight: 5,
-      icons: [{
-        icon: lineSymbol,
-        offset: '0',
-        repeat: '20px'
-      }]
-    });
-
-    geoPath.setMap(map);
-
-    return geoPath;
-  }
-
-  /* 
-   * Given a list of travel object data, draws corresponding markers on map and 
-   * returns hash map containing marker objects 
+  /*
+   *  Draws path between all finalized travel objects, returns list of path objects
    */
-  drawMarkers(list, bounds) {
-    // construct hashmap with key: travelObject id, value: marker object
-    return list.reduce((objectIDToMarker, item) => {
-      if (item.type !== "flight") {
-        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
-        bounds.extend(item.coordinates);
-      } else {
-        objectIDToMarker.set(item.id, {
-          marker: {
-            departure: this.addMarker(item.departureCoordinates, item.type),
-            arrival: this.addMarker(item.arrivalCoordinates, item.type)
-          },
-          type: item.type
-        });
+  drawPaths() {
+    let paths = this.getPathSegments();
 
-        bounds.extend(item.departureCoordinates);
-        bounds.extend(item.arrivalCoordinates);
-      }
-      return objectIDToMarker;
-    }, new Map())
+    // add each path to the map and return array of path objects
+    var red = 60;
+    let change = paths.length === 0 ? 0 : red / (paths.length - 1);
+    return paths.map((path) => {
+      let color = "hsl(0, 100%, " + red + "%)";
+      red -= change;
+      return this.addPath(this.googleMap, path, color);
+    })
   }
 
   // splits finalized trips into segments of coordinate pairs
@@ -181,41 +208,39 @@ class MapComponent extends React.Component {
     return paths;
   }
 
-  sortList(list) {
-    return list.sort(travelObjectStartDateComparator)
-  }
+  // constructs path object and places on map. Returns path object.
+  addPath(map, path, color) {
+    // TODO : change to show directions between paths
+    // dotted line
+    var lineSymbol = {
+      path: 'M 0,-1 0,1',
+      strokeOpacity: 1,
+      scale: 4
+    };
 
-  /*
-   *  Draws path between all finalized travel objects, returns list of path objects
-   */
-  drawPaths() {
-    let paths = this.getPathSegments();
-
-    // add each path to the map and return array of path objects
-    var red = 60;
-    let change = paths.length === 0 ? 0 : red / (paths.length - 1);
-    return paths.map((path) => {
-      let color = "hsl(0, 100%, " + red + "%)";
-      red -= change;
-      return this.addPath(this.googleMap, path, color);
-    })
-  }
-
-  drawMap() {
-    var bounds = new window.google.maps.LatLngBounds();
-
-    let unfinalizedMarkers = this.drawMarkers(this.props.unfinalized, bounds);
-    let finalizedMarkers = this.drawMarkers(this.sortList(this.props.finalized), bounds);
-
-    let pathArr = this.drawPaths();
-
-    this.setState({
-      unfinalizedMarkers: unfinalizedMarkers,
-      finalizedMarkers: finalizedMarkers,
-      geoPaths: pathArr
+    let geoPath = new window.google.maps.Polyline({
+      path: path,
+      strokeColor: color,
+      strokeOpacity: 0,
+      strokeWeight: 5,
+      icons: [{
+        icon: lineSymbol,
+        offset: '0',
+        repeat: '20px'
+      }]
     });
 
-    return bounds;
+    geoPath.setMap(map);
+
+    return geoPath;
+  }
+
+  clearMap() {
+    this.removeAllMarkers(this.state.unfinalizedMarkers);
+    this.removeAllMarkers(this.state.finalizedMarkers);
+
+    // remove all paths
+    this.state.geoPaths.map((path) => path.setMap(null));
   }
 
   removeAllMarkers(hashMap) {
@@ -227,14 +252,6 @@ class MapComponent extends React.Component {
         value.marker.arrival.setMap(null);
       }
     }
-  }
-
-  clearMap() {
-    this.removeAllMarkers(this.state.unfinalizedMarkers);
-    this.removeAllMarkers(this.state.finalizedMarkers);
-
-    // remove all paths
-    this.state.geoPaths.map((path) => path.setMap(null));
   }
 
   render() {

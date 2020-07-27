@@ -38,3 +38,15 @@ export const fetchPhoto = function(placeId, service) {
   })
 }
 
+export const sameTravelObjectList = function (list1, list2) {
+  if (list1.length !== list2.length) {
+      return false;
+  }
+  for (let i = 0; i < list1.length; i++) {
+      if (list1[i].id !== list2[i].id) {
+          return false;
+      }
+  }
+  return true;
+}
+
