@@ -82,10 +82,10 @@ export default function AddEvent(props) {
       startDate: startDate,
       endDate: endDate,
       finalized: checked,
-      location: location ? location.address : null,
-      coordinates: location ? location.coordinates : null,
+      location: location ? location.address : "",
+      coordinates: location ? location.coordinates : "",
       description: description,
-      placeId: location ? location.placeId : null,
+      placeId: location ? location.placeId : "",
     });
 
     //validating input
