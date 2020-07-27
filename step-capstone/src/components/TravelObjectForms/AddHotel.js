@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid } from "../../scripts/HelperFunctions";
+import { isValid, sameDate } from "../../scripts/HelperFunctions";
 
 export default function AddHotel(props) {
   let overwriting = props.data !== undefined;
@@ -86,13 +86,13 @@ export default function AddHotel(props) {
       coordinates: location ? location.coordinates : null,
       description: description,
     });
-
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
+      
     } else if (checked && (location===null||location.address==="")) {
       props.onToggleValidation(false);
-    } else if (!isValid(startDate) || !isValid(endDate)) {
+    } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
       props.onToggleValidation(false);
     } else {
       props.onToggleValidation(true);
