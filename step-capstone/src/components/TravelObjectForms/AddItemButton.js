@@ -41,6 +41,7 @@ export default function AddItemButton(props) {
                 }}
                 onAddItem={props.onAddItem}
                 onEditItem={props.onEditItem}
+                travelObjects={props.travelObjects}
             />
         </div>
     )

@@ -207,6 +207,7 @@ export default class Trip extends React.Component {
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
+                        travelObjects={this.state.items}
                     />
                 </Grid>
             )
@@ -246,6 +247,7 @@ export default class Trip extends React.Component {
                             setTodaysEvents={this.handleChangeDisplayDate}
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -257,6 +259,7 @@ export default class Trip extends React.Component {
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
                             onClickObject={this.handleSelectedObject}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                 </Grid>
@@ -271,6 +274,7 @@ export default class Trip extends React.Component {
                         <AddItemButton
                             startDate={this.state.tripSetting.startDate}
                             onAddItem={this.handleAddItem}
+                            travelObjects={this.state.items}
                         />
                     </Box>
                 </Grid>

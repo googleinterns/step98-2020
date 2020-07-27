@@ -90,6 +90,7 @@ export default function OneHourInterval(props) {
             position: "absolute",
             zIndex: props.zIndex.toString(),
           }}
+          travelObjects={props.travelObjects}
         />
       );
 
@@ -130,6 +131,7 @@ export default function OneHourInterval(props) {
         onOpenSuggestions={props.onOpenSuggestions}
         onClose={handleClose}
         startDate={props.startDate}
+        travelObjects={props.travelObjects}
       />
     </div>
   );
