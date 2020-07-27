@@ -92,7 +92,7 @@ export const AutoCapitalize = function(string) {
 export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
   var foundConflict = false;
   travelObjects.forEach((travelObject) => {
-    if(travelObject.finalized && id!==travelObject.id){
+    if(travelObject.finalized && id!==travelObject.id && travelObject.type !== "hotel"){
       if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
         foundConflict = true;
       }
