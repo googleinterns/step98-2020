@@ -10,7 +10,7 @@ import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
-import { sameDate } from "../../scripts/HelperFunctions"
+import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
 
 // TODO: Implement code with form
 // getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
@@ -218,7 +218,7 @@ export default class Trip extends React.Component {
     }
 
     handleChangeDisplayDate(travelObjects, date) {
-        if (this.state.today.date !== date) {
+        if (!sameTravelObjectList(travelObjects, this.state.today.events)) {
             this.setState({
                 today: {
                     events: travelObjects,
@@ -291,7 +291,6 @@ export default class Trip extends React.Component {
             <div className="trip">
                 <Grid id="map-component">
                     <MapComponent
-                        zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
                         unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
