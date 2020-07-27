@@ -8,7 +8,7 @@ import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
-
+import OptimizationButton from '../../scripts/OptimizationButton';
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -262,6 +262,12 @@ export default class Trip extends React.Component {
                 </Grid>
                 {this.renderSuggestionBar()}
                 <Grid id="button-group">
+                    <Box mb={3}>
+                        <OptimizationButton
+                            startDate={this.state.tripSetting.startDate}
+                            onAddItem={this.handleAddItem}
+                        />
+                    </Box>
                     <Box mb={3}>
                         <GetSuggestionButton
                             onClick={this.toggleSuggestionBar}
