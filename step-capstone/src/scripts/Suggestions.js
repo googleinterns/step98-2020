@@ -78,7 +78,11 @@ const filterByTimeRange = (results, timeRange) => {
 const query = (service, config, type) => {
   // return results: a map with key : place_id, value: PlaceObject
   return new Promise(res => {
-    let types = type === "food" ? config.userCategories : ["tourist_attraction", "natural_feature"]
+    let types = type === "food" 
+      ? config.userCategories.length === 0
+        ? ["bakery", "cafe", "restaurant"]
+        : config.userCategories
+      : ["tourist_attraction", "natural_feature"]
     let places = queryPlaces(config.coordinates, config.radius, service, types)
     places.then(results => {
       results = filterAlreadySelected(results, config.items);
