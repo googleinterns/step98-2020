@@ -17,7 +17,7 @@ import {
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import "../../styles/TripSetting.css"
-import { fetchPhoto } from "../../scripts/HelperFunctions"
+import { fetchPhoto, AutoCapitalize } from "../../scripts/HelperFunctions"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -130,7 +130,7 @@ function EditTripSetting(props) {
 
     useEffect(() => {
         props.onDataChange({
-            title: title,
+            title: AutoCapitalize(title),
             destination: destination,
             photoUrl: photoUrl,
             startDate: startDate,

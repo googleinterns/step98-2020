@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid, sameDate } from "../../scripts/HelperFunctions";
+import { isValid, AutoCapitalize } from "../../scripts/HelperFunctions";
 
 export default function AddHotel(props) {
   let overwriting = props.data !== undefined;
@@ -77,7 +77,7 @@ export default function AddHotel(props) {
   useEffect(() => {
     props.onDataChange({
       id: overwriting ? props.data.id : undefined,
-      title: title,
+      title: AutoCapitalize(title),
       type: "hotel",
       startDate: startDate,
       endDate: endDate,

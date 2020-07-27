@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import {isValid} from '../../scripts/HelperFunctions';
+import { isValid, AutoCapitalize } from '../../scripts/HelperFunctions';
 
 export default function AddEvent(props) {
   let overwriting = props.data !== undefined;
@@ -77,7 +77,7 @@ export default function AddEvent(props) {
   useEffect(() => {
     props.onDataChange({
       id: overwriting ? props.data.id : undefined,
-      title: title,
+      title: AutoCapitalize(title),
       type: "event",
       startDate: startDate,
       endDate: endDate,
