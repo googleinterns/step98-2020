@@ -6,8 +6,7 @@ export const ItemTypes = {
 const minPerDiv = 30.0;
 const pixelPerDiv = 47.5;
 export const moveTravelObject = (item, monitor) => {
-  var diffPos = monitor.getDifferenceFromInitialOffset().y;
-
+  var diffPos = window.event.clientY - item.y;
   // Handle Drag and drop
   var cloneData = _.cloneDeep(item.data);
   const startOfDisplayDate = new Date(

@@ -11,6 +11,7 @@ export default function OneHourInterval(props) {
   const padding = 22.0;
   const minPerDiv = 30.0;
   const [anchorEl, setAnchorEl] = React.useState(null);
+
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.TRAVELOBJECT,
     drop: (item, monitor) => moveTravelObject(item, monitor),
@@ -82,7 +83,6 @@ export default function OneHourInterval(props) {
         item.data.type === "hotel"
           ? getTopPixel(item.data.endDate)
           : getTopPixel(item.data.startDate);
-      console.log("rerendering onehourinterval top", top.toString());
       let travelObject = (
         <DraggableTravelObject
           key={item.data.id}

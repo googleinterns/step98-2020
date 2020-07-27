@@ -1,10 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 import { useDrag } from "react-dnd";
 import TravelObject from "./TravelObject";
 import _, { clone } from "lodash";
 import { ItemTypes } from "../../scripts/DragTravelObject";
 
+
 export default function DraggableTravelObject(props) {
+  const item = {
+    type: ItemTypes.TRAVELOBJECT,
+    travelObjectId: props.data.id,
+    data: props.data,
+    displayDate: props.displayDate,
+    onEditItem: props.onEditItem,
+  }
+
   const [{ opacity }, dragRef] = useDrag({
     item: {
       type: ItemTypes.TRAVELOBJECT,
@@ -16,6 +25,10 @@ export default function DraggableTravelObject(props) {
     previewOptions: {
       offsetX: 0,
       offsetY: 0
+    },
+    begin : () => {
+      item.y = window.event.clientY;
+      return item;
     },
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.75 : 1,
@@ -37,6 +50,7 @@ export default function DraggableTravelObject(props) {
         top: props.styleConfig.top,
         opacity,
         zIndex: props.styleConfig.zIndex,
+        cursor: "move"
       }}
     >
       <TravelObject
