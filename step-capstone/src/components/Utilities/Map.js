@@ -1,5 +1,8 @@
 import React, { createRef } from 'react'
 import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
+import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
+import MapIcon from '@material-ui/icons/Map';
+import TodayIcon from '@material-ui/icons/Today';
 
 const MARKER_ZOOM = 15;
 const CENTER_ZOOM = 12;
@@ -17,6 +20,7 @@ class MapComponent extends React.Component {
   }
 
   componentDidMount() {
+    console.log("mounting")
     this.googleMap = this.createMap();
 
     if (this.props.finalized.length > 0 || this.props.unfinalized > 0) {
