@@ -3,6 +3,7 @@ import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/Hel
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import MapIcon from '@material-ui/icons/Map';
 import TodayIcon from '@material-ui/icons/Today';
+import { Typography } from '@material-ui/core';
 
 const MARKER_ZOOM = 15;
 const CENTER_ZOOM = 12;
@@ -115,13 +116,13 @@ class MapComponent extends React.Component {
     // construct hashmap with key: travelObject id, value: marker object
     return list.reduce((objectIDToMarker, item) => {
       if (item.type !== "flight") {
-        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type), type: item.type });
+        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type, item.title), type: item.type });
         bounds.extend(item.coordinates);
       } else {
         objectIDToMarker.set(item.id, {
           marker: {
-            departure: this.addMarker(item.departureCoordinates, item.type),
-            arrival: this.addMarker(item.arrivalCoordinates, item.type)
+            departure: this.addMarker(item.departureCoordinates, item.type, item.departureAirport),
+            arrival: this.addMarker(item.arrivalCoordinates, item.type, item.arrivalAirport)
           },
           type: item.type
         });
@@ -132,7 +133,7 @@ class MapComponent extends React.Component {
     }, new Map())
   }
 
-  addMarker(coordinates, type) {
+  addMarker(coordinates, type, content) {
     var iconUrl;
     if (type === "flight") {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
@@ -149,10 +150,13 @@ class MapComponent extends React.Component {
       icon: { url: iconUrl }
     })
 
+    const infowindow = new window.google.maps.InfoWindow({content: content})
+
     // zoom to marker when clicked
     newMarker.addListener('click', () => {
       this.googleMap.setZoom(MARKER_ZOOM);
       this.googleMap.setCenter(newMarker.getPosition());
+      infowindow.open(this.googleMap, newMarker)
     });
 
     return newMarker;
