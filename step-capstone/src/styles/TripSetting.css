@@ -1,3 +1,5 @@
 #setting-container {
     width: 600px;
+    height: 750px;
+    overflow-y: scroll;
 }

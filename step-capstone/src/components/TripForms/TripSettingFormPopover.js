@@ -136,14 +136,14 @@ function EditTripSetting(props) {
             startDate: startDate,
             endDate: endDate,
             description: description,
-            userPref: userPref
+            userPref: userPref,
         })
         // notifies form if necessary inputs are present
         props.onValidation(!(!destination || (title === "")))
     }, [destination, startDate, endDate, description, userPref, photoUrl])
 
     return (
-        <div >
+        <div>
             <div id="map"></div>
             <Grid container direction="column">
                 <Grid>
