@@ -38,14 +38,11 @@ class MapComponent extends React.Component {
 
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
       this.zoomToMarker(marker);
-    }
-    if (prevProps.displayDate.date !== this.props.displayDate.date && this.props.displayDate.events.length !== 0) {
+    } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events)) {
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
     } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
-      console.log(!sameTravelObjectList(prevProps.finalized, this.props.finalized))
-      console.log("changed props")
       this.clearMap();
       let bounds = this.drawMap();
       if (this.props.displayDate.events.length === 0) {

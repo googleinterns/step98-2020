@@ -198,7 +198,12 @@ export default class Trip extends React.Component {
             .then(() => {
                 let items = this.state.items.concat(data);
                 let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.hotelMap;
-                this.setState({ items: items, placeIds: newPlaceIds, hotelMap: hotelMap });
+                this.setState({
+                    items: items,
+                    placeIds: newPlaceIds,
+                    hotelMap: hotelMap,
+                    // selected: data.id
+                });
             })
             .catch(error => {
                 console.log("Error Adding Item")

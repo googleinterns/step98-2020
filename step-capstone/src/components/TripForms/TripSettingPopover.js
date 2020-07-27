@@ -1,5 +1,5 @@
 import React from 'react';
-import { Backdrop, Button, makeStyles, Popover, Modal } from '@material-ui/core';
+import { Backdrop, Button, makeStyles, Modal, DialogContent } from '@material-ui/core';
 import TripSettingFormPopover from './TripSettingFormPopover';
 import AddIcon from '@material-ui/icons/Add';
 import "../../styles/TripSetting.css"
