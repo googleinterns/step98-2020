@@ -25,7 +25,6 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-
             queryResults: null,
             placeIds: new Set(),
             showSuggestions: false,
@@ -223,6 +222,12 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
+                    <div id="optimization-popper"
+                    style={{
+                        position: "absolute",
+                        left: "800px",
+                        top: "100px"
+                    }}></div>
                     <MapComponent
                         zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
@@ -264,8 +269,8 @@ export default class Trip extends React.Component {
                 <Grid id="button-group">
                     <Box mb={3}>
                         <OptimizationButton
-                            startDate={this.state.tripSetting.startDate}
-                            onAddItem={this.handleAddItem}
+                            displayDate={this.state.today.date}
+                            displayItems={this.state.today.events}
                         />
                     </Box>
                     <Box mb={3}>
