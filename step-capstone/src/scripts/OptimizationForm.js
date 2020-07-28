@@ -53,6 +53,7 @@ export default function OptimizationForm(props) {
               Please select unfinalized items you also want to include:
             </Typography>
           </Grid>
+          <div id="error-display"></div>
           <DropArea
             onClose={props.onClose}
             displayDate={props.displayDate}
