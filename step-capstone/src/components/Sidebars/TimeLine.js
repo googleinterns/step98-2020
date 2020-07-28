@@ -37,6 +37,10 @@ export default class TimeLine extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString) {
       this.setState()
+      this.props.setTodaysEvents(
+        this.displayItems,
+        this.props.displayDate.toDateString()
+      );
     }
   }
 
@@ -101,11 +105,6 @@ export default class TimeLine extends React.Component {
         : [];
 
       this.displayItems.sort(travelObjectStartDateComparator);
-
-      this.props.setTodaysEvents(
-        this.displayItems,
-        this.props.displayDate.toDateString()
-      );
 
       this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
 

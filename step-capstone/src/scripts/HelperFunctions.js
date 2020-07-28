@@ -46,7 +46,7 @@ export const sameTravelObjectList = function (list1, list2) {
 
   let sortedList1 = sortTravelObjectsByDate(list1);
   let sortedList2 = sortTravelObjectsByDate(list2);
-
+  
   for (let i = 0; i < list1.length; i++) {
     if (!equalsTravelObject(sortedList1[i], sortedList2[i])) {
       return false;
