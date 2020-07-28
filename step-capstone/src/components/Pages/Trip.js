@@ -289,7 +289,6 @@ export default class Trip extends React.Component {
         if (!this.state.items || !this.state.tripSetting) {
             return null;
         }
-        console.log(this.state.today.date)
         return (
             <div className="trip">
                 <Grid id="map-component">
