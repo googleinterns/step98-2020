@@ -42,6 +42,7 @@ export default function AddHotel(props) {
         placeId: "",
       }
   );
+
   const [description, setDescription] = useState(
     overwriting ? props.data.description : ""
   );
@@ -89,7 +90,6 @@ export default function AddHotel(props) {
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
-      
     } else if (checked && (location===null||location.address==="")) {
       props.onToggleValidation(false);
     } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
@@ -131,6 +131,8 @@ export default function AddHotel(props) {
             label={"Check in"}
             value={startDate}
             onChange={setStartDate}
+            error={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)}
+            helperText={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate) ? "Check in and checkout dates cannot be the same." : ""}
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -139,6 +141,8 @@ export default function AddHotel(props) {
             label={"Check out"}
             value={endDate}
             onChange={setEndDate}
+            error={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)}
+            helperText={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate) ? "Check in and checkout dates cannot be the same." : ""}
           />
         </MuiPickersUtilsProvider>
       </Grid>
