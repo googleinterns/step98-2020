@@ -82,10 +82,11 @@ const equalsTravelObject = function (obj1, obj2) {
 
 export const AutoCapitalize = function(string) {
   let words = string.split(" ");
-  return words.reduce((title, word) => {
+  let capitalized = words.reduce((title, word) => {
     title += word.charAt(0).toUpperCase() + word.substring(1) + " ";
     return title;
-  }, "")
+  }, "");
+  return capitalized.substring(0, capitalized.length - 1);
 }
 
 //returns true if there is a conflict, false otherwise
