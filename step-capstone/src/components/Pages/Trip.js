@@ -262,7 +262,6 @@ export default class Trip extends React.Component {
         todayEndTime.setHours(23, 59, 59);
 
         if (this.state.map) {
-            console.log(this.state.selectedTimeslot && this.state.selectedTimeslot.radius ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius)
             return (
                 <Grid item>
                     <SuggestionPopup
