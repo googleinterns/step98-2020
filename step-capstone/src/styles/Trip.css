@@ -76,9 +76,3 @@
     box-sizing: border-box;
 }
 
-.MuiPopover-paper{
-    height: 700px;
-    width: 700px;
-    padding: 16px;
-    background: red;
-}

@@ -233,3 +233,9 @@
     max-width: 141px;
     left: 20px;
 }
+.popper_class{
+  padding: 16px;
+  height: 800px;
+  overflow-y: scroll;
+  border-radius: 1px solid black;
+}
