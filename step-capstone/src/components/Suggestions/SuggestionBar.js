@@ -1,8 +1,9 @@
 import React from 'react';
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, IconButton, Typography, Box } from '@material-ui/core'
 import { ArrowLeft, ArrowRight } from '@material-ui/icons'
 import "../../styles/Suggestions.css"
 import SuggestionItem from "./SuggestionItem"
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default class SuggestionBar extends React.Component {
   constructor(props) {
@@ -51,6 +52,17 @@ export default class SuggestionBar extends React.Component {
   }
 
   render() {
+    if (this.state.suggestions.length === 0) {
+      return (
+        <Box mt={10}>
+          <Grid container justify="center" align-items="center">
+            <ErrorOutlineIcon color="secondary" fontSize="medium" />
+            <Typography variant="subtitle1" gutterBottom color="secondary">We were unable to retrieve any suggestions given your location and preferences.</Typography>
+          </Grid>
+        </Box>
+      )
+    }
+
     let suggestionItems = [];
     for (let i = 0; i < this.state.numOfSuggestionsToDisplay; i++) {
       suggestionItems.push(
