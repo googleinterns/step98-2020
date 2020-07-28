@@ -49,7 +49,8 @@ export default function InsertObjectPopover(props) {
       getDistance(start, end, "DRIVING").then((result) => {
         let distance = result.distance.value;
         // radius is half distance between two points + additional 2 km for encompassing start and endpoints.
-        res((distance / 1000) * 0.5);
+        let radius = (distance / 1000) * 0.5
+        res(radius.toFixed(1));
       })
     })
   }
