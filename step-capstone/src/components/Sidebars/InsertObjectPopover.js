@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Popover, Box } from "@material-ui/core"
 import AddItemButton from "../TravelObjectForms/AddItemButton"
 import GetSuggestionButton from "../Suggestions/GetSuggestionButton"
+import getDistance from "../../scripts/Distance"
 
 export default function InsertObjectPopover(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -12,29 +13,45 @@ export default function InsertObjectPopover(props) {
     }
   }, [props.anchorEl]);
 
-  const getCoordinates = () => {
+  const getCoordinatesAndRadius = () => {
     let coordinates = { lat: 0, lng: 0 }
-    if (props.slots !== null) {
-      let prevNotNullOrFlight = props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type !== 'flight';
-      let nextNotNullOrFlight = props.slots.nextTravelObject !== null && props.slots.nextTravelObject.type !== 'flight';
 
-      if (prevNotNullOrFlight && nextNotNullOrFlight) {
-        coordinates.lat = (props.slots.prevTravelObject.coordinates.lat + props.slots.nextTravelObject.coordinates.lat) / 2;
-        coordinates.lng = (props.slots.prevTravelObject.coordinates.lng + props.slots.nextTravelObject.coordinates.lng) / 2
-      } else if (prevNotNullOrFlight) {
-        coordinates.lat = props.slots.prevTravelObject.coordinates.lat;
-        coordinates.lng = props.slots.prevTravelObject.coordinates.lng;
-      } else if (nextNotNullOrFlight) {
-        coordinates.lat = props.slots.nextTravelObject.coordinates.lat;
-        coordinates.lng = props.slots.nextTravelObject.coordinates.lng;
+    return new Promise(res => {
+      if (props.slots !== null) {
+        let prevNotNullOrFlight = props.slots.prevTravelObject !== null && props.slots.prevTravelObject.type !== 'flight';
+        let nextNotNullOrFlight = props.slots.nextTravelObject !== null && props.slots.nextTravelObject.type !== 'flight';
+        if (prevNotNullOrFlight && nextNotNullOrFlight) {
+          coordinates.lat = (props.slots.prevTravelObject.coordinates.lat + props.slots.nextTravelObject.coordinates.lat) / 2;
+          coordinates.lng = (props.slots.prevTravelObject.coordinates.lng + props.slots.nextTravelObject.coordinates.lng) / 2
+          calculateRadius(props.slots.prevTravelObject.coordinates, props.slots.nextTravelObject.coordinates)
+            .then(results => {
+              res({ coordinates: coordinates, radius: results })
+            })
+        } else if (prevNotNullOrFlight) {
+          coordinates.lat = props.slots.prevTravelObject.coordinates.lat;
+          coordinates.lng = props.slots.prevTravelObject.coordinates.lng;
+          res({ coordinates: coordinates, radius: null });
+        } else if (nextNotNullOrFlight) {
+          coordinates.lat = props.slots.nextTravelObject.coordinates.lat;
+          coordinates.lng = props.slots.nextTravelObject.coordinates.lng;
+          res({ coordinates: coordinates, radius: null });
+        } else {
+          res(null);
+        }
       } else {
-        return null;
+        res(null);
       }
-    } else {
-      return null;
-    }
+    })
+  }
 
-    return coordinates;
+  const calculateRadius = (start, end) => {
+    return new Promise(res => {
+      getDistance(start, end, "DRIVING").then((result) => {
+        let distance = result.distance.value;
+        // radius is half distance between two points + additional 2 km for encompassing start and endpoints.
+        res((distance / 1000) * 0.5);
+      })
+    })
   }
 
   const handleClose = () => {
@@ -46,9 +63,13 @@ export default function InsertObjectPopover(props) {
   const id = open ? "simple-popover" : undefined;
 
   const getSuggestions = () => {
-    props.onClickTimeslot([props.slots.freeTimeSlot.startDate, props.slots.freeTimeSlot.endDate], getCoordinates());
-    props.onOpenSuggestions();
-    handleClose()
+    getCoordinatesAndRadius().then(results => {
+      let coords = results ? results.coordinates : null;
+      let radius = results ? results.radius : null;
+      props.onClickTimeslot([props.slots.freeTimeSlot.startDate, props.slots.freeTimeSlot.endDate], coords, radius);
+      props.onOpenSuggestions();
+      handleClose()
+    })
   }
 
   return (
