@@ -44,6 +44,7 @@ class MapComponent extends React.Component {
       this.clearMap()
       this.drawMap();
       this.googleMap.fitBounds(this.getTodaysBounds());
+      this.googleMap.setZoom(this.googleMap.getZoom() - 1);
     } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
       // any other changes to finalized or unfinalized zoom out to encompass all markers.
       this.clearMap();

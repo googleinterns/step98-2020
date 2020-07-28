@@ -82,17 +82,18 @@ const equalsTravelObject = function (obj1, obj2) {
 
 export const AutoCapitalize = function(string) {
   let words = string.split(" ");
-  return words.reduce((title, word) => {
+  let capitalized = words.reduce((title, word) => {
     title += word.charAt(0).toUpperCase() + word.substring(1) + " ";
     return title;
-  }, "")
+  }, "");
+  return capitalized.substring(0, capitalized.length - 1);
 }
 
 //returns true if there is a conflict, false otherwise
 export const hasTimeConflict = (id, startDate, endDate, travelObjects) => {
   var foundConflict = false;
   travelObjects.forEach((travelObject) => {
-    if(travelObject.finalized && id!==travelObject.id){
+    if(travelObject.finalized && id!==travelObject.id && travelObject.type !== "hotel"){
       if (overlaps(travelObject.startDate, travelObject.endDate, startDate, endDate)) {
         foundConflict = true;
       }
