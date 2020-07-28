@@ -89,9 +89,7 @@ class TripList extends React.Component {
 
   handleCloseTripSetting() {
     this.setState({
-      editingTrip: false,
-      // selectedTripSetting: null,
-      
+      editingTrip: false
     })
   }
 
