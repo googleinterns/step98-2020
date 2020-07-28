@@ -32,7 +32,7 @@ export default function OptimizationForm(props) {
           }}
         >
           <Grid item justify="center">
-            <Typography variant={"h4"} gutterBottom>
+            <Typography variant={"h5"} gutterBottom>
               Optimization Form
             </Typography>
           </Grid>
@@ -43,11 +43,17 @@ export default function OptimizationForm(props) {
             justify="space-between"
             style={{ justifyContent: "center" }}
           >
-            <Typography variant={"h6"}>
-              Please select the unfinalized items to get optimization
+            <Typography variant={"subtitle2"}>
+              We'll generate an optimal schedule for your date of {props.displayDate}.
+            </Typography>
+            <Typography variant={"subtitle2"}>
+              All finalized items of that date will be included in the optimal schedule.
+            </Typography>
+            <Typography variant={"subtitle2"}>
+              Please select unfinalized items you also want to include:
             </Typography>
           </Grid>
-          <DropArea 
+          <DropArea
             onClose={props.onClose}
             displayDate={props.displayDate}
             displayItems={props.displayItems}
