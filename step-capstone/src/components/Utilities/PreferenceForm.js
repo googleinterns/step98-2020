@@ -67,7 +67,7 @@ export default class PreferenceForm extends React.Component {
                 <Grid container>
                     <Grid item>
                         <Typography variant="h5" gutterBottom>Preferences</Typography>
-                        <Typography variant="subtitle2" gutterBottom>Select your own preferences and we'll give you custom suggestions for foor and activities!</Typography>
+                        <Typography variant="subtitle2" gutterBottom>Select your own preferences and we'll give you custom suggestions for food and activities!</Typography>
                     </Grid>
                     <Grid container item direction="column">
                         <Grid item>
