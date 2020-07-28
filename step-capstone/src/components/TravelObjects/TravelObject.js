@@ -11,10 +11,12 @@ export default function TravelObject(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-    // if has a placeId, zoom to marker on map
-    if (props.data.placeId) {
-      props.onClickObject(props.data.id);
+    if (props.onClickAllow === undefined) {
+      setAnchorEl(event.currentTarget);
+      // if has a placeId, zoom to marker on map
+      if (props.data.placeId) {
+        props.onClickObject(props.data.id);
+      }
     }
   };
 
