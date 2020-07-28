@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { sameDate } from "../../scripts/HelperFunctions";
 import InsertObjectPopover from "./InsertObjectPopover";
-import DraggableTravelObject from "../TravelObjects/DraggableTravelObject";
+import DraggableFinalized from "../TravelObjects/DraggableFinalized";
 import { ItemTypes, moveTravelObject } from "../../scripts/DragTravelObject";
 import { useDrop } from "react-dnd";
 
@@ -13,7 +13,7 @@ export default function OneHourInterval(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [{ isOver, canDrop }, drop] = useDrop({
-    accept: ItemTypes.TRAVELOBJECT,
+    accept: ItemTypes.FINALIZEDTRAVELOBJECT,
     drop: (item, monitor) => moveTravelObject(item, monitor),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -84,7 +84,7 @@ export default function OneHourInterval(props) {
           ? getTopPixel(item.data.endDate)
           : getTopPixel(item.data.startDate);
       let travelObject = (
-        <DraggableTravelObject
+        <DraggableFinalized
           key={item.data.id}
           displayDate={props.displayDate}
           data={item.data}
