@@ -178,7 +178,6 @@ class MapComponent extends React.Component {
   // splits finalized trips into segments of coordinate pairs
   getPathSegments() {
     let todaysHotel = this.props.date2HotelMap.get(this.props.displayDate.date)
-    console.log(todaysHotel)
     var paths = [];
     // if stayed at hotel overnight, start day at hotel.
     var curPath = todaysHotel !== undefined && todaysHotel.morningHotel !== undefined ? [todaysHotel.morningHotel.coordinates] : [];
