@@ -6,8 +6,9 @@ export const ItemTypes = {
 
 const minPerDiv = 30.0;
 const pixelPerDiv = 47.5;
+const millisecondsPerMin = 60000;
 export const moveTravelObject = (item, monitor) => {
-  var diffPos = window.event.clientY - item.y;
+  var deltaY = window.event.clientY - item.y;
   // Handle Drag and drop
   var cloneData = _.cloneDeep(item.data);
   const startOfDisplayDate = new Date(
@@ -29,8 +30,8 @@ export const moveTravelObject = (item, monitor) => {
   );
   var newStartDate = new Date(
     item.data.startDate.getTime() +
-      (((diffPos) * minPerDiv) / pixelPerDiv) *
-        60000
+      ((deltaY * minPerDiv) / pixelPerDiv) *
+      millisecondsPerMin
   );
   newStartDate =
     newStartDate < startOfDisplayDate ? startOfDisplayDate : newStartDate;

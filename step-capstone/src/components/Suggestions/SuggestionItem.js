@@ -106,6 +106,8 @@ export default function SuggestionItem(props) {
           horizontal: 'left',
         }}
         onAddItem={props.onAddItem}
+        travelObjects={props.travelObjects}
+        isFromSuggestions={true}
       />
     </Card>
   )

@@ -28,6 +28,7 @@ export default class SuggestionBar extends React.Component {
   }
 
   componentDidMount() {
+    this.updateDisplayNum();
     window.addEventListener("resize", this.updateDisplayNum)
   }
 
@@ -59,6 +60,7 @@ export default class SuggestionBar extends React.Component {
             suggestion={this.state.suggestions[this.state.startIndex + i]}
             context={this.props.context}
             onAddItem={this.props.onAddItem}
+            travelObjects={this.props.travelObjects}
           />
         </Grid>
       );
@@ -66,7 +68,7 @@ export default class SuggestionBar extends React.Component {
 
     return (
       <div id="suggestion-bar">
-        <Grid id="suggestion-grid" container direction="row" justify="center" nowrap>
+        <Grid id="suggestion-grid" container direction="row" justify="center" wrap="nowrap">
           <Grid item>
             <IconButton
               className="arrow-buttons"

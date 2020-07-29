@@ -5,7 +5,7 @@ import DropArea from "./DropArea";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-export default function OptimizationForm(props) {
+export default function ScheduleBuilder(props) {
   return (
     <DndProvider backend={HTML5Backend}>
       <Popper

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CommuteIcon from "@material-ui/icons/Commute";
 import { Fab } from "@material-ui/core";
-import OptimizationForm from './OptimizationForm'
+import ScheduleBuilder from './ScheduleBuilder'
 
 export default function OptimizationButton(props) {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -19,7 +19,7 @@ export default function OptimizationButton(props) {
       <Fab color="primary" aria-label="optimization" onClick={handleClick}>
         <CommuteIcon />
       </Fab>
-      {anchorEl ? <OptimizationForm 
+      {anchorEl ? <ScheduleBuilder 
                     anchorEl={anchorEl}
                     onClose={handleClose}
                     {...props}

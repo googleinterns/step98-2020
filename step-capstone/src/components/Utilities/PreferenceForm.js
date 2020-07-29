@@ -13,6 +13,7 @@ import {
     FormGroup,
     Checkbox
 } from "@material-ui/core"
+import FoodTimeForm from "../Utilities/FoodTimeForm"
 
 export default class PreferenceForm extends React.Component {
     constructor(props) {
@@ -21,7 +22,8 @@ export default class PreferenceForm extends React.Component {
             budget: this.props.pref.budget,
             radius: this.props.pref.radius,
             activityPreferences: this.props.pref.activityPreferences,
-            foodPreferences: this.props.pref.foodPreferences
+            foodPreferences: this.props.pref.foodPreferences,
+            foodTimeRanges: this.props.pref.foodTimeRanges
         }
     }
 
@@ -47,6 +49,10 @@ export default class PreferenceForm extends React.Component {
         this.togglePreferenceHelper("foodPreferences", event.target.name)
     }
 
+    handleFoodTimeRangesChange = (timeranges) => {
+        this.setState({ foodTimeRanges: timeranges });
+    }
+
     togglePreferenceHelper = (listName, pref) => {
         if (!this.state[listName].includes(pref)) {
             this.setState({ [listName]: this.state[listName].concat([pref]) })
@@ -61,7 +67,7 @@ export default class PreferenceForm extends React.Component {
                 <Grid container>
                     <Grid item>
                         <Typography variant="h5" gutterBottom>Preferences</Typography>
-                        <Typography variant="subtitle2" gutterBottom>Select your own preferences and we'll give you custom suggestions for foor and activities!</Typography>
+                        <Typography variant="subtitle2" gutterBottom>Select your own preferences and we'll give you custom suggestions for food and activities!</Typography>
                     </Grid>
                     <Grid container item direction="column">
                         <Grid item>
@@ -250,6 +256,7 @@ export default class PreferenceForm extends React.Component {
                                 </Grid>
                             </FormControl>
                         </Grid>
+                        <FoodTimeForm foodTimeRanges={this.state.foodTimeRanges} onChange={this.handleFoodTimeRangesChange} />
                     </Grid>
                 </Grid>
             </Box>

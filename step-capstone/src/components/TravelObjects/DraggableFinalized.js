@@ -61,6 +61,7 @@ export default function DraggableFinalized(props) {
         onAddItem={props.onAddItem}
         onClickObject={props.onClickObject}
         styleConfig={newStyleConfig}
+        travelObjects={props.travelObjects}
       />
     </div>
   );

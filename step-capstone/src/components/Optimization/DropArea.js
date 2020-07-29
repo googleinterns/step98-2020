@@ -9,8 +9,8 @@ import {
   Button,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { ItemTypes } from "./DragTravelObject";
-import TravelObject from "../components/TravelObjects/TravelObject";
+import { ItemTypes } from "../../scripts/DragTravelObject";
+import TravelObject from "../TravelObjects/TravelObject";
 import { useDrop } from "react-dnd";
 import _, { clone } from "lodash";
 import ErrorDisplay from "./ErrorDisplay";
@@ -36,11 +36,13 @@ export default function DropArea(props) {
     setSelectedUnfinalizedItems(newItems);
   };
   const handleSelectItem = (newItem) => {
+    console.log(newItem);
     if (
       !selectedUnfinalizedItems.has(newItem.data.id) &&
       newItem.data.location !== undefined &&
       newItem.data.location !== null &&
       newItem.data.location.address !== "" &&
+      newItem.data.location !== "" &&
       newItem.data.type !== "hotel"
     ) {
       var newItems = _.cloneDeep(selectedUnfinalizedItems);
