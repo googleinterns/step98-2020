@@ -48,7 +48,9 @@ export default function TripItemComponent(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Share</Button>
+        <Button size="small" onClick={() => props.onEditTrip(props.tripId)}>
+          Edit
+        </Button>
         <Button size="small" onClick={() => props.onOpenTrip(props.tripId)}>
           Open
         </Button>

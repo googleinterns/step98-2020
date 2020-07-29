@@ -17,7 +17,7 @@ import {
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import "../../styles/TripSetting.css"
-import { fetchPhoto, AutoCapitalize } from "../../scripts/HelperFunctions"
+import { fetchPhoto, AutoCapitalize, isValid } from "../../scripts/HelperFunctions"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -139,8 +139,8 @@ function EditTripSetting(props) {
             userPref: userPref,
         })
         // notifies form if necessary inputs are present
-        props.onValidation(!(!destination || (title === "")))
-    }, [destination, startDate, endDate, description, userPref, photoUrl])
+        props.onValidation((destination && !(title === "") && isValid(startDate) && isValid(endDate)))
+    }, [destination, startDate, endDate, description, userPref, photoUrl, title])
 
     return (
         <div>
