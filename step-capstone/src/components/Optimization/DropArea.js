@@ -13,11 +13,23 @@ import { ItemTypes } from "../../scripts/DragTravelObject";
 import TravelObject from "../TravelObjects/TravelObject";
 import { useDrop } from "react-dnd";
 import _, { clone } from "lodash";
+import ErrorDisplay from "./ErrorDisplay";
 
 export default function DropArea(props) {
   const [selectedUnfinalizedItems, setSelectedUnfinalizedItems] = useState(
     new Map()
   );
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorAnchorEl, setErrorAnchorEl] = useState(null);
+  
+  const onOpenError = (errorMessage) => {
+    setErrorMessage(errorMessage);
+    setErrorAnchorEl(window.document.getElementById("error-display"));
+  }
+
+  const onCloseError = () => {
+    setErrorAnchorEl(null);
+  }
   const handleClick = (id) => {
     var newItems = _.cloneDeep(selectedUnfinalizedItems);
     newItems.delete(id);
@@ -67,6 +79,9 @@ export default function DropArea(props) {
     //     Call Dan's error display component here
     // }
     // })
+
+    
+    // onOpenError("Please remove some items!")
   };
 
   const getTravelObjects = () => {
@@ -139,6 +154,11 @@ export default function DropArea(props) {
           </Button>
         </CardActions>
       </Grid>
+      <ErrorDisplay 
+          errorMessage={errorMessage}
+          errorAnchorEl={errorAnchorEl}
+          onClose={onCloseError}
+        />
     </div>
   );
 }
