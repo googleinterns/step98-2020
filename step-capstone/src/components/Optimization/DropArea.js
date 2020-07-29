@@ -13,6 +13,8 @@ import { ItemTypes } from "../../scripts/DragTravelObject";
 import TravelObject from "../TravelObjects/TravelObject";
 import { useDrop } from "react-dnd";
 import _, { clone } from "lodash";
+import OptimizationConfirmation from "./OptimizationConfirmation";
+import { getOptimalRoute, createSchedule } from "../../scripts/Optimization";
 import ErrorDisplay from "./ErrorDisplay";
 
 export default function DropArea(props) {
@@ -21,22 +23,22 @@ export default function DropArea(props) {
   );
   const [errorMessage, setErrorMessage] = useState(null);
   const [errorAnchorEl, setErrorAnchorEl] = useState(null);
-  
+  const [schedule, setSchedule] = useState(null);
+
   const onOpenError = (errorMessage) => {
     setErrorMessage(errorMessage);
     setErrorAnchorEl(window.document.getElementById("error-display"));
-  }
+  };
 
   const onCloseError = () => {
     setErrorAnchorEl(null);
-  }
+  };
   const handleClick = (id) => {
     var newItems = _.cloneDeep(selectedUnfinalizedItems);
     newItems.delete(id);
     setSelectedUnfinalizedItems(newItems);
   };
   const handleSelectItem = (newItem) => {
-    console.log(newItem);
     if (
       !selectedUnfinalizedItems.has(newItem.data.id) &&
       newItem.data.location !== undefined &&
@@ -65,23 +67,50 @@ export default function DropArea(props) {
       allItems.push(item);
     });
 
-    allItems = allItems.concat(props.displayItems);
+    allItems = allItems.concat(
+      props.displayItems.filter((each) => each.type === "event")
+    );
+    var startDate = new Date(props.displayDate);
+    startDate.setHours(9, 0, 0);
+    var endDate = new Date(props.displayDate);
+    endDate.setHours(22, 0, 0);
 
-    //Current status: we have displayDate, displayItems, selectedUnfinalizedItems here
-    //What is lacking: hotel start and end of displayDate, userPref
-    //TODO: 1. pass Emmie's hotel start and end of displayDate from Trip to
-    // Optimization Button, to Optimization Form to Drop Area
-    //      2. call function
-    // try {
-    //     let schedule = createSchedule(travelObjects, userPref, props.displayDate);
-    //     Call Zach's confirmation component here, when user clicks accept, call editMultipleItems(schedule);
-    // } catch (error) {
-    //     Call Dan's error display component here
-    // }
-    // })
+    var userPref = _.cloneDeep(props.userPref);
 
-    
-    // onOpenError("Please remove some items!")
+    userPref.startDate = startDate;
+    userPref.endDate = endDate;
+
+    if (
+      props.hotels.nightHotel !== undefined &&
+      props.hotels.morningHotel !== undefined
+    ) {
+      getOptimalRoute(
+        allItems,
+        props.hotels.morningHotel,
+        props.hotels.nightHotel
+      )
+        .then((travelObjects) => {
+          try {
+            let newSchedule = createSchedule(
+              travelObjects,
+              userPref,
+              props.displayDate
+            );
+            setSchedule(newSchedule);
+          } catch (error) {
+            onOpenError(error);
+          }
+        })
+        .catch((error) => {
+          onOpenError(error);
+        });
+    } else {
+      onOpenError(
+        "You need a night and morning hotel to get schedule builder working!"
+      );
+    }
+
+    //
   };
 
   const getTravelObjects = () => {
@@ -154,11 +183,18 @@ export default function DropArea(props) {
           </Button>
         </CardActions>
       </Grid>
-      <ErrorDisplay 
-          errorMessage={errorMessage}
-          errorAnchorEl={errorAnchorEl}
-          onClose={onCloseError}
+      <ErrorDisplay
+        errorMessage={errorMessage}
+        errorAnchorEl={errorAnchorEl}
+        onClose={onCloseError}
+      />
+      {schedule ? (
+        <OptimizationConfirmation
+          travelObjects={schedule}
+          onConfirm={props.onConfirm}
+          onClose={props.onClose}
         />
+      ) : null}
     </div>
   );
 }

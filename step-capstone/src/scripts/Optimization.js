@@ -3,6 +3,7 @@ const LUNCH_TIMERANGE = [11, 15];
 const DINNER_TIMERANGE = [17, 21];
 
 export const getOptimalRoute = function (travelObjects, origin, destination) {
+  
   let request = {
     origin: new window.google.maps.LatLng(origin.coordinates.lat, origin.coordinates.lng),
     destination: new window.google.maps.LatLng(destination.coordinates.lat, destination.coordinates.lng),

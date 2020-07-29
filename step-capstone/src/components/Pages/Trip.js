@@ -13,25 +13,6 @@ import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
 
-// TODO: Implement code with form
-// getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
-//     .then(travelObjects => {
-//         var startTime = new Date(this.state.today.date);
-//         startTime.setHours(9, 0, 0);
-//         var endTime = new Date(this.state.today.date);
-//         endTime.setHours(20, 0, 0);
-//         try {
-//             let schedule = createSchedule(travelObjects, {
-//                 startDate: startTime,
-//                 endDate: endTime,
-//                 foodTimeRanges: [3600000, 3600000, 3600000]
-//             }, this.state.today.date);
-//             this.editMultipleItems(schedule);
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     })
-
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -52,7 +33,7 @@ export default class Trip extends React.Component {
             placeIds: new Set(),
             showSuggestions: false,
             selectedTimeslot: null,
-            date2HotelMap: new Map()
+            date2HotelMap: new Map(),
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -64,6 +45,7 @@ export default class Trip extends React.Component {
         this.setMap = this.setMap.bind(this);
         this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
         this.handleSelectTimeslot = this.handleSelectTimeslot.bind(this);
+        this.editMultipleItems = this.editMultipleItems.bind(this);
     }
 
     componentDidMount() {
@@ -344,6 +326,9 @@ export default class Trip extends React.Component {
                         <OptimizationButton
                             displayDate={this.state.today.date}
                             displayItems={this.state.today.events}
+                            userPref={this.state.tripSetting.userPref}
+                            hotels={this.state.date2HotelMap.get(this.state.today.date)}
+                            onConfirm={this.editMultipleItems}
                         />
                     </Box>
                     <Box mb={3}>

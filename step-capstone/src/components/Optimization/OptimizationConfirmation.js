@@ -22,6 +22,7 @@ export default function OptimizationConfirmation(props) {
   const onConfirm = () => {
     setOpen(false);
     props.onConfirm(props.travelObjects);
+    props.onClose();
   }
 
   useEffect(() => { setOpen(true) }, []);
