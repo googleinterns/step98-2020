@@ -8,7 +8,7 @@ import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
-
+import OptimizationButton from '../../scripts/OptimizationButton';
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -25,7 +25,6 @@ export default class Trip extends React.Component {
             },
             map: null,
             service: null,
-
             queryResults: null,
             placeIds: new Set(),
             showSuggestions: false,
@@ -223,6 +222,12 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
+                    <div id="optimization-popper"
+                    style={{
+                        position: "absolute",
+                        left: "800px",
+                        top: "100px"
+                    }}></div>
                     <MapComponent
                         zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
@@ -262,6 +267,12 @@ export default class Trip extends React.Component {
                 </Grid>
                 {this.renderSuggestionBar()}
                 <Grid id="button-group">
+                    <Box mb={3}>
+                        <OptimizationButton
+                            displayDate={this.state.today.date}
+                            displayItems={this.state.today.events}
+                        />
+                    </Box>
                     <Box mb={3}>
                         <GetSuggestionButton
                             onClick={this.toggleSuggestionBar}

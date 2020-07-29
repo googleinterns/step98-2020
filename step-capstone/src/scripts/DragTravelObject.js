@@ -1,6 +1,7 @@
 import _, { clone } from "lodash";
 export const ItemTypes = {
-  TRAVELOBJECT: "travelobject",
+  FINALIZEDTRAVELOBJECT: "FinalizedTravelObject",
+  UNFINALIZEDTRAVELOBJECT: "UnfinalizedTravelObject"
 };
 
 const minPerDiv = 30.0;

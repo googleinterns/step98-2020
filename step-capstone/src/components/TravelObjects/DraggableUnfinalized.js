@@ -5,9 +5,9 @@ import _, { clone } from "lodash";
 import { ItemTypes } from "../../scripts/DragTravelObject";
 
 
-export default function DraggableTravelObject(props) {
+export default function DraggableUnfinalized(props) {
   const item = {
-    type: ItemTypes.TRAVELOBJECT,
+    type: ItemTypes.UNFINALIZEDTRAVELOBJECT,
     travelObjectId: props.data.id,
     data: props.data,
     displayDate: props.displayDate,
@@ -16,7 +16,7 @@ export default function DraggableTravelObject(props) {
 
   const [{ opacity }, dragRef] = useDrag({
     item: {
-      type: ItemTypes.TRAVELOBJECT,
+      type: ItemTypes.UNFINALIZEDTRAVELOBJECT,
       travelObjectId: props.data.id,
       data: props.data,
       displayDate: props.displayDate,
@@ -35,32 +35,20 @@ export default function DraggableTravelObject(props) {
     }),
   });
 
-  let newStyleConfig = _.cloneDeep(props.styleConfig);
-  newStyleConfig.top = "0px";
-
   return (
     <div
       id={props.data.id}
       ref={dragRef}
       style={{
-        position: "absolute",
         width: "100%",
-        height: "30px",
-        top: props.styleConfig.top,
+        height: "100%",
         opacity,
-        zIndex: props.styleConfig.zIndex,
+        zIndex: "3",
         cursor: "move"
       }}
     >
       <TravelObject
-        key={props.key}
-        displayDate={props.displayDate}
-        data={props.data}
-        onRemoveItem={props.onRemoveItem}
-        onEditItem={props.onEditItem}
-        onAddItem={props.onAddItem}
-        onClickObject={props.onClickObject}
-        styleConfig={newStyleConfig}
+        {...props}
       />
     </div>
   );
