@@ -268,7 +268,7 @@ export default class Trip extends React.Component {
                         service={this.state.service}
                         userPref={this.state.tripSetting.userPref}
                         coordinates={(this.state.selectedTimeslot && this.state.selectedTimeslot.coordinates) ?
-                          this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                            this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
                         radius={this.state.tripSetting.userPref.radius}
@@ -283,6 +283,24 @@ export default class Trip extends React.Component {
         return null;
     }
 
+    renderMap() {
+        if (this.state.today.date !== null) {
+            return (
+                <MapComponent
+                    defaultCenter={this.state.tripSetting.destination.coordinates}
+                    finalized={this.state.items.filter((item) => item.finalized)}
+                    unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
+                    selected={this.state.selectedObject}
+                    displayDate={this.state.today}
+                    setMap={this.setMap}
+                    date2HotelMap={this.state.date2HotelMap}
+                />
+            )
+        } else {
+            return null;
+        }
+    }
+
     render() {
         // if data hasn't been loaded yet, don't render the trip
         // prevents map from loading empty data
@@ -292,14 +310,7 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
-                    <MapComponent
-                        defaultCenter={this.state.tripSetting.destination.coordinates}
-                        finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
-                        selected={this.state.selectedObject}
-                        displayDate={this.state.today}
-                        setMap={this.setMap}
-                    />
+                    {this.renderMap()}
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
