@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import DraggableUnfinalized from "../TravelObjects/DraggableUnfinalize";
+import DraggableUnfinalized from "../TravelObjects/DraggableUnfinalized";
 import { Button, Grid, Menu, MenuItem, Typography } from "@material-ui/core";
 import TripSettingPopover from "../TripForms/TripSettingPopover";
 import { FirebaseContext } from "../Firebase";
