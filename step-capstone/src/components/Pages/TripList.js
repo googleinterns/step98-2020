@@ -84,7 +84,7 @@ class TripList extends React.Component {
 
   handleEditTripSetting(newSetting) {
     this.context.editTripSetting(this.state.reference + this.state.selectedTripId, this.state.selectedTripSetting, newSetting)
-      .then(() => { console.log("load trips"); this.loadTrips() })
+      .then(() => { this.loadTrips() })
   }
 
   handleCloseTripSetting() {
