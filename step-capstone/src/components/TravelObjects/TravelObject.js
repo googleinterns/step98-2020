@@ -6,7 +6,16 @@ import FormPopover from "../TravelObjectForms/FormPopover";
 import "../../styles/TimeLine.css";
 
 export default function TravelObject(props) {
-  let content = null;
+    let content = null;
+    
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        if (props.data.placeId !== "") {
+            props.onClickObject(props.data.id);
+        }
+    };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -25,6 +34,32 @@ export default function TravelObject(props) {
   };
 
   const open = Boolean(anchorEl);
+
+    return (
+        <div>
+            <div onClick={handleClick}>
+                {content}
+            </div>
+            <FormPopover
+                    data={props.data}
+                    isNewItem={false}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                    onAddItem={props.onAddItem}
+                    onEditItem={props.onEditItem}
+                    onRemoveItem={props.onRemoveItem}
+                    travelObjects={props.travelObjects}
+                />
+        </div>
 
   switch (props.data.type) {
     case "event":

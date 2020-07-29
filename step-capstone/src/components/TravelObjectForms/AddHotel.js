@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import { isValid } from "../../scripts/HelperFunctions";
+import { isValid, AutoCapitalize, sameDate } from "../../scripts/HelperFunctions";
 
 export default function AddHotel(props) {
   let overwriting = props.data !== undefined;
@@ -42,6 +42,7 @@ export default function AddHotel(props) {
         placeId: "",
       }
   );
+
   const [description, setDescription] = useState(
     overwriting ? props.data.description : ""
   );
@@ -77,22 +78,21 @@ export default function AddHotel(props) {
   useEffect(() => {
     props.onDataChange({
       id: overwriting ? props.data.id : undefined,
-      title: title,
+      title: AutoCapitalize(title),
       type: "hotel",
       startDate: startDate,
       endDate: endDate,
       finalized: checked,
-      location: location ? location.address : null,
-      coordinates: location ? location.coordinates : null,
+      location: location ? location.address : "",
+      coordinates: location ? location.coordinates : "",
       description: description,
     });
-
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
     } else if (checked && (location===null||location.address==="")) {
       props.onToggleValidation(false);
-    } else if (!isValid(startDate) || !isValid(endDate)) {
+    } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
       props.onToggleValidation(false);
     } else {
       props.onToggleValidation(true);
@@ -131,6 +131,8 @@ export default function AddHotel(props) {
             label={"Check in"}
             value={startDate}
             onChange={setStartDate}
+            error={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)}
+            helperText={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate) ? "Check in and checkout dates cannot be the same." : ""}
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -139,6 +141,8 @@ export default function AddHotel(props) {
             label={"Check out"}
             value={endDate}
             onChange={setEndDate}
+            error={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)}
+            helperText={!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate) ? "Check in and checkout dates cannot be the same." : ""}
           />
         </MuiPickersUtilsProvider>
       </Grid>

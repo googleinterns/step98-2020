@@ -13,7 +13,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput";
-import {isValid} from '../../scripts/HelperFunctions';
+import { isValid, AutoCapitalize, hasTimeConflict } from '../../scripts/HelperFunctions';
 
 export default function AddEvent(props) {
   let overwriting = props.data !== undefined;
@@ -31,15 +31,15 @@ export default function AddEvent(props) {
   const [location, setLocation] = useState(
     overwriting
       ? {
-          address: props.data.location,
-          coordinates: props.data.coordinates,
-          placeId: props.data.placeId,
-        }
-      : { 
-          address: "",
-          coordinates: "",
-          placeId: "",
-        }
+        address: props.data.location,
+        coordinates: props.data.coordinates,
+        placeId: props.data.placeId,
+      }
+      : {
+        address: "",
+        coordinates: "",
+        placeId: "",
+      }
   );
   const [description, setDescription] = useState(
     overwriting ? props.data.description : ""
@@ -77,23 +77,23 @@ export default function AddEvent(props) {
   useEffect(() => {
     props.onDataChange({
       id: overwriting ? props.data.id : undefined,
-      title: title,
+      title: AutoCapitalize(title),
       type: "event",
       startDate: startDate,
       endDate: endDate,
       finalized: checked,
-      location: location ? location.address : null,
-      coordinates: location ? location.coordinates : null,
+      location: location ? location.address : "",
+      coordinates: location ? location.coordinates : "",
       description: description,
-      placeId: location ? location.placeId : null,
+      placeId: location ? location.placeId : "",
     });
 
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
-    } else if (checked && (location===null||location.address===""||location.address===null)) {
+    } else if (checked && (location === null || location.address === "" || location.address === null)) {
       props.onToggleValidation(false);
-    } else if (!isValid(startDate) || !isValid(endDate)) {
+    } else if (!isValid(startDate) || !isValid(endDate) || (checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects))) {
       props.onToggleValidation(false);
     } else {
       props.onToggleValidation(true);
@@ -134,6 +134,8 @@ export default function AddEvent(props) {
             label={"Start"}
             value={startDate}
             onChange={setStartDate}
+            error={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects)}
+            helperText={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects) ? "You already have something scheduled for that time" : ""}
           />
         </MuiPickersUtilsProvider>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -142,6 +144,8 @@ export default function AddEvent(props) {
             label={"End"}
             value={endDate}
             onChange={setEndDate}
+            error={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects)}
+            helperText={checked && hasTimeConflict(props.data.id, startDate, endDate, props.travelObjects) ? "You already have something scheduled for that time" : ""}
           />
         </MuiPickersUtilsProvider>
       </Grid>
@@ -149,7 +153,7 @@ export default function AddEvent(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleLocationChange}
-            error={checked && (location===null||location.address===""||location.address===null)}
+            error={checked && (location === null || location.address === "" || location.address === null)}
             text={location ? location.address : ""}
             type="event"
           />

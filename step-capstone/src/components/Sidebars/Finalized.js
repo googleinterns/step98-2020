@@ -29,6 +29,8 @@ export default function Finalized(props) {
                 onClickTimeslot={props.onClickTimeslot}
                 onOpenSuggestions={props.onOpenSuggestions}
                 startDate={props.startDate}
+                hotelMap={props.hotelMap}
+                travelObjects={props.travelObjects}
             />
         </div>
 

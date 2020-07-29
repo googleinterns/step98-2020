@@ -157,8 +157,6 @@ export const handleClickedTimePoint = (idV, startOfDisplayDate, endOfDisplayDate
 
   let timePointEnd = new Date(timePointStart);
   timePointEnd.setTime(timePointEnd.getTime() + 30 * 60000);
-  console.log(timePointStart)
-  console.log(timePointEnd)
   let overlappingPoint = searchForOverlappingPoint(emptySlots,timePointStart,timePointEnd);
   if (overlappingPoint === null) {
     return { prevTravelObject: undefined, freeTimeSlot: undefined, nextTravelObject: undefined };

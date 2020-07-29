@@ -9,6 +9,29 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import OptimizationButton from '../../scripts/OptimizationButton';
+import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
+import _ from "lodash"
+import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
+
+// TODO: Implement code with form
+// getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
+//     .then(travelObjects => {
+//         var startTime = new Date(this.state.today.date);
+//         startTime.setHours(9, 0, 0);
+//         var endTime = new Date(this.state.today.date);
+//         endTime.setHours(20, 0, 0);
+//         try {
+//             let schedule = createSchedule(travelObjects, {
+//                 startDate: startTime,
+//                 endDate: endTime,
+//                 foodTimeRanges: [3600000, 3600000, 3600000]
+//             }, this.state.today.date);
+//             this.editMultipleItems(schedule);
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     })
+
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
     constructor(props) {
@@ -28,7 +51,8 @@ export default class Trip extends React.Component {
             queryResults: null,
             placeIds: new Set(),
             showSuggestions: false,
-            selectedTimeslot: null
+            selectedTimeslot: null,
+            date2HotelMap: new Map()
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -55,22 +79,39 @@ export default class Trip extends React.Component {
                         endDate: trip.startDate.toDate(),
                         destination: trip.destination,
                         description: trip.description,
-                        userPref: trip.userPref
+                        userPref: trip.userPref,
                     }
                 })
-
                 trip.travelObjects.forEach(travelObject => {
                     travelObject.startDate = travelObject.startDate.toDate();
                     travelObject.endDate = travelObject.endDate.toDate();
-                    travelObjectList.push(travelObject)
+                    travelObjectList.push(travelObject);
                     placeIds.add(travelObject.placeId);
                 });
-                this.setState({ items: travelObjectList, placeIds: placeIds });
+                this.setState({ items: travelObjectList, placeIds: placeIds, date2HotelMap: this.getHotelMap(trip.travelObjects) });
             })
             .catch(error => {
                 console.log("Error retrieving trip data");
                 console.error(error);
             });
+    }
+
+    getHotelMap(items) {
+        var hotelMap = new Map(); // Map date to morning and night hotel
+        items.forEach(travelObject => {
+            if (travelObject.type === "hotel") {
+                hotelMap.set(travelObject.startDate.toDateString(), { nightHotel: travelObject })
+                var curDate = new Date(travelObject.startDate);
+                curDate.setDate(curDate.getDate() + 1);
+                while (!sameDate(curDate, travelObject.endDate)) {
+                    hotelMap.set(curDate.toDateString(), { morningHotel: travelObject, nightHotel: travelObject });
+                    curDate.setDate(curDate.getDate() + 1);
+
+                }
+                hotelMap.set(travelObject.endDate.toDateString(), { morningHotel: travelObject })
+            }
+        })
+        return hotelMap;
     }
 
     handleRemoveItem(data) {
@@ -80,9 +121,12 @@ export default class Trip extends React.Component {
                 if (data.type !== "flight") {
                     placeIdCopy.delete(data.placeId);
                 }
+                let items = this.state.items.filter((item) => item.id !== data.id)
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
                 this.setState({
-                    items: this.state.items.filter((item) => item.id !== data.id),
-                    placeIds: placeIdCopy
+                    items: items,
+                    placeIds: placeIdCopy,
+                    date2HotelMap: hotelMap
                 });
             })
             .catch(error => {
@@ -107,18 +151,41 @@ export default class Trip extends React.Component {
                 newItems.push(item);
             }
         });
-        this.context.editTravelObject(this.state.reference, itemToChange, data)
+        this.context.editTravelObject(this.state.reference, itemToChange, _.cloneDeep(data))
             .then(() => {
+                let hotelMap = itemToChange.type === "hotel" ? this.getHotelMap(newItems) : this.state.date2HotelMap;
                 this.setState({
                     items: newItems,
-                    placeIds: newPlaceIds
+                    placeIds: newPlaceIds,
+                    date2HotelMap: hotelMap
                 });
             })
             .catch((error) => {
                 console.log("Error Editing Item");
                 console.log(error);
             });
-        this.setState({ items: newItems });
+    }
+
+    editMultipleItems(editedTravelObjects) {
+        let editedIds = editedTravelObjects.reduce((objectMap, object) => {
+            objectMap.set(object.id, { edited: object });
+            return objectMap;
+        }, new Map());
+        let newItems = this.state.items.map((item) => {
+            if (editedIds.has(item.id)) {
+                // add old object into map
+                editedIds.set(item.id, { edited: editedIds.get(item.id).edited, previous: item });
+                return editedIds.get(item.id).edited;
+            } else {
+                return item;
+            }
+        })
+        let editingPromises = editedTravelObjects.map(item => {
+            return this.context.editTravelObject(this.state.reference, editedIds.get(item.id).previous, editedIds.get(item.id).edited);
+        });
+        Promise.all(editingPromises).then(() => {
+            this.setState({ items: newItems })
+        })
     }
 
     handleAddItem(data) {
@@ -130,7 +197,9 @@ export default class Trip extends React.Component {
         data.id = Date.now();
         this.context.addTravelObject(this.state.reference, data)
             .then(() => {
-                this.setState({ items: this.state.items.concat(data), placeIds: newPlaceIds });
+                let items = this.state.items.concat(data);
+                let hotelMap = data.type === "hotel" ? this.getHotelMap(items) : this.state.date2HotelMap;
+                this.setState({ items: items, placeIds: newPlaceIds, date2HotelMap: hotelMap });
             })
             .catch(error => {
                 console.log("Error Adding Item")
@@ -150,7 +219,7 @@ export default class Trip extends React.Component {
     }
 
     handleChangeDisplayDate(travelObjects, date) {
-        if (this.state.today.date !== date) {
+        if (!sameTravelObjectList(travelObjects, this.state.today.events) || this.state.today.date !== date) {
             this.setState({
                 today: {
                     events: travelObjects,
@@ -199,13 +268,15 @@ export default class Trip extends React.Component {
                         show={this.state.showSuggestions}
                         service={this.state.service}
                         userPref={this.state.tripSetting.userPref}
-                        coordinates={this.state.selectedTimeslot ? this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                        coordinates={(this.state.selectedTimeslot && this.state.selectedTimeslot.coordinates) ?
+                          this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
-                        timeRange= {this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
-                        radius={this.state.tripSetting.userPref.radius }
+                        timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
+                        radius={this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
+                        travelObjects={this.state.items}
                     />
                 </Grid>
             )
@@ -229,10 +300,9 @@ export default class Trip extends React.Component {
                         top: "100px"
                     }}></div>
                     <MapComponent
-                        zoom={15}
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== null)}
+                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
                         selected={this.state.selectedObject}
                         displayDate={this.state.today}
                         setMap={this.setMap}
@@ -251,6 +321,8 @@ export default class Trip extends React.Component {
                             setTodaysEvents={this.handleChangeDisplayDate}
                             onClickTimeslot={this.handleSelectTimeslot}
                             onOpenSuggestions={this.toggleSuggestionBar}
+                            hotelMap={this.state.date2HotelMap}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                     <Grid item id="unfinalized-component">
@@ -262,6 +334,7 @@ export default class Trip extends React.Component {
                             tripSetting={this.state.tripSetting}
                             onEditTripSetting={this.handleEditTripSetting}
                             onClickObject={this.handleSelectedObject}
+                            travelObjects={this.state.items}
                         />
                     </Grid>
                 </Grid>
@@ -280,8 +353,9 @@ export default class Trip extends React.Component {
                     </Box>
                     <Box>
                         <AddItemButton
-                            startDate={this.state.tripSetting.startDate}
+                            startDate={new Date(this.state.today.date)}
                             onAddItem={this.handleAddItem}
+                            travelObjects={this.state.items}
                         />
                     </Box>
                 </Grid>

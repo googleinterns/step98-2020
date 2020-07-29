@@ -17,7 +17,7 @@ import {
 import LocationAutocompleteInput from "../Utilities/LocationAutocompleteInput"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import "../../styles/TripSetting.css"
-import { fetchPhoto } from "../../scripts/HelperFunctions"
+import { fetchPhoto, AutoCapitalize, isValid } from "../../scripts/HelperFunctions"
 
 export default class TripSettingFormPopover extends React.Component {
     constructor(props) {
@@ -123,28 +123,28 @@ function EditTripSetting(props) {
     }
 
     useEffect(() => {
-        let newMap = new window.google.maps.Map(window.document.getElementById("map"))
+        let newMap = new window.google.maps.Map(window.document.getElementById("trip-setting-map"))
         setMap(newMap);
         setService(new window.google.maps.places.PlacesService(newMap));
     }, [])
 
     useEffect(() => {
         props.onDataChange({
-            title: title,
+            title: AutoCapitalize(title),
             destination: destination,
             photoUrl: photoUrl,
             startDate: startDate,
             endDate: endDate,
             description: description,
-            userPref: userPref
+            userPref: userPref,
         })
         // notifies form if necessary inputs are present
-        props.onValidation(!(!destination || (title === "")))
-    }, [destination, startDate, endDate, description, userPref, photoUrl])
+        props.onValidation((destination && !(title === "") && isValid(startDate) && isValid(endDate)))
+    }, [destination, startDate, endDate, description, userPref, photoUrl, title])
 
     return (
-        <div >
-            <div id="map"></div>
+        <div>
+            <div id="trip-setting-map"></div>
             <Grid container direction="column">
                 <Grid>
                     <Typography variant={"h4"} gutterBottom>Trip Settings</Typography>
