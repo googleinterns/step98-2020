@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from "react";
-import TravelObject from "../TravelObjects/TravelObject";
+import React, { useState } from "react";
 import { sameDate } from "../../scripts/HelperFunctions";
-import InsertObjectPopover from "./InsertObjectPopover"
+import InsertObjectPopover from "./InsertObjectPopover";
+import DraggableFinalized from "../TravelObjects/DraggableFinalized";
+import { ItemTypes, moveTravelObject } from "../../scripts/DragTravelObject";
+import { useDrop } from "react-dnd";
 
 export default function OneHourInterval(props) {
   const [slots, setSlots] = useState(null);
-  const displayHeightOfADiv = 45.0;
+  const displayHeightOfADiv = 45.47;
   const padding = 22.0;
   const minPerDiv = 30.0;
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [{ isOver, canDrop }, drop] = useDrop({
+    accept: ItemTypes.FINALIZEDTRAVELOBJECT,
+    drop: (item, monitor) => moveTravelObject(item, monitor),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+      canDrop: !!monitor.canDrop(),
+    }),
+  });
 
   const handleOnClickInterval = (idV, event) => {
     if (event.target.className === "Interval") {
       let data = props.onClickInterval(idV);
       if (data.freeTimeSlot !== undefined) {
         setSlots(data);
-        setAnchorEl(event.currentTarget)
+        setAnchorEl(event.currentTarget);
       }
     }
-    
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   /*Given startDate and endDate of a TravelObject, return the height of display (unit: pixel) */
   const getHeightPercentage = (startDate, endDate) => {
@@ -40,8 +50,8 @@ export default function OneHourInterval(props) {
       dif = endDate.getHours() * 60 + endDate.getMinutes();
     }
 
-    let height = (dif * displayHeightOfADiv) / minPerDiv
-    return  height < padding ? 0 : height - padding;
+    let height = (dif * displayHeightOfADiv) / minPerDiv;
+    return height < padding ? 0 : height - padding;
   };
 
   const getHeightFromMin = (min) => {
@@ -73,10 +83,10 @@ export default function OneHourInterval(props) {
         item.data.type === "hotel"
           ? getTopPixel(item.data.endDate)
           : getTopPixel(item.data.startDate);
-
       let travelObject = (
-        <TravelObject
+        <DraggableFinalized
           key={item.data.id}
+          displayDate={props.displayDate}
           data={item.data}
           onRemoveItem={props.onRemoveItem}
           onEditItem={props.onEditItem}
@@ -102,7 +112,15 @@ export default function OneHourInterval(props) {
     });
   }
   return (
-    <div className="OneHourInterval">
+    <div
+      className="OneHourInterval"
+      ref={drop}
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+      }}
+    >
       <tr className="OneHourInterval">
         <td className="headcol">{props.idV + ":00"}</td>
         <td

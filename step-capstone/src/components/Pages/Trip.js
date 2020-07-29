@@ -8,6 +8,7 @@ import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
+import OptimizationButton from '../../scripts/OptimizationButton';
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
@@ -292,6 +293,12 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
+                    <div id="optimization-popper"
+                    style={{
+                        position: "absolute",
+                        left: "800px",
+                        top: "100px"
+                    }}></div>
                     <MapComponent
                         defaultCenter={this.state.tripSetting.destination.coordinates}
                         finalized={this.state.items.filter((item) => item.finalized)}
@@ -333,6 +340,12 @@ export default class Trip extends React.Component {
                 </Grid>
                 {this.renderSuggestionBar()}
                 <Grid id="button-group">
+                    <Box mb={3}>
+                        <OptimizationButton
+                            displayDate={this.state.today.date}
+                            displayItems={this.state.today.events}
+                        />
+                    </Box>
                     <Box mb={3}>
                         <GetSuggestionButton
                             onClick={this.toggleSuggestionBar}
