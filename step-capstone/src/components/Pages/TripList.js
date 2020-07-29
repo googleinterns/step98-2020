@@ -65,7 +65,6 @@ class TripList extends React.Component {
 
   handleDeleteTrip(tripId) {
     this.context.deleteTrip(this.state.reference + tripId).then(() => this.loadTrips());
-    this.loadTrips();
   }
 
   handleEditTripClick(tripId) {
