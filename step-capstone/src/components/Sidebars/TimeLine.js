@@ -127,7 +127,7 @@ export default class TimeLine extends React.Component {
                   nextItem.type === "hotel" ? nextItem.endDate.getHours() : 0
                 }
                 items={[{ data: nextItem, div: ":00" }]}
-                zIndex={nextItemIndex}
+                zIndex={nextItemIndex + 1}
                 displayDate={this.props.displayDate}
                 onRemoveItem={this.props.onRemoveItem}
                 onEditItem={this.props.onEditItem}
@@ -140,6 +140,7 @@ export default class TimeLine extends React.Component {
                 travelObjects={this.props.travelObjects}
               />
             );
+            nextItemIndex++;
           } else {
             var items = [];
             var div = null;
