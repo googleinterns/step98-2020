@@ -35,7 +35,7 @@ export default class TimeLine extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString) {
+    if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString()) {
       this.setState()
       this.props.setTodaysEvents(
         this.displayItems,
