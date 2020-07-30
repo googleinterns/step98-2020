@@ -245,11 +245,12 @@ export default class Trip extends React.Component {
     }
 
     // Triggered when a time slot is selected in timeline
-    handleSelectTimeslot(timeRange, coordinates) {
+    handleSelectTimeslot(timeRange, coordinates, radius) {
         this.setState({
             selectedTimeslot: {
                 timeRange: timeRange,
-                coordinates: coordinates
+                coordinates: coordinates,
+                radius: radius
             }
         })
     }
@@ -270,10 +271,10 @@ export default class Trip extends React.Component {
                         service={this.state.service}
                         userPref={this.state.tripSetting.userPref}
                         coordinates={(this.state.selectedTimeslot && this.state.selectedTimeslot.coordinates) ?
-                          this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
+                            this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
-                        radius={this.state.tripSetting.userPref.radius}
+                        radius={this.state.selectedTimeslot && this.state.selectedTimeslot.radius ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
