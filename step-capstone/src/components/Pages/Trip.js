@@ -268,6 +268,24 @@ export default class Trip extends React.Component {
         return null;
     }
 
+    renderMap() {
+        if (this.state.today.date !== null) {
+            return (
+                <MapComponent
+                    defaultCenter={this.state.tripSetting.destination.coordinates}
+                    finalized={this.state.items.filter((item) => item.finalized)}
+                    unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
+                    selected={this.state.selectedObject}
+                    displayDate={this.state.today}
+                    setMap={this.setMap}
+                    date2HotelMap={this.state.date2HotelMap}
+                />
+            )
+        } else {
+            return null;
+        }
+    }
+
     render() {
         // if data hasn't been loaded yet, don't render the trip
         // prevents map from loading empty data
@@ -283,14 +301,7 @@ export default class Trip extends React.Component {
                         left: "800px",
                         top: "100px"
                     }}></div>
-                    <MapComponent
-                        defaultCenter={this.state.tripSetting.destination.coordinates}
-                        finalized={this.state.items.filter((item) => item.finalized)}
-                        unfinalized={this.state.items.filter((item) => !item.finalized && item.coordinates !== "")}
-                        selected={this.state.selectedObject}
-                        displayDate={this.state.today}
-                        setMap={this.setMap}
-                    />
+                    {this.renderMap()}
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
                     <Grid item id="finalized-component">
