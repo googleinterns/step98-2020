@@ -1,8 +1,9 @@
 import React from 'react';
-import { Grid, IconButton } from '@material-ui/core'
+import { Grid, IconButton, Typography, Box } from '@material-ui/core'
 import { ArrowLeft, ArrowRight } from '@material-ui/icons'
 import "../../styles/Suggestions.css"
 import SuggestionItem from "./SuggestionItem"
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 export default class SuggestionBar extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ export default class SuggestionBar extends React.Component {
   }
 
   componentDidMount() {
+    this.updateDisplayNum();
     window.addEventListener("resize", this.updateDisplayNum)
   }
 
@@ -51,6 +53,17 @@ export default class SuggestionBar extends React.Component {
   }
 
   render() {
+    if (this.state.suggestions.length === 0) {
+      return (
+        <Box mt={10}>
+          <Grid container justify="center" align-items="center">
+            <ErrorOutlineIcon color="secondary" fontSize="medium" />
+            <Typography variant="subtitle1" gutterBottom color="secondary">We were unable to retrieve any suggestions given your location and preferences.</Typography>
+          </Grid>
+        </Box>
+      )
+    }
+
     let suggestionItems = [];
     for (let i = 0; i < this.state.numOfSuggestionsToDisplay; i++) {
       suggestionItems.push(
@@ -67,7 +80,7 @@ export default class SuggestionBar extends React.Component {
 
     return (
       <div id="suggestion-bar">
-        <Grid id="suggestion-grid" container direction="row" justify="center" nowrap>
+        <Grid id="suggestion-grid" container direction="row" justify="center" wrap="nowrap">
           <Grid item>
             <IconButton
               className="arrow-buttons"

@@ -107,6 +107,7 @@ export default function SuggestionItem(props) {
         }}
         onAddItem={props.onAddItem}
         travelObjects={props.travelObjects}
+        isFromSuggestions={true}
       />
     </Card>
   )

@@ -1,9 +1,11 @@
-import React, { useContext } from 'react';
-import TravelObject from '../TravelObjects/TravelObject';
-import { Button, Grid, Menu, MenuItem, Typography } from '@material-ui/core';
+import React, { useContext } from "react";
+import DraggableUnfinalized from "../TravelObjects/DraggableUnfinalized";
+import { Button, Grid, Menu, MenuItem, Typography } from "@material-ui/core";
 import TripSettingPopover from "../TripForms/TripSettingPopover";
-import { FirebaseContext } from '../Firebase';
+import { FirebaseContext } from "../Firebase";
 import { Redirect } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 function Header(props) {
   const context = useContext(FirebaseContext);
@@ -21,16 +23,16 @@ function Header(props) {
   const handleTrips = () => {
     sessionStorage.setItem("tripId", "");
     setTripRedirect(true);
-  }
+  };
 
   const handleSignOut = (e) => {
     e.preventDefault();
-    context.auth.signOut().then(() => window.location = "index.html");
-  }
+    context.auth.signOut().then(() => (window.location = "index.html"));
+  };
 
   return (
     <div>
-      <Grid container direction='row' justify='space-around' id='top-buttons'>
+      <Grid container direction="row" justify="space-around" id="top-buttons">
         <div>
           {tripRedirect ? <Redirect to="/trips/" /> : ""}
           <Button variant='outlined' aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>Menu</Button>
@@ -54,15 +56,16 @@ function Header(props) {
       </Grid>
       <table>
         <thead className="header-name">
-          <Typography variant="h6" gutterBottom>Ideas</Typography>
+          <Typography variant="h6" gutterBottom>
+            Ideas
+          </Typography>
         </thead>
       </table>
     </div>
-  )
+  );
 }
 
 export default class Unfinalized extends React.Component {
-
   render() {
     return (
       <div>
@@ -70,25 +73,31 @@ export default class Unfinalized extends React.Component {
           tripSetting={this.props.tripSetting}
           onEditTripSetting={this.props.onEditTripSetting}
         />
-        <Grid style={{ position: "absolute", top: "120px", width: "300px" }}>
-          {
-            this.props.list.map((item) => {
-              return <TravelObject
-                key={item.id}
-                data={item}
-                onRemoveItem={this.props.onRemoveItem}
-                onEditItem={this.props.onEditItem}
-                onAddItem={this.props.onAddItem}
-                styleConfig={{ position: "relative", top: "1px" }}
-                onClickObject={this.props.onClickObject}
-                travelObjects={this.props.travelObjects}
-              />
-            })
-          }
-        </Grid>
+        <DndProvider backend={HTML5Backend}>
+          <Grid
+            container
+            style={{ position: "absolute", top: "120px", width: "300px" }}
+          >
+            {this.props.list.map((item) => {
+              return (
+                <Grid item >
+                  <div>
+                    <DraggableUnfinalized
+                      key={item.id}
+                      data={item}
+                      onRemoveItem={this.props.onRemoveItem}
+                      onEditItem={this.props.onEditItem}
+                      onAddItem={this.props.onAddItem}
+                      onClickObject={this.props.onClickObject}
+                      travelObjects={this.props.travelObjects}
+                    />
+                  </div>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </DndProvider>
       </div>
-
-    )
+    );
   }
-
 }

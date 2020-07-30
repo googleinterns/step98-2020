@@ -15,20 +15,17 @@ import "../../styles/SuggestionPopup.css"
 import PreferenceForm from "../Utilities/PreferenceForm"
 import { handleSuggestions } from "../../scripts/Suggestions"
 import SuggestionBar from "../Suggestions/SuggestionBar"
+import _ from "lodash"
 
 export default class SuggestionPopup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userPref: this.props.userPref,
-            coordinates: this.props.coordinates,
-            timeRange: this.props.timeRange,
-            items: this.props.items,
+            userPref: this.getModifiedUserPref(),
             tabPos: 0,
             foodSuggestions: [],
             activitySuggestions: [],
             suggestionsLoaded: false,
-            radius: this.props.radius
         }
 
         this.handleUserPrefChange = this.handleUserPrefChange.bind(this);
@@ -38,8 +35,12 @@ export default class SuggestionPopup extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        // opening
         if (!prevProps.show && this.props.show) {
             this.getSuggestions();
+            // closing
+        } else if (prevProps.show && !this.props.show) {
+            this.setState({ suggestionsLoaded: false });
         }
     }
 
@@ -51,30 +52,35 @@ export default class SuggestionPopup extends React.Component {
     }
 
     getSuggestions() {
+        let prefs = this.state.suggestionsLoaded ? this.state.userPref : this.getModifiedUserPref();
         this.setState({ suggestionsLoaded: false });
-        this.getActivitySuggestions(this.getConfig("activities")).then(activities => {
-            this.getFoodSuggestions(this.getConfig("food")).then(foods => {
-                if (this.state.radius) {
-                    var updatedPref = this.state.userPref;
-                    updatedPref.radius = this.state.radius;
-                }
+        this.getActivitySuggestions(this.getConfig("activities", prefs)).then(activities => {
+            this.getFoodSuggestions(this.getConfig("food", prefs)).then(foods => {
                 this.setState({
                     foodSuggestions: foods,
                     activitySuggestions: activities,
                     suggestionsLoaded: true,
-                    userPref: updatedPref
+                    userPref: prefs,
                 })
             })
         });
     }
 
-    getConfig(queryType) {
+    getModifiedUserPref() {
+        let newPref = _.cloneDeep(this.props.userPref);
+        newPref.radius = this.props.radius;
+        newPref.timeRange = this.props.timeRange;
+        newPref.coordinates = this.props.coordinates;
+        return newPref;
+    }
+
+    getConfig(queryType, userPref) {
         return {
             userCategories: queryType === "activities" ? this.state.userPref.activityPreferences : this.state.userPref.foodPreferences,
-            userBudget: this.state.userPref.budget,
-            radius: "" + this.state.userPref.radius * 1000,
-            coordinates: this.props.coordinates,
-            timeRange: this.props.timeRange,
+            userBudget: userPref.budget,
+            radius: "" + userPref.radius * 1000,
+            coordinates: userPref.coordinates,
+            timeRange: userPref.timeRange,
             items: this.props.items
         }
     }
@@ -91,13 +97,22 @@ export default class SuggestionPopup extends React.Component {
          *  6. items: set of all place ids of selected places
          * return the suggestions : an array of PlaceObject already sorted based on score
          */
-        let results = await handleSuggestions(this.props.service, config, "activities");
-        return results;
+        try {
+            let results = await handleSuggestions(this.props.service, config, "activities");
+            return results;
+        } catch {
+            return [];
+        }
+
     }
 
     async getFoodSuggestions(config) {
-        let results = await handleSuggestions(this.props.service, config, "food");
-        return results;
+        try {
+            let results = await handleSuggestions(this.props.service, config, "food");
+            return results;
+        } catch {
+            return [];
+        }
     }
 
     handleToggleTab(event, newVal) {
@@ -129,7 +144,7 @@ export default class SuggestionPopup extends React.Component {
     }
 
     handleUserPrefChange(newPref) {
-        if (newPref !== this.state.userPref) {
+        if (!this.equalsUserPref(newPref, this.state.userPref)) {
             this.setState({
                 userPref: newPref
             })
@@ -149,7 +164,7 @@ export default class SuggestionPopup extends React.Component {
                                 px={3}
                             >
                                 <PreferenceForm
-                                    pref={this.props.userPref}
+                                    pref={this.state.suggestionsLoaded ? this.state.userPref : this.getModifiedUserPref()}
                                     onChange={this.handleUserPrefChange}
                                 />
                                 <Box my={2}>

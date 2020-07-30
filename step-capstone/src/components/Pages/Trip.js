@@ -8,6 +8,7 @@ import { FirebaseContext } from '../Firebase';
 import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
+import OptimizationButton from '../Optimization/OptimizationButton';
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
@@ -71,6 +72,7 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
+                trip.userPref.dayStartEndTimes = [trip.userPref.dayStartEndTimes[0].toDate(), trip.userPref.dayStartEndTimes[1].toDate()]
                 this.setState({
                     tripSetting: {
                         title: trip.title,
@@ -243,11 +245,12 @@ export default class Trip extends React.Component {
     }
 
     // Triggered when a time slot is selected in timeline
-    handleSelectTimeslot(timeRange, coordinates) {
+    handleSelectTimeslot(timeRange, coordinates, radius) {
         this.setState({
             selectedTimeslot: {
                 timeRange: timeRange,
-                coordinates: coordinates
+                coordinates: coordinates,
+                radius: radius
             }
         })
     }
@@ -271,7 +274,7 @@ export default class Trip extends React.Component {
                             this.state.selectedTimeslot.coordinates : this.state.tripSetting.destination.coordinates}
                         items={this.state.placeIds}
                         timeRange={this.state.selectedTimeslot ? this.state.selectedTimeslot.timeRange : [todayStartTime, todayEndTime]}
-                        radius={this.state.tripSetting.userPref.radius}
+                        radius={this.state.selectedTimeslot && this.state.selectedTimeslot.radius ? this.state.selectedTimeslot.radius : this.state.tripSetting.userPref.radius}
                         onClose={this.toggleSuggestionBar}
                         finalized={this.state.selectedTimeslot !== null}
                         onAddItem={this.handleAddItem}
@@ -310,6 +313,12 @@ export default class Trip extends React.Component {
         return (
             <div className="trip">
                 <Grid id="map-component">
+                    <div id="optimization-popper"
+                    style={{
+                        position: "absolute",
+                        left: "800px",
+                        top: "100px"
+                    }}></div>
                     {this.renderMap()}
                 </Grid>
                 <Grid container className="foreground" direction="row" justify="space-between">
@@ -344,6 +353,12 @@ export default class Trip extends React.Component {
                 </Grid>
                 {this.renderSuggestionBar()}
                 <Grid id="button-group">
+                    <Box mb={3}>
+                        <OptimizationButton
+                            displayDate={this.state.today.date}
+                            displayItems={this.state.today.events}
+                        />
+                    </Box>
                     <Box mb={3}>
                         <GetSuggestionButton
                             onClick={this.toggleSuggestionBar}

@@ -2,9 +2,14 @@ import React from "react";
 import FinalizedHeader from "../Sidebars/FinalizedHeader";
 import "../../styles/TimeLine.css";
 import { travelObjectStartDateComparator } from "../../scripts/HelperFunctions";
-import { getEmptySlots, handleClickedTimePoint } from "./HandleClickedTimePoint";
+import {
+  getEmptySlots,
+  handleClickedTimePoint,
+} from "./HandleClickedTimePoint";
 import { sameDate } from "../../scripts/HelperFunctions";
 import OneHourInterval from "./OneHourInterval";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { Grid } from "@material-ui/core"
 import TravelObject from "../TravelObjects/TravelObject"
 
@@ -35,8 +40,12 @@ export default class TimeLine extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString) {
+    if (prevProps.displayDate.toDateString() !== this.props.displayDate.toDateString()) {
       this.setState()
+      this.props.setTodaysEvents(
+        this.displayItems,
+        this.props.displayDate.toDateString()
+      );
     }
   }
 
@@ -67,7 +76,13 @@ export default class TimeLine extends React.Component {
   handleOnClickInterval(idV) {
     idV = idV.length < 5 ? "0" + idV : idV;
 
-    return handleClickedTimePoint(idV, this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel, this.emptySlots)
+    return handleClickedTimePoint(
+      idV,
+      this.startOfDisplayDate,
+      this.endOfDisplayDate,
+      this.displayItemsExcludeHotel,
+      this.emptySlots
+    );
   }
 
   /* Handling rendering starts HERE */
@@ -271,14 +286,16 @@ export default class TimeLine extends React.Component {
           onChangeDisplayDate={this.props.onChangeDisplayDate}
         />
         <div className="outer">
-          <table className="offset">
-            <tbody>
+          <DndProvider backend={HTML5Backend}>
+            <table className="offset">
+              <tbody>
               <tr></tr>
               {this.getMorningHotel()}
               <div id="intervals">{this.getIntervals()}</div>
               {this.getNightHotel()}
             </tbody>
-          </table>
+            </table>
+          </DndProvider>
         </div>
       </div>
     );
