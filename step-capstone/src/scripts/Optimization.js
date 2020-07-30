@@ -38,7 +38,7 @@ export const getOptimalRoute = function (travelObjects, origin, destination) {
 
 export const createSchedule = function (travelObjects, userPref, displayDate) {
   var curTime = new Date(displayDate);
-  curTime.setTime(userPref.startDate.getTime() + travelObjects[0].toNextLocation.duration.value * 1000)
+  curTime.setTime(userPref.dayStartEndTimes[0].getTime() + travelObjects[0].toNextLocation.duration.value * 1000)
 
   const foodTimeRanges = [BREAKFAST_TIMERANGE, LUNCH_TIMERANGE, DINNER_TIMERANGE]
   var nextFoodRange = 0;
@@ -49,7 +49,7 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
     if (nextFoodRange < 3 && curTime.getHours() >= foodTimeRanges[nextFoodRange][0] && curTime.getHours() <= foodTimeRanges[nextFoodRange][1]) {
       curTime.setTime(curTime.getTime() + userPref.foodTimeRanges[nextFoodRange]);
       nextFoodRange++;
-    } else if (curTime.getHours() > foodTimeRanges[nextFoodRange][1]) {
+    } else if (nextFoodRange < 3 && curTime.getHours() > foodTimeRanges[nextFoodRange][1]) {
       nextFoodRange++;
     }
 
@@ -60,14 +60,16 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
     let newEnd = new Date(curTime.getTime() + diff);
     curTime.setTime(newEnd.getTime() + curTravelObject.toNextLocation.duration.value * 1000);
 
-
-    if (curTime.getTime() > userPref.endDate.getTime()) {
+    // overflowing objects
+    if (curTime.getTime() > userPref.dayStartEndTimes[1].getTime()) {
       let numLeft = travelObjects.length - i - 1;
-      var timeLeft = curTime.getTime() - userPref.endDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
-      curTravelObject = travelObjects[++i];
-      while (i < travelObjects.length - 1) {
-        timeLeft += curTravelObject.endDate.getTime() - curTravelObject.startDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+      var timeLeft = curTime.getTime() - userPref.dayStartEndTimes[1].getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+      if (i < travelObjects.length - 1 ){
         curTravelObject = travelObjects[++i];
+        while (i < travelObjects.length - 1) {
+          timeLeft += curTravelObject.endDate.getTime() - curTravelObject.startDate.getTime() + curTravelObject.toNextLocation.duration.value * 1000;
+          curTravelObject = travelObjects[++i];
+        }
       }
       throw "We couldn't fit " + numLeft + " event(s) totaling " + Math.floor(timeLeft / 60000) + " minutes into your day."
     }

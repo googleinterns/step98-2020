@@ -12,7 +12,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { ItemTypes } from "../../scripts/DragTravelObject";
 import TravelObject from "../TravelObjects/TravelObject";
 import { useDrop } from "react-dnd";
-import _, { clone } from "lodash";
+import _ from "lodash";
 import OptimizationConfirmation from "./OptimizationConfirmation";
 import { getOptimalRoute, createSchedule } from "../../scripts/Optimization";
 import ErrorDisplay from "./ErrorDisplay";
@@ -70,18 +70,9 @@ export default function DropArea(props) {
     allItems = allItems.concat(
       props.displayItems.filter((each) => each.type === "event")
     );
-    var startDate = new Date(props.displayDate);
-    startDate.setHours(9, 0, 0);
-    var endDate = new Date(props.displayDate);
-    endDate.setHours(22, 0, 0);
-
-    var userPref = _.cloneDeep(props.userPref);
-
-    userPref.startDate = startDate;
-    userPref.endDate = endDate;
 
     if (
-      props.hotels.nightHotel !== undefined &&
+      props.hotels !== undefined && props.hotels.nightHotel !== undefined &&
       props.hotels.morningHotel !== undefined
     ) {
       getOptimalRoute(
@@ -91,17 +82,21 @@ export default function DropArea(props) {
       )
         .then((travelObjects) => {
           try {
+            console.log("trying to make a schedule")
             let newSchedule = createSchedule(
               travelObjects,
-              userPref,
+              props.userPref,
               props.displayDate
             );
+            console.log("made schedule: ", newSchedule)
             setSchedule(newSchedule);
           } catch (error) {
+            console.log(error);
             onOpenError(error);
           }
         })
         .catch((error) => {
+          console.log(error);
           onOpenError(error);
         });
     } else {
@@ -109,8 +104,6 @@ export default function DropArea(props) {
         "You need a night and morning hotel to get schedule builder working!"
       );
     }
-
-    //
   };
 
   const getTravelObjects = () => {
@@ -188,6 +181,7 @@ export default function DropArea(props) {
         errorAnchorEl={errorAnchorEl}
         onClose={onCloseError}
       />
+      {console.log(schedule)}
       {schedule ? (
         <OptimizationConfirmation
           travelObjects={schedule}

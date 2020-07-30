@@ -11,16 +11,17 @@ export default function DayStartEndPref(props) {
     const [start, setStart] = useState(props.dayStartEndTimes[0]);
     const [end, setEnd] = useState(props.dayStartEndTimes[1]);
 
-    const handleStartChange = (date) => {
-        setStart(date);
+    const handleStartChange = (time) => {
+        setStart(time);
     }
 
-    const handleEndChange = (date) => {
-        setEnd(date)
+    const handleEndChange = (time) => {
+        setEnd(time)
     }
 
     useEffect(() => {
-        props.onChange([start, end])
+        console.log(start)
+        props.onChange([start, end]);
     }, [start, end]);
 
     return (

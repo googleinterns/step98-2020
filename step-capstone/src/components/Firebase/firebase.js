@@ -67,7 +67,7 @@ class Firebase {
   }
 
   addTrip(reference, trip) {
-    const tripListRef = this.db.collection(reference);
+    const tripListRef = this.db.collection(reference);  
     return tripListRef.add(trip);
   }
 
