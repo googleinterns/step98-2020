@@ -177,27 +177,33 @@ class MapComponent extends React.Component {
 
   // splits finalized trips into segments of coordinate pairs
   getPathSegments() {
+    let todaysHotel = this.props.date2HotelMap.get(this.props.displayDate.date)
     var paths = [];
-    var curPath = [];
+    // if stayed at hotel overnight, start day at hotel.
+    var curPath = todaysHotel !== undefined && todaysHotel.morningHotel !== undefined ? [todaysHotel.morningHotel.coordinates] : [];
 
     for (let i = 0; i < this.props.displayDate.events.length; i++) {
       let item = this.props.displayDate.events[i];
-      // found flight -> create new path segment
-      if (item.type === "flight") {
-        if (paths.length !== 0) {
-          curPath.push(item.departureCoordinates)
+      // don't include hotel checkin time/checkout time as part of route
+      if (item.type !== "hotel") {
+        // found flight -> create new path segment
+        if (item.type === "flight") {
+          if (paths.length !== 0) {
+            curPath.push(item.departureCoordinates)
+            paths.push(curPath);
+          }
+          curPath = [item.arrivalCoordinates];
+        } else {
+          curPath.push(item.coordinates);
           paths.push(curPath);
+          curPath = [item.coordinates];
         }
-        curPath = [item.arrivalCoordinates];
-      } else {
-        curPath.push(item.coordinates);
-        paths.push(curPath);
-        curPath = [item.coordinates];
       }
     }
 
-    // add remaining path, if any, to paths
-    if (curPath.length > 1) {
+    // If staying in hotel that night, add to route as final destination
+    if (todaysHotel !== undefined && todaysHotel.nightHotel !== undefined) {
+      curPath.push(todaysHotel.nightHotel.coordinates);
       paths.push(curPath);
     }
 
