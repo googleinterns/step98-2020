@@ -43,11 +43,40 @@ export default class ItemForm extends React.Component {
     );
   }
 
-  // clears data when tab is changed
+  // handles passing and clearing of data between tabs 
   handleToggleTab(event, newVal) {
+    var newData;
+    //convert from the 0,1,2 returned by tab switch to the string types
+    var newType = newVal===0 ? 'event' : (newVal===1 ? 'flight' : 'hotel')
+    if(newType==='flight'){
+      newData = {
+        type: newType, 
+        startDate: this.state.data.startDate, 
+        endDate: this.state.data.endDate,
+        finalized: this.state.data.finalized,
+        departureAirport: "",
+        departureCoordinates: "",
+        departurePlaceId: "",
+        arrivalAirport: "",
+        arrivalCoordinates: "",
+        arrivalPlaceId: "",
+        description: "",
+      }
+    } else { 
+      newData = {
+        type: newType, 
+        startDate: this.state.data.startDate, 
+        endDate: this.state.data.endDate,
+        finalized: this.state.data.finalized,
+        title:"",
+        location: null,
+        description: "",
+      }
+    }
+
     this.setState({
       value: newVal,
-      data: undefined,
+      data: newData
     });
   }
 
@@ -61,7 +90,7 @@ export default class ItemForm extends React.Component {
         newEndDate.setTime(newData.startDate.getTime() + this.state.data.endDate.getTime() - this.state.data.startDate.getTime());
         newData.endDate = newEndDate;
     }
-}
+  }
 
   /* Mimic Google Calendar's behavior: when user edits the newEndDate to be smaller than the current startDate,
     this function will automatically reset the startDate to be smaller than the newEndDate by the same duration as before editing.
@@ -105,6 +134,7 @@ export default class ItemForm extends React.Component {
 
   getForm() {
     let isNew = this.state.isNewItem;
+
     if (
       (!isNew && this.state.data.type === "event") ||
       (isNew && this.state.value === 0)
