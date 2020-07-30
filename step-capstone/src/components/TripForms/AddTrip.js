@@ -32,7 +32,8 @@ export default function AddTrip(props) {
             radius: 10,
             activityPreferences: [],
             foodPreferences: [],
-            foodTimeRanges: [moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds()]
+            foodTimeRanges: [moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds()],
+            dayStartEndTimes: [new Date().setHours(8, 0, 0), new Date().setHours(22, 0, 0)]
         }
     }
     const handleEditTrip = (newTrip) => {

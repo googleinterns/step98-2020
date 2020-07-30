@@ -59,7 +59,7 @@ export default function FoodTimeForm(props) {
                 </Box>
             </Grid>
             <Grid item>
-                <Box my={3} mr={3}>
+                <Box my={3} mb={1} mr={3}>
                     <Typography id="discrete-slider-custom" gutterBottom>Breakfast Duration</Typography>
                     <Slider
                         value={breakfastDuration}

@@ -72,6 +72,7 @@ export default class Trip extends React.Component {
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
+                trip.userPref.dayStartEndTimes = [trip.userPref.dayStartEndTimes[0].toDate(), trip.userPref.dayStartEndTimes[1].toDate()]
                 this.setState({
                     tripSetting: {
                         title: trip.title,
