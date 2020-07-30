@@ -82,7 +82,7 @@ export default class Trip extends React.Component {
     getHotelMap(items) {
         var hotelMap = new Map(); // Map date to morning and night hotel
         items.forEach(travelObject => {
-            if (travelObject.type === "hotel") {
+            if (travelObject.type === "hotel" && travelObject.finalized) {
                 hotelMap.set(travelObject.startDate.toDateString(), { nightHotel: travelObject })
                 var curDate = new Date(travelObject.startDate);
                 curDate.setDate(curDate.getDate() + 1);
