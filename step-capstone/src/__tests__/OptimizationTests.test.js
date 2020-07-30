@@ -111,9 +111,6 @@ test ("event pushed through lunch - no lunch ", () => {
     _.cloneDeep(hotel)]
   var scheduledEvents = createSchedule(travelObjects, userPrefwithFoodLateRise);
 
-  console.log("schedule", scheduledEvents)
-  console.log("correct", correctScheduleEventThroughLunch)
-
   expect(scheduledEvents).areEqualRoutes(correctScheduleEventThroughLunch)
 })
 
