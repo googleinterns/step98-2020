@@ -9,7 +9,6 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import OptimizationButton from '../Optimization/OptimizationButton';
-import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
 
