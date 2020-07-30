@@ -7,6 +7,8 @@ export default function FormPopver(props) {
         <div>
             <Popover
                 open={props.open}
+                anchorReference={props.anchorReference}
+                anchorPosition={props.anchorPosition}
                 anchorEl={props.anchorEl}
                 onClose={props.onClose}
                 anchorOrigin={props.anchorOrigin}
