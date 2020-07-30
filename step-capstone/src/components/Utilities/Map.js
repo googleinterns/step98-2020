@@ -1,5 +1,7 @@
 import React, { createRef } from 'react'
 import { sortTravelObjectsByDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
+import { Box } from "@material-ui/core"
+import FormPopover from "../TravelObjectForms/FormPopover"
 
 const MARKER_ZOOM = 15;
 const CENTER_ZOOM = 12;
@@ -10,7 +12,9 @@ class MapComponent extends React.Component {
     this.state = {
       finalizedMarkers: new Map(),
       unfinalizedMarkers: new Map(),
-      geoPaths: []
+      geoPaths: [],
+      anchorPosition: null,
+      selectedMarker: null,
     }
     this.googleMapRef = createRef();
     this.googleMap = undefined
@@ -113,13 +117,13 @@ class MapComponent extends React.Component {
     // construct hashmap with key: travelObject id, value: marker object
     return list.reduce((objectIDToMarker, item) => {
       if (item.type !== "flight") {
-        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item.type, item.title), type: item.type });
+        objectIDToMarker.set(item.id, { marker: this.addMarker(item.coordinates, item), type: item.type });
         bounds.extend(item.coordinates);
       } else {
         objectIDToMarker.set(item.id, {
           marker: {
-            departure: this.addMarker(item.departureCoordinates, item.type, item.departureAirport),
-            arrival: this.addMarker(item.arrivalCoordinates, item.type, item.arrivalAirport)
+            departure: this.addMarker(item.departureCoordinates, item),
+            arrival: this.addMarker(item.arrivalCoordinates, item)
           },
           type: item.type
         });
@@ -130,11 +134,11 @@ class MapComponent extends React.Component {
     }, new Map())
   }
 
-  addMarker(coordinates, type, content) {
+  addMarker(coordinates, data) {
     var iconUrl;
-    if (type === "flight") {
+    if (data.type === "flight") {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-    } else if (type === "event") {
+    } else if (data.type === "event") {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
     } else {
       iconUrl = "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
@@ -147,16 +151,22 @@ class MapComponent extends React.Component {
       icon: { url: iconUrl }
     })
 
-    const infowindow = new window.google.maps.InfoWindow({ content: content })
-
     // zoom to marker when clicked
     newMarker.addListener('click', () => {
+      this.setAnchorPosition({ top: window.innerHeight / 2 - 20, left: window.innerWidth / 2 }, data);
       this.googleMap.setZoom(MARKER_ZOOM);
       this.googleMap.setCenter(newMarker.getPosition());
-      infowindow.open(this.googleMap, newMarker)
     });
 
     return newMarker;
+  }
+
+  handleCloseForm = () => {
+    this.setAnchorPosition(null, null);
+  }
+
+  setAnchorPosition = (val, data) => {
+    this.setState({ anchorPosition: val, selectedMarker: data });
   }
 
   /*
@@ -258,10 +268,34 @@ class MapComponent extends React.Component {
 
   render() {
     return (
-      <div
-        id='map'
-        ref={this.googleMapRef}
-      />
+      <Box width="100%" height="100%">
+        <div
+          id='map'
+          ref={this.googleMapRef}
+        >
+        </div>
+        <FormPopover
+          onClose={this.handleCloseForm}
+          data={this.state.selectedMarker}
+          isNewItem={false}
+          open={this.state.anchorPosition !== null}
+          anchorReference="anchorPosition"
+          anchorPosition={this.state.anchorPosition}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          onAddItem={this.props.onAddItem}
+          onEditItem={this.props.onEditItem}
+          onRemoveItem={this.props.onRemoveItem}
+          travelObjects={this.props.travelObjects}
+        />
+      </Box>
+
     )
   }
 }

@@ -297,6 +297,10 @@ export default class Trip extends React.Component {
                     displayDate={this.state.today}
                     setMap={this.setMap}
                     date2HotelMap={this.state.date2HotelMap}
+                    onRemoveItem={this.handleRemoveItem}
+                    onEditItem={this.handleEditItem}
+                    onAddItem={this.handleAddItem}
+                    travelObjects={this.state.items}
                 />
             )
         } else {
