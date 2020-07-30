@@ -82,21 +82,17 @@ export default function DropArea(props) {
       )
         .then((travelObjects) => {
           try {
-            console.log("trying to make a schedule")
             let newSchedule = createSchedule(
               travelObjects,
               props.userPref,
               props.displayDate
             );
-            console.log("made schedule: ", newSchedule)
             setSchedule(newSchedule);
           } catch (error) {
-            console.log(error);
             onOpenError(error);
           }
         })
         .catch((error) => {
-          console.log(error);
           onOpenError(error);
         });
     } else {
@@ -181,7 +177,6 @@ export default function DropArea(props) {
         errorAnchorEl={errorAnchorEl}
         onClose={onCloseError}
       />
-      {console.log(schedule)}
       {schedule ? (
         <OptimizationConfirmation
           travelObjects={schedule}
