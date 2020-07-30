@@ -61,7 +61,7 @@ export default class Trip extends React.Component {
                     tripSetting: {
                         title: trip.title,
                         startDate: trip.startDate.toDate(),
-                        endDate: trip.startDate.toDate(),
+                        endDate: trip.endDate.toDate(),
                         destination: trip.destination,
                         description: trip.description,
                         userPref: trip.userPref,
@@ -344,7 +344,7 @@ export default class Trip extends React.Component {
                     <Box mb={3}>
                         <OptimizationButton
                             displayDate={this.state.today.date}
-                            displayItems={this.state.today.events}
+                            displayItems={_.cloneDeep(this.state.today.events)}
                             userPref={this.state.tripSetting.userPref}
                             hotels={this.state.date2HotelMap.get(this.state.today.date)}
                             onConfirm={this.editMultipleItems}

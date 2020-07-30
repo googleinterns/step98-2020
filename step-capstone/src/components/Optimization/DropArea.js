@@ -33,7 +33,7 @@ export default function DropArea(props) {
   const onCloseError = () => {
     setErrorAnchorEl(null);
   };
-  const handleClick = (id) => {
+  const handleDelete = (id) => {
     var newItems = _.cloneDeep(selectedUnfinalizedItems);
     newItems.delete(id);
     setSelectedUnfinalizedItems(newItems);
@@ -48,13 +48,13 @@ export default function DropArea(props) {
       newItem.data.type !== "hotel"
     ) {
       var newItems = _.cloneDeep(selectedUnfinalizedItems);
-      newItems.set(newItem.data.id, newItem.data);
+      newItems.set(newItem.data.id, _.cloneDeep(newItem.data));
       setSelectedUnfinalizedItems(newItems);
     }
   };
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.UNFINALIZEDTRAVELOBJECT,
-    drop: (item, monitor) => handleSelectItem(item),
+    drop: (item, monitor) => {handleSelectItem(item);},
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
@@ -123,7 +123,7 @@ export default function DropArea(props) {
               <DeleteIcon
                 style={{ left: "10px", position: "relative", top: "40px" }}
                 color="primary"
-                onClick={() => handleClick(travelobject.id)}
+                onClick={() => handleDelete(travelobject.id)}
               />
             </Grid>
           </Grid>
