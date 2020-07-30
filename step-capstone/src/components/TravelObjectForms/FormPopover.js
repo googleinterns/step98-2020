@@ -21,6 +21,7 @@ export default function FormPopver(props) {
                     isNewItem={props.isNewItem}
                     startDate={props.startDate}
                     travelObjects={props.travelObjects}
+                    isFromSuggestions={props.isFromSuggestions}
                 />
             </Popover>
         </div>

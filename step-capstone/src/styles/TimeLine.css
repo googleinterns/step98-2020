@@ -137,7 +137,6 @@ thead {
   
   
   .OneHourInterval .Interval:hover:after {
-    content: "+";
     vertical-align: middle;
     font-size: 1.875rem;
     font-weight: 100;
@@ -188,6 +187,14 @@ thead {
     max-width: 141px;
     left: 20px;
 }
+
+.popper_class{
+  padding: 16px;
+  height: 800px;
+  overflow-y: scroll;
+  border-radius: 1px solid black;
+}
+
 
 .hotel-bar {
   width: 100%;
@@ -333,3 +340,4 @@ tr td:nth-child(2), tr td:nth-child(3), .past {
   max-width: 141px;
   left: 20px;
 }
+

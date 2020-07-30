@@ -161,7 +161,7 @@ export default class ItemForm extends React.Component {
   // renders tab if user presses add button to create a new item
   // otherwise only the form should show for editing
   renderTab() {
-    if (this.state.isNewItem) {
+    if (this.state.isNewItem && !this.props.isFromSuggestions) {
       return (
         <Paper>
           <Tabs
