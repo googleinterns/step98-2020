@@ -35,7 +35,6 @@ class Home extends React.Component {
     this.setState({clickedToLogin : true});
   }
 
-
   render() {
     return (
         <Grid container id='home'>

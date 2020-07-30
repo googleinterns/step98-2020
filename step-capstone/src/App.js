@@ -32,20 +32,22 @@ class App extends React.Component {
   }
 
   afterAuthStateCheck(status) {
-
     if (status.signInStatus) {
       this.setState({authState: true, user: status.user});
     }
     else {
+      console.log("Signed out")
       this.setState({authState: false, user: null});
     }
   }
 
   handleLogin(){
     if(this.state.authState){
+      console.log("opning trips")
       sessionStorage.setItem("userId", this.context.auth.currentUser.uid);
       return <Redirect to = "/trips/"/>;
     } else {
+      console.log("going back to home")
       return <Redirect to = "/home"/>;
     }
   }
@@ -55,14 +57,13 @@ class App extends React.Component {
     return(
       <div className="app">
         {this.state.authState ? <SignOutButton className="sign-out"/> :''}
-
         <Router>
           {this.handleLogin()}
           <Switch>
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route path = "/trips/:tripId">
+            <Route exact path = "/trips/:tripId">
               <Trip/>
             </Route>
             <Route exact path = "/trips/">

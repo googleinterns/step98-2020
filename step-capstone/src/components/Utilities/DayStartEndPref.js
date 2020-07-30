@@ -20,7 +20,6 @@ export default function DayStartEndPref(props) {
     }
 
     useEffect(() => {
-        console.log(start)
         props.onChange([start, end]);
     }, [start, end]);
 

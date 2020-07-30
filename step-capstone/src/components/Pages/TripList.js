@@ -33,6 +33,7 @@ class TripList extends React.Component {
   }
 
   loadTrips() {
+    console.log("loading trips")
     let trips = [];
     this.context.getTripList(this.state.reference).then(tripList => {
       tripList.forEach(trip => {
@@ -54,6 +55,7 @@ class TripList extends React.Component {
   }
 
   handleOpenTrip(tripId) {
+    console.log("OPENING TRIP: ", tripId)
     this.setState({ selectedTrip: tripId })
     sessionStorage.setItem("tripId", tripId);
   }
@@ -97,6 +99,7 @@ class TripList extends React.Component {
     return (
       <div>
         <div id="map"></div>
+        {console.log(this.state.selectedTrip)}
         {this.state.selectedTrip ? <Redirect to={"/trips/" + this.state.selectedTrip} /> : 
           <div>
             <Grid id="trips"

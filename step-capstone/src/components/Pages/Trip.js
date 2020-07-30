@@ -48,6 +48,9 @@ export default class Trip extends React.Component {
     }
 
     componentDidMount() {
+        if (sessionStorage.getItem("tripId") === "") {
+            return;
+        }
         let travelObjectList = [];
         let placeIds = new Set();
         this.context.getTrip(this.state.reference)
