@@ -90,7 +90,8 @@ export default function AddHotel(props) {
     //validating input
     if (title === "") {
       props.onToggleValidation(false);
-    } else if (checked && (location===null||location.address==="")) {
+    } else if (checked && (location===null||location.address===""||location.address === null)) {
+      console.log("hi")
       props.onToggleValidation(false);
     } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
       props.onToggleValidation(false);
@@ -150,7 +151,7 @@ export default function AddHotel(props) {
         <Box my={1}>
           <LocationAutocompleteInput
             onLocationSelected={handleLocationChange}
-            error={checked && (location === null || location.address === "")}
+            error={checked && (location === null || location.address === "" || location.address === null)}
             text={location ? location.address : ""}
             type="hotel"
           />
