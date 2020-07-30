@@ -77,7 +77,7 @@ const filterByTimeRange = (results, timeRange) => {
 
 const query = (service, config, type) => {
   // return results: a map with key : place_id, value: PlaceObject
-  return new Promise(res => {
+  return new Promise((res, rej) => {
     let types = type === "food" 
       ? config.userCategories.length === 0
         ? ["bakery", "cafe", "restaurant"]
@@ -90,6 +90,9 @@ const query = (service, config, type) => {
         results = filterByTimeRange(results, config.timeRange);
       }
       res(results);
+    })
+    .catch(error => {
+      rej(error);
     })
   })
 }
@@ -177,9 +180,14 @@ const placeObjectsComparator = (placeObjectA, placeObjectB) => {
 }
 
 export async function handleSuggestions(service, config, type) {
-  let results = await query(service, config, type);
-  let placeObjects = rank(results, config, type);
-  return placeObjects;
+  try {
+    let results = await query(service, config, type);
+    let placeObjects = rank(results, config, type);
+    return placeObjects;
+  } catch (error) {
+    throw error;
+  }
+  
 
 }
 

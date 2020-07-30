@@ -97,13 +97,22 @@ export default class SuggestionPopup extends React.Component {
          *  6. items: set of all place ids of selected places
          * return the suggestions : an array of PlaceObject already sorted based on score
          */
-        let results = await handleSuggestions(this.props.service, config, "activities");
-        return results;
+        try {
+            let results = await handleSuggestions(this.props.service, config, "activities");
+            return results;
+        } catch {
+            return [];
+        }
+
     }
 
     async getFoodSuggestions(config) {
-        let results = await handleSuggestions(this.props.service, config, "food");
-        return results;
+        try {
+            let results = await handleSuggestions(this.props.service, config, "food");
+            return results;
+        } catch {
+            return [];
+        }
     }
 
     handleToggleTab(event, newVal) {
