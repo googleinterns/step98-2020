@@ -45,7 +45,7 @@ export default function DraggableFinalized(props) {
       style={{
         position: "absolute",
         width: "100%",
-        height: "30px",
+        height: "1px",
         top: props.styleConfig.top,
         opacity,
         zIndex: props.styleConfig.zIndex,
