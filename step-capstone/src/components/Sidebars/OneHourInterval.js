@@ -4,12 +4,15 @@ import InsertObjectPopover from "./InsertObjectPopover";
 import DraggableFinalized from "../TravelObjects/DraggableFinalized";
 import { ItemTypes, moveTravelObject } from "../../scripts/DragTravelObject";
 import { useDrop } from "react-dnd";
+import {
+  displayHeightOfADiv,
+  padding,
+  minPerDiv,
+  millisecondsPerMin,
+} from "../../scripts/Constants";
 
 export default function OneHourInterval(props) {
   const [slots, setSlots] = useState(null);
-  const displayHeightOfADiv = 45.47;
-  const padding = 22.0;
-  const minPerDiv = 30.0;
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -21,9 +24,33 @@ export default function OneHourInterval(props) {
     }),
   });
 
+// Given a id of a div and an mouse click event
+// Return the exact timePoint of the click
+  const getExactClickTimePoint = (idV, event) => {
+    // Calculate how many minutes the click is away from the top of the div
+    const div = window.document.getElementById(idV);
+    const rect = div.getBoundingClientRect();
+    const y = event.clientY - rect.top;
+    const y2min = Math.floor((y / displayHeightOfADiv) * minPerDiv);
+
+    // Convert the mouse click into a timepoint in displayDate
+    idV = idV.length < 5 ? "0" + idV : idV;
+    var clickTimePoint = new Date(
+      props.displayDate.getFullYear(),
+      props.displayDate.getMonth(),
+      props.displayDate.getDate(),
+      Number(idV.slice(0, 2)),
+      Number(idV.slice(3)),
+      0
+    );
+
+    clickTimePoint.setTime(clickTimePoint.getTime() + y2min * millisecondsPerMin);
+    return clickTimePoint;
+  };
   const handleOnClickInterval = (idV, event) => {
     if (event.target.className === "Interval") {
-      let data = props.onClickInterval(idV);
+      var clickTimePoint = getExactClickTimePoint(idV, event);
+      let data = props.onClickInterval(clickTimePoint);
       if (data.freeTimeSlot !== undefined) {
         setSlots(data);
         setAnchorEl(event.currentTarget);
