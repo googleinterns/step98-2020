@@ -18,6 +18,7 @@ export const sameDate = (timeA, timeB) => {
 
 // Given 2 Date objects, return true if they are the same; false otherwise
 // Ignore milliseconds
+// This function is added since === is not consistent in comparing two DateTime object
 export const twoDateObjectEqual = (timeA, timeB) => {
   return (timeA.getDate() === timeB.getDate() && 
         timeA.getMonth() === timeB.getMonth() && 
