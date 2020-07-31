@@ -67,7 +67,7 @@ export const createSchedule = function (travelObjects, userPref, displayDate) {
     curTime = moment(newEnd);
     curTime.add(curTravelObject.toNextLocation.duration.value, "s")
 
-    let dayEnd = moment(curTime);
+    let dayEnd = moment(displayDate);
     dayEnd.hours(userPref.dayStartEndTimes[1].getHours());
     dayEnd.minutes(userPref.dayStartEndTimes[1].getMinutes());
     // overflowing objects
