@@ -91,7 +91,6 @@ export default function AddHotel(props) {
     if (title === "") {
       props.onToggleValidation(false);
     } else if (checked && (location===null||location.address===""||location.address === null)) {
-      console.log("hi")
       props.onToggleValidation(false);
     } else if (!isValid(startDate) || !isValid(endDate) || sameDate(startDate, endDate)) {
       props.onToggleValidation(false);
