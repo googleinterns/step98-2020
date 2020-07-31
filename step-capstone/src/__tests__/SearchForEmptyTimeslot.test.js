@@ -43,6 +43,7 @@ const TIMEPOINT_1746 = new Date("2020-08-07T17:46:00Z");
 
 const TIMEPOINT_1800 = new Date("2020-08-07T18:00:00Z");
 const TIMEPOINT_2245 = new Date("2020-08-07T22:45:00Z");
+const TIMEPOINT_2246 = new Date("2020-08-07T22:46:00Z");
 
 const TIMEPOINT_2300 = new Date("2020-08-07T23:00:00Z");
 const TIMEPOINT_2330 = new Date("2020-08-07T23:30:00Z");
@@ -574,7 +575,52 @@ test("Case 25: Five items, Clickpoint is in the last free timeslot of the day", 
   });
 });
 
-test("Case 26: Five items, clickPoint is in between 3rd and 4th item", () => {
+test("Case 26: Five items, clickPoint is in the 1st free timeslot of the day", () => {
+  expect(
+    handleClickedTimePoint(
+      TIMEPOINT_0100,
+      startOfDisplayDate,
+      endOfDisplayDate,
+      FIVE_ITEMS
+    )
+  ).toStrictEqual({
+    prevTravelObject: null,
+    freeTimeSlot: {startDate: startOfDisplayDate, endDate: TIMEPOINT_0915},
+    nextTravelObject: ITEM_5_0915_TO_1345,
+  });
+});
+
+test("Case 27: Five items, clickPoint is in the 2nd free timeslot of the day", () => {
+  expect(
+    handleClickedTimePoint(
+      TIMEPOINT_1400,
+      startOfDisplayDate,
+      endOfDisplayDate,
+      FIVE_ITEMS
+    )
+  ).toStrictEqual({
+    prevTravelObject: ITEM_5_0915_TO_1345,
+    freeTimeSlot: {startDate: TIMEPOINT_1345, endDate: TIMEPOINT_1430},
+    nextTravelObject: ITEM_7_1430_TO_1700,
+  });
+});
+
+test("Case 28: Five items, clickPoint is in the 3rd free timeslot", () => {
+  expect(
+    handleClickedTimePoint(
+      TIMEPOINT_1715,
+      startOfDisplayDate,
+      endOfDisplayDate,
+      FIVE_ITEMS
+    )
+  ).toStrictEqual({
+    prevTravelObject: ITEM_7_1430_TO_1700,
+    freeTimeSlot: {startDate: TIMEPOINT_1700, endDate: TIMEPOINT_1730},
+    nextTravelObject: ITEM_9_1730_TO_1745,
+  });
+});
+
+test("Case 29: Five items, clickPoint is in the 4th free timeslot", () => {
   expect(
     handleClickedTimePoint(
       TIMEPOINT_1746,
@@ -589,7 +635,22 @@ test("Case 26: Five items, clickPoint is in between 3rd and 4th item", () => {
   });
 });
 
-test("Case 27: One full day, clickPoint is in the item ", () => {
+test("Case 30: Five items, clickPoint is in the 5th free timeslot", () => {
+  expect(
+    handleClickedTimePoint(
+      TIMEPOINT_2246,
+      startOfDisplayDate,
+      endOfDisplayDate,
+      FIVE_ITEMS
+    )
+  ).toStrictEqual({
+    prevTravelObject: ITEM_10_1800_TO_2245,
+    freeTimeSlot: {startDate: TIMEPOINT_2245, endDate: TIMEPOINT_2300},
+    nextTravelObject: ITEM_11_2300_TO_2330,
+  });
+});
+
+test("Case 31: One full day, clickPoint is in the item ", () => {
   expect(
     handleClickedTimePoint(
       TIMEPOINT_2331,
