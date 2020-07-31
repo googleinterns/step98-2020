@@ -69,15 +69,12 @@ export default class TimeLine extends React.Component {
     }
   }
 
-  handleOnClickInterval(idV) {
-    idV = idV.length < 5 ? "0" + idV : idV;
-
+  handleOnClickInterval(clickTimePoint) {
     return handleClickedTimePoint(
-      idV,
+      clickTimePoint,
       this.startOfDisplayDate,
       this.endOfDisplayDate,
       this.displayItemsExcludeHotel,
-      this.emptySlots
     );
   }
 
@@ -87,7 +84,6 @@ export default class TimeLine extends React.Component {
     if (this.props.displayDate !== undefined) {
       this.startOfDisplayDate = this.date2Items = new Map();
       this.displayItems = [];
-      this.emptySlots = [];
       this.startOfDisplayDate = new Date(
         this.props.displayDate.getFullYear(),
         this.props.displayDate.getMonth(),
@@ -118,8 +114,6 @@ export default class TimeLine extends React.Component {
         this.props.displayDate.toDateString()
       );
       this.displayItemsExcludeHotel = this.displayItems.filter((item) => item.type !== "hotel");
-
-      this.emptySlots = getEmptySlots(this.startOfDisplayDate, this.endOfDisplayDate, this.displayItemsExcludeHotel)
 
       var nextItemIndex = 0;
       var hotel = null; // flags hotel until finds right place in timeline
