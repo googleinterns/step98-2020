@@ -42,7 +42,7 @@ export default class PreferenceForm extends React.Component {
     handleRadiusChange = (event, newValue) => {
         this.setState({ radius: newValue })
     }
-    ß
+    
     handleActivityPreferenceCheck = (event) => {
         this.togglePreferenceHelper("activityPreferences", event.target.name)
     }

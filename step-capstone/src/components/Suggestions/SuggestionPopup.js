@@ -46,9 +46,9 @@ export default class SuggestionPopup extends React.Component {
 
     equalsUserPref(prevPref, newPref) {
         return (prevPref.activityPreferences === newPref.activityPreferences
-            || prevPref.foodPreferences === newPref.foodPreferences
-            || prevPref.radius === newPref.radius
-            || prevPref.budget === newPref.budget);
+            && prevPref.foodPreferences === newPref.foodPreferences
+            && prevPref.radius === newPref.radius
+            && prevPref.budget === newPref.budget);
     }
 
     getSuggestions() {
@@ -145,6 +145,7 @@ export default class SuggestionPopup extends React.Component {
 
     handleUserPrefChange(newPref) {
         if (!this.equalsUserPref(newPref, this.state.userPref)) {
+            newPref.coordinates = this.state.userPref.coordinates;
             this.setState({
                 userPref: newPref
             })
