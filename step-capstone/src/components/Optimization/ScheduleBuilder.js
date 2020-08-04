@@ -55,9 +55,7 @@ export default function ScheduleBuilder(props) {
           </Grid>
           <div id="error-display"></div>
           <DropArea
-            onClose={props.onClose}
-            displayDate={props.displayDate}
-            displayItems={props.displayItems}
+            {...props}
           />
         </Grid>
       </Popper>

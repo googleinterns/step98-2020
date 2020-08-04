@@ -32,7 +32,6 @@ class App extends React.Component {
   }
 
   afterAuthStateCheck(status) {
-
     if (status.signInStatus) {
       this.setState({authState: true, user: status.user});
     }
@@ -55,14 +54,13 @@ class App extends React.Component {
     return(
       <div className="app">
         {this.state.authState ? <SignOutButton className="sign-out"/> :''}
-
         <Router>
           {this.handleLogin()}
           <Switch>
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route path = "/trips/:tripId">
+            <Route exact path = "/trips/:tripId">
               <Trip/>
             </Route>
             <Route exact path = "/trips/">

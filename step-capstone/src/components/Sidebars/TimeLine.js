@@ -165,7 +165,8 @@ export default class TimeLine extends React.Component {
             // found hotel who's checkout time isn't in the current hour block --> flags it and moves index
             if (!hotel && item.type === "hotel" && !sameDate(item.startDate, this.props.displayDate) && item.endDate.getHours() !== i) {
               hotel = item;
-              item = this.displayItems[++nextItemIndex];
+              if(nextItemIndex <= this.displayItems.length - 1)
+                item = this.displayItems[++nextItemIndex];
             }
 
             // special case: no travel objects except for checkout for hotel
@@ -180,7 +181,7 @@ export default class TimeLine extends React.Component {
                   this.displayItems[nextItemIndex].startDate.getHours() === i) || (hotel && hotel.endDate.getHours() === i)
               ) {
                 // found proper location for previously flagged hotel.
-                if (hotel && hotel.endDate.getHours() === i && travelObjectStartDateComparator(hotel, this.displayItems[nextItemIndex]) < 0) {
+                if (hotel && hotel.endDate.getHours() === i && (nextItemIndex>=this.displayItems.length  ||  travelObjectStartDateComparator(hotel, this.displayItems[nextItemIndex]) < 0)) {
                   item = hotel;
                   hotel = null;
                 } else {

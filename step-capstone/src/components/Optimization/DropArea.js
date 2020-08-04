@@ -12,7 +12,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { ItemTypes } from "../../scripts/DragTravelObject";
 import TravelObject from "../TravelObjects/TravelObject";
 import { useDrop } from "react-dnd";
-import _, { clone } from "lodash";
+import _ from "lodash";
+import OptimizationConfirmation from "./OptimizationConfirmation";
+import { getOptimalRoute, createSchedule } from "../../scripts/Optimization";
 import ErrorDisplay from "./ErrorDisplay";
 
 export default function DropArea(props) {
@@ -21,22 +23,22 @@ export default function DropArea(props) {
   );
   const [errorMessage, setErrorMessage] = useState(null);
   const [errorAnchorEl, setErrorAnchorEl] = useState(null);
-  
+  const [schedule, setSchedule] = useState(null);
+
   const onOpenError = (errorMessage) => {
     setErrorMessage(errorMessage);
     setErrorAnchorEl(window.document.getElementById("error-display"));
-  }
+  };
 
   const onCloseError = () => {
     setErrorAnchorEl(null);
-  }
-  const handleClick = (id) => {
+  };
+  const handleDelete = (id) => {
     var newItems = _.cloneDeep(selectedUnfinalizedItems);
     newItems.delete(id);
     setSelectedUnfinalizedItems(newItems);
   };
   const handleSelectItem = (newItem) => {
-    console.log(newItem);
     if (
       !selectedUnfinalizedItems.has(newItem.data.id) &&
       newItem.data.location !== undefined &&
@@ -46,13 +48,13 @@ export default function DropArea(props) {
       newItem.data.type !== "hotel"
     ) {
       var newItems = _.cloneDeep(selectedUnfinalizedItems);
-      newItems.set(newItem.data.id, newItem.data);
+      newItems.set(newItem.data.id, _.cloneDeep(newItem.data));
       setSelectedUnfinalizedItems(newItems);
     }
   };
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: ItemTypes.UNFINALIZEDTRAVELOBJECT,
-    drop: (item, monitor) => handleSelectItem(item),
+    drop: (item, monitor) => {handleSelectItem(item);},
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),
@@ -65,23 +67,39 @@ export default function DropArea(props) {
       allItems.push(item);
     });
 
-    allItems = allItems.concat(props.displayItems);
+    allItems = allItems.concat(
+      props.displayItems.filter((each) => each.type === "event")
+    );
 
-    //Current status: we have displayDate, displayItems, selectedUnfinalizedItems here
-    //What is lacking: hotel start and end of displayDate, userPref
-    //TODO: 1. pass Emmie's hotel start and end of displayDate from Trip to
-    // Optimization Button, to Optimization Form to Drop Area
-    //      2. call function
-    // try {
-    //     let schedule = createSchedule(travelObjects, userPref, props.displayDate);
-    //     Call Zach's confirmation component here, when user clicks accept, call editMultipleItems(schedule);
-    // } catch (error) {
-    //     Call Dan's error display component here
-    // }
-    // })
-
-    
-    // onOpenError("Please remove some items!")
+    if (
+      props.hotels !== undefined && props.hotels.nightHotel !== undefined &&
+      props.hotels.morningHotel !== undefined
+    ) {
+      getOptimalRoute(
+        allItems,
+        props.hotels.morningHotel,
+        props.hotels.nightHotel
+      )
+        .then((travelObjects) => {
+          try {
+            let newSchedule = createSchedule(
+              travelObjects,
+              props.userPref,
+              props.displayDate
+            );
+            setSchedule(newSchedule);
+          } catch (error) {
+            onOpenError(error);
+          }
+        })
+        .catch((error) => {
+          onOpenError(error);
+        });
+    } else {
+      onOpenError(
+        "You need a night and morning hotel to get schedule builder working!"
+      );
+    }
   };
 
   const getTravelObjects = () => {
@@ -105,7 +123,7 @@ export default function DropArea(props) {
               <DeleteIcon
                 style={{ left: "10px", position: "relative", top: "40px" }}
                 color="primary"
-                onClick={() => handleClick(travelobject.id)}
+                onClick={() => handleDelete(travelobject.id)}
               />
             </Grid>
           </Grid>
@@ -154,11 +172,18 @@ export default function DropArea(props) {
           </Button>
         </CardActions>
       </Grid>
-      <ErrorDisplay 
-          errorMessage={errorMessage}
-          errorAnchorEl={errorAnchorEl}
-          onClose={onCloseError}
+      <ErrorDisplay
+        errorMessage={errorMessage}
+        errorAnchorEl={errorAnchorEl}
+        onClose={onCloseError}
+      />
+      {schedule ? (
+        <OptimizationConfirmation
+          travelObjects={schedule}
+          onConfirm={props.onConfirm}
+          onClose={props.onClose}
         />
+      ) : null}
     </div>
   );
 }

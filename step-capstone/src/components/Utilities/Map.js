@@ -43,12 +43,16 @@ class MapComponent extends React.Component {
       let marker = selectedObject.type === "flight" ? selectedObject.marker.arrival : selectedObject.marker;
 
       this.zoomToMarker(marker);
-    } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events) && this.props.displayDate.events.length !== 0) {
+    } else if (!sameTravelObjectList(prevProps.displayDate.events, this.props.displayDate.events)) {
       // if changes to current day's events and isn't empty, zoom to todays events
       this.clearMap()
-      this.drawMap();
-      this.googleMap.fitBounds(this.getTodaysBounds());
-      this.googleMap.setZoom(this.googleMap.getZoom() - 1);
+      let bounds = this.drawMap();
+      if (this.props.displayDate.events.length === 0) {
+        this.googleMap.fitBounds(bounds);
+      } else {
+        this.googleMap.fitBounds(this.getTodaysBounds());
+        this.googleMap.setZoom(this.googleMap.getZoom() - 1);
+      }
     } else if (!sameTravelObjectList(prevProps.finalized, this.props.finalized) || !sameTravelObjectList(prevProps.unfinalized, this.props.unfinalized)) {
       // any other changes to finalized or unfinalized zoom out to encompass all markers.
       this.clearMap();

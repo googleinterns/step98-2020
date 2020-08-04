@@ -73,6 +73,7 @@ class TripList extends React.Component {
         tripSetting = tripSetting.data()
         tripSetting.startDate = tripSetting.startDate.toDate()
         tripSetting.endDate = tripSetting.endDate.toDate()
+        tripSetting.userPref.dayStartEndTimes = [tripSetting.userPref.dayStartEndTimes[0].toDate(), tripSetting.userPref.dayStartEndTimes[1].toDate()]
         this.setState({
           selectedTripSetting: tripSetting,
           selectedTripId: tripId,

@@ -9,28 +9,8 @@ import MapComponent from "../Utilities/Map"
 import GetSuggestionButton from '../Suggestions/GetSuggestionButton';
 import SuggestionPopup from "../Suggestions/SuggestionPopup"
 import OptimizationButton from '../Optimization/OptimizationButton';
-import { getOptimalRoute, createSchedule } from "../../scripts/Optimization"
 import _ from "lodash"
 import { sameDate, sameTravelObjectList } from "../../scripts/HelperFunctions"
-
-// TODO: Implement code with form
-// getOptimalRoute(_.cloneDeep(this.state.items), { coordinates: { lat: 51.501167, lng: -0.119185 } }, { coordinates: { lat: 51.501167, lng: -0.119185 } })
-//     .then(travelObjects => {
-//         var startTime = new Date(this.state.today.date);
-//         startTime.setHours(9, 0, 0);
-//         var endTime = new Date(this.state.today.date);
-//         endTime.setHours(20, 0, 0);
-//         try {
-//             let schedule = createSchedule(travelObjects, {
-//                 startDate: startTime,
-//                 endDate: endTime,
-//                 foodTimeRanges: [3600000, 3600000, 3600000]
-//             }, this.state.today.date);
-//             this.editMultipleItems(schedule);
-//         } catch (error) {
-//             console.log(error);
-//         }
-//     })
 
 export default class Trip extends React.Component {
     static contextType = FirebaseContext;
@@ -52,7 +32,7 @@ export default class Trip extends React.Component {
             placeIds: new Set(),
             showSuggestions: false,
             selectedTimeslot: null,
-            date2HotelMap: new Map()
+            date2HotelMap: new Map(),
         }
 
         this.handleRemoveItem = this.handleRemoveItem.bind(this);
@@ -64,20 +44,24 @@ export default class Trip extends React.Component {
         this.setMap = this.setMap.bind(this);
         this.toggleSuggestionBar = this.toggleSuggestionBar.bind(this);
         this.handleSelectTimeslot = this.handleSelectTimeslot.bind(this);
+        this.editMultipleItems = this.editMultipleItems.bind(this);
     }
 
     componentDidMount() {
+        if (sessionStorage.getItem("tripId") === "") {
+            return;
+        }
         let travelObjectList = [];
         let placeIds = new Set();
         this.context.getTrip(this.state.reference)
             .then(data => {
                 let trip = data.data();
-                trip.userPref.dayStartEndTimes = [trip.userPref.dayStartEndTimes[0].toDate(), trip.userPref.dayStartEndTimes[1].toDate()]
+                trip.userPref.dayStartEndTimes = [trip.userPref.dayStartEndTimes[0].toDate(), trip.userPref.dayStartEndTimes[1].toDate()];
                 this.setState({
                     tripSetting: {
                         title: trip.title,
                         startDate: trip.startDate.toDate(),
-                        endDate: trip.startDate.toDate(),
+                        endDate: trip.endDate.toDate(),
                         destination: trip.destination,
                         description: trip.description,
                         userPref: trip.userPref,
@@ -100,7 +84,7 @@ export default class Trip extends React.Component {
     getHotelMap(items) {
         var hotelMap = new Map(); // Map date to morning and night hotel
         items.forEach(travelObject => {
-            if (travelObject.type === "hotel") {
+            if (travelObject.type === "hotel" && travelObject.finalized) {
                 hotelMap.set(travelObject.startDate.toDateString(), { nightHotel: travelObject })
                 var curDate = new Date(travelObject.startDate);
                 curDate.setDate(curDate.getDate() + 1);
@@ -360,7 +344,10 @@ export default class Trip extends React.Component {
                     <Box mb={3}>
                         <OptimizationButton
                             displayDate={this.state.today.date}
-                            displayItems={this.state.today.events}
+                            displayItems={_.cloneDeep(this.state.today.events)}
+                            userPref={this.state.tripSetting.userPref}
+                            hotels={this.state.date2HotelMap.get(this.state.today.date)}
+                            onConfirm={this.editMultipleItems}
                         />
                     </Box>
                     <Box mb={3}>

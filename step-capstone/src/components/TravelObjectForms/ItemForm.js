@@ -34,7 +34,7 @@ export default class ItemForm extends React.Component {
   renderDeleteButton() {
     return this.props.isNewItem ? null : (
       <Button
-        onClick={() => this.props.onRemoveItem(this.state.data)}
+        onClick={() => { this.props.onRemoveItem(this.state.data); this.props.onClose(); }}
         color="primary"
         size="small"
       >

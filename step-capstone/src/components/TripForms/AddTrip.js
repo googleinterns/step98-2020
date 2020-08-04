@@ -20,6 +20,11 @@ const useStyles = makeStyles({
 
 export default function AddTrip(props) {
     const classes = useStyles();
+    let start = new Date();
+    start.setHours(8, 0, 0);
+    let end = new Date();
+    end.setHours(22, 0, 0);
+
     const newTrip = {
         title: "",
         startDate: new Date(),
@@ -33,9 +38,10 @@ export default function AddTrip(props) {
             activityPreferences: [],
             foodPreferences: [],
             foodTimeRanges: [moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds(), moment.duration(1, 'hour').asMilliseconds()],
-            dayStartEndTimes: [new Date().setHours(8, 0, 0), new Date().setHours(22, 0, 0)]
+            dayStartEndTimes: [start, end]
         }
     }
+
     const handleEditTrip = (newTrip) => {
         newTrip.travelObjects = [];
         props.onAddTrip(newTrip);
