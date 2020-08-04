@@ -24,7 +24,7 @@ export default function OneHourInterval(props) {
     }),
   });
 
-// Given a id of a div and an mouse click event
+// Given an id of a div and an mouse click event
 // Return the exact timePoint of the click
   const getExactClickTimePoint = (idV, event) => {
     // Calculate how many minutes the click is away from the top of the div
