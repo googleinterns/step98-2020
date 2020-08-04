@@ -34,7 +34,7 @@ export default class SuggestionPopup extends React.Component {
         this.getSuggestions = this.getSuggestions.bind(this);
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         // opening
         if (!prevProps.show && this.props.show) {
             this.getSuggestions();
@@ -52,15 +52,17 @@ export default class SuggestionPopup extends React.Component {
     }
 
     getSuggestions() {
-        let prefs = this.state.suggestionsLoaded ? this.state.userPref : this.getModifiedUserPref();
-        this.setState({ suggestionsLoaded: false });
+        let prefs = this.state.userPref;
+        if (!this.state.suggestionsLoaded) {
+            prefs = this.getModifiedUserPref();
+        }
+        this.setState({ suggestionsLoaded: false, userPref: prefs });
         this.getActivitySuggestions(this.getConfig("activities", prefs)).then(activities => {
             this.getFoodSuggestions(this.getConfig("food", prefs)).then(foods => {
                 this.setState({
                     foodSuggestions: foods,
                     activitySuggestions: activities,
-                    suggestionsLoaded: true,
-                    userPref: prefs,
+                    suggestionsLoaded: true
                 })
             })
         });
@@ -165,8 +167,8 @@ export default class SuggestionPopup extends React.Component {
                                 px={3}
                             >
                                 <PreferenceForm
-                                    pref={this.state.suggestionsLoaded ? this.state.userPref : this.getModifiedUserPref()}
-                                    onChange={this.handleUserPrefChange}
+                                    pref={this.state.userPref}
+                                    onChange={(newPref) => this.handleUserPrefChange(newPref)}
                                 />
                                 <Box my={2}>
                                     <Button

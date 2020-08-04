@@ -29,9 +29,22 @@ export default class PreferenceForm extends React.Component {
         }
     }
 
-    componentDidUpdate(prevState) {
+    componentDidUpdate(prevProps, prevState) {
         if (prevState !== this.state) {
             this.props.onChange(this.state);
+        } else if (prevProps.pref.budget !== this.props.pref.budget ||
+            prevProps.pref.radius !== this.props.pref.radius ||
+            prevProps.pref.activityPreferences !== this.props.pref.activityPreferences ||
+            prevProps.pref.foodPreferences !== this.props.pref.foodPreferences
+            ) {
+            this.setState({
+                budget: this.props.pref.budget,
+                radius: this.props.pref.radius,
+                activityPreferences: this.props.pref.activityPreferences,
+                foodPreferences: this.props.pref.foodPreferences,
+                foodTimeRanges: this.props.pref.foodTimeRanges,
+                dayStartEndTimes: this.props.pref.dayStartEndTimes
+            })
         }
     }
 
@@ -42,7 +55,7 @@ export default class PreferenceForm extends React.Component {
     handleRadiusChange = (event, newValue) => {
         this.setState({ radius: newValue })
     }
-    
+
     handleActivityPreferenceCheck = (event) => {
         this.togglePreferenceHelper("activityPreferences", event.target.name)
     }
