@@ -16,6 +16,17 @@ export const sameDate = (timeA, timeB) => {
   return (timeA.getDate() === timeB.getDate() && timeA.getMonth() === timeB.getMonth() && timeA.getFullYear() === timeB.getFullYear());
 }
 
+// Given 2 Date objects, return true if they are the same; false otherwise
+// Ignore milliseconds
+// This function is added since === is not consistent in comparing two DateTime object
+export const twoDateObjectEqual = (timeA, timeB) => {
+  return (timeA.getDate() === timeB.getDate() && 
+        timeA.getMonth() === timeB.getMonth() && 
+        timeA.getFullYear() === timeB.getFullYear() &&
+        timeA.getHours() === timeB.getHours() &&
+        timeA.getMinutes() === timeB.getMinutes());
+}
+
 export const isValid = function (date) {
   // An invalid date object returns NaN for getTime() and NaN is the only
   // object not strictly equal to itself.
