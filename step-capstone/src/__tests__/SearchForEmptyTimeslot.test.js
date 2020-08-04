@@ -245,7 +245,7 @@ test("Case 3: ClickPoint is in travelObject", () => {
   });
 });
 
-test("Case 4: One travelobject overflows from the previous day and clickPoint is in the rest of the day", () => {
+test("Case 4: One travelobject overflows from the previous day and clickPoint is in the part of the day after overflow event", () => {
   expect(
     handleClickedTimePoint(
       TIMEPOINT_1000,
@@ -260,7 +260,7 @@ test("Case 4: One travelobject overflows from the previous day and clickPoint is
   });
 });
 
-test("Case 5: One travelobject overflows to the next day and clickPoint is in the rest of the day", () => {
+test("Case 5: One travelobject overflows to the next day and clickPoint is in the part of the day before overflow event", () => {
   expect(
     handleClickedTimePoint(
       TIMEPOINT_1000,
